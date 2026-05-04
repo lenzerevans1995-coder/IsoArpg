@@ -109,24 +109,13 @@ const CLOUD_RECYCLE_DIST := 3400.0   # if farther than this from player, recycle
 var clouds: Array[Sprite2D] = []
 var cloud_velocities: Array[Vector2] = []
 @onready var player_scene := preload("res://player.tscn")
-# DEPRECATED: PLAYER_LAYERED_SCRIPT (Fantasy tileset character) and the matching
-# character_creator.gd are kept for reference but no longer wired in. The active
-# player driver is player_otherworlds.gd (PVGames OtherWorlds kit).
 const PLAYER_LAYERED_SCRIPT := preload("res://player_layered.gd")
-# Direct-spritesheet driver pointed at Fantasy tileset / Player. Used in
-# BATTLE_WORLD so we skip LayeredCharacter / equipment slots entirely.
-const PLAYER_SIMPLE_SCRIPT := preload("res://player_simple.gd")
-const PLAYER_LONGBOW_SCRIPT := preload("res://player_longbow.gd")
-const PLAYER_OTHERWORLDS_SCRIPT := preload("res://player_otherworlds.gd")
-const USE_LAYERED_PLAYER := true
 const EDITOR_SCENE := preload("res://editor.tscn")
 var editor: Node
 
-const CHARACTER_CREATOR_SCRIPT := preload("res://character_creator.gd")
 const INVENTORY_UI_SCRIPT := preload("res://inventory_ui.gd")
 const Inventory := preload("res://inventory.gd")
 const PROFILE_PATH := "user://profile.json"
-var character_creator: Control = null
 var inventory_ui: Control = null
 var player: Node2D
 var hud_mode_text: String = "[F2] dusk"
@@ -203,12 +192,6 @@ func _ready() -> void:
 	# layout and editor flow). Re-enable by uncommenting the call.
 	# if BATTLE_WORLD:
 	# 	_spawn_battle_goblins()
-	# Character creator removed from the default flow — pressing C now
-	# opens the lightweight Character panel from panels_ui.gd. Re-enable
-	# this block (or call `_show_character_creator()` from a UI button)
-	# if you want the full creator back.
-	# if not BATTLE_WORLD and not FileAccess.file_exists(PROFILE_PATH):
-	#     _show_character_creator()
 
 var monster_debug_panel: Control = null
 
@@ -356,26 +339,6 @@ const BOSS_NAMES := [
 	"Medieval_Bosses_TheTriplets", "Medieval_Bosses_Witch",
 ]
 var _next_boss_idx: int = 0
-
-const BACKER_NAMES := [
-	"Female_Archer", "Female_Bard", "Female_Battleguard", "Female_Cleric",
-	"Female_Mage", "Female_Orc1", "Female_Rogue",
-	"Male_Musketeer", "Male_Miner",
-]
-var _next_backer_idx: int = 0
-
-func _spawn_next_backer() -> void:
-	var Backer := load("res://backer_character.gd")
-	var b: Node2D = Backer.new()
-	b.character_name = BACKER_NAMES[_next_backer_idx % BACKER_NAMES.size()]
-	b.display_size = 192.0
-	world.add_child(b)
-	b.position = player.position + Vector2(160, 0)
-	b.set_direction(4)
-	b.add_to_group("placed_shader_asset")
-	b.play_anim("Idle 1", true)
-	print("spawned backer ", b.character_name)
-	_next_backer_idx += 1
 
 const BUILDING_PACKS := ["building_stone_1", "building_wood_1"]
 var _building_pack_idx: int = 0
@@ -613,29 +576,6 @@ func _toggle_monster_debug_panel() -> void:
 		if t is CanvasItem:
 			t.visible = not trees_hidden
 
-func _show_character_creator() -> void:
-	if character_creator and is_instance_valid(character_creator):
-		return
-	# Sits in its own CanvasLayer so it renders above the world, ignores
-	# camera transform, and pauses no game systems behind it.
-	var layer := CanvasLayer.new()
-	layer.layer = 30
-	add_child(layer)
-	var cc: Control = CHARACTER_CREATOR_SCRIPT.new()
-	layer.add_child(cc)
-	character_creator = cc
-	var _close := func():
-		if is_instance_valid(layer):
-			layer.queue_free()
-		character_creator = null
-	cc.confirmed.connect(func(_loadout):
-		# Push the freshly saved loadout into the live player without restart.
-		if player and player.has_method("reload_loadout"):
-			player.reload_loadout()
-		_close.call()
-	)
-	cc.cancelled.connect(_close)
-
 func _toggle_inventory() -> void:
 	if inventory_ui and is_instance_valid(inventory_ui):
 		inventory_ui.queue_free()
@@ -800,7 +740,6 @@ func _input(event: InputEvent) -> void:
 			KEY_F4: _set_lighting_mode(3)
 			KEY_F5: _set_lighting_mode(4)
 			KEY_F6: _toggle_world_shader_panel()
-			KEY_F7: _spawn_next_backer()
 			KEY_F8:
 				# Inside a dungeon F8 saves the layout to draft_Dungeon;
 				# outside it toggles cloud visibility (the original dev
