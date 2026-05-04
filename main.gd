@@ -198,7 +198,6 @@ func _ready() -> void:
 		player.position = grid_to_screen(Vector2i(1, -36))
 	_update_chunks()
 	_set_lighting_mode(1)
-	_spawn_test_monster()
 	_spawn_combat_hud()
 	# Goblin spawn disabled for now (paused while iterating on dungeon
 	# layout and editor flow). Re-enable by uncommenting the call.
@@ -211,7 +210,6 @@ func _ready() -> void:
 	# if not BATTLE_WORLD and not FileAccess.file_exists(PROFILE_PATH):
 	#     _show_character_creator()
 
-var test_monsters: Array = []
 var monster_debug_panel: Control = null
 
 # Combat
@@ -344,21 +342,6 @@ func _cycle_goblin_target(direction: int = 1) -> void:
 		var g = goblins[current_target_idx]
 		if is_instance_valid(g) and not g.dead:
 			return
-
-func _spawn_test_monster() -> void:
-	var Monster := load("res://monster.gd")
-	var tex: Texture2D = load("res://assets/monsters/BloodEye/Spritesheet.png")
-	if Monster == null or tex == null:
-		return
-	var m: Node2D = Monster.new()
-	m.spritesheet = tex
-	m.display_size = 96.0
-	m.wander = true
-	world.add_child(m)
-	m.position = Vector2(192, 0)
-	m.set_direction(2)
-	m.play_anim("Idle", true)
-	test_monsters.append(m)
 
 func _toggle_otherworlds_creator() -> void:
 	if otherworlds_creator == null:
@@ -624,8 +607,6 @@ func _toggle_monster_debug_panel() -> void:
 		add_child(layer)
 		monster_debug_panel = Panel.new()
 		layer.add_child(monster_debug_panel)
-		for m in test_monsters:
-			monster_debug_panel.add_target(m)
 	# Hide trees while the panel is up so monsters aren't occluded.
 	var trees_hidden: bool = monster_debug_panel.visible
 	for t in get_tree().get_nodes_in_group("tree"):
