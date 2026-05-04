@@ -135,9 +135,9 @@ static func _get_fx_root(any_node: Node) -> Node3D:
 	container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	# Pixelize shader on the container so we can dial chunkiness up/down
 	# at runtime via `set_pixel_size()`. pixel_size=1 means no effect.
-	if ResourceLoader.exists("res://pixelize_ui.gdshader"):
+	if ResourceLoader.exists("res://shaders/pixelize_ui.gdshader"):
 		var mat := ShaderMaterial.new()
-		mat.shader = load("res://pixelize_ui.gdshader")
+		mat.shader = load("res://shaders/pixelize_ui.gdshader")
 		mat.set_shader_parameter("pixel_size", DEFAULT_PIXEL_SIZE)
 		mat.set_shader_parameter("saturation", 1.0)
 		mat.set_shader_parameter("brightness", 1.0)

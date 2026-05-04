@@ -12,8 +12,8 @@ extends Node
 # return to the game the painted tiles are no longer visible.
 
 const FOREST := "res://assets/forest"
-const WATER_SHADER := preload("res://water.gdshader")
-const FROTH_SHADER := preload("res://ripple_froth.gdshader")
+const WATER_SHADER := preload("res://shaders/water.gdshader")
+const FROTH_SHADER := preload("res://shaders/ripple_froth.gdshader")
 
 const DUNGEON_CATEGORY := {
 	"label": "Dungeon",

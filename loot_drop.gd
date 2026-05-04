@@ -82,7 +82,7 @@ func _build_for(rarity: int) -> void:
 	# Same chunky pixelize the skill icons use, dialed lower (1.1) so
 	# the coin pile keeps its detail but reads as pixel-art on the floor.
 	var coin_mat := ShaderMaterial.new()
-	coin_mat.shader = preload("res://skill_icon_pixelize.gdshader")
+	coin_mat.shader = preload("res://shaders/skill_icon_pixelize.gdshader")
 	coin_mat.set_shader_parameter("pixel_size", 1.1)
 	_gold_sprite.material = coin_mat
 	add_child(_gold_sprite)

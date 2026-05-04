@@ -6,10 +6,10 @@ class_name Monster
 # animation playback with the catalog's animation lexicon (Loop / Singular /
 # PingPong / PingPongSingular / Static).
 
-const CATALOG_PATH := "res://monster_anim_catalog.json"
-const SHADER_PATH := "res://monster_painterly.gdshader"
-const PRESETS_PATH := "res://gear_presets.json"
-const SWATCH_PATH := "res://swatch_palette.json"
+const CATALOG_PATH := "res://data/monster_anim_catalog.json"
+const SHADER_PATH := "res://shaders/monster_painterly.gdshader"
+const PRESETS_PATH := "res://data/gear_presets.json"
+const SWATCH_PATH := "res://data/swatch_palette.json"
 # Slots from the gear presets that read as "skin/armor" colors and translate
 # well into a luma ramp for the monster recolor.
 const PRESET_SLOTS := ["body", "head", "chest", "legs", "shoes", "hands", "belt"]

@@ -28,7 +28,7 @@ enum Mode { PLUS, MINUS }
 		pixel_size = v
 		_apply_shader()
 
-const _PIXELIZE_SHADER := preload("res://skill_icon_pixelize.gdshader")
+const _PIXELIZE_SHADER := preload("res://shaders/skill_icon_pixelize.gdshader")
 
 func _ready() -> void:
 	flat = true

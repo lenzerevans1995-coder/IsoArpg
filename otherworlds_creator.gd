@@ -8,9 +8,9 @@ extends CanvasLayer
 # Opened via main.gd's KEY_C, or automatically on first run when
 # user://otherworlds_profile.json is missing.
 
-const MANIFEST_PATH := "res://character_kit_manifest.json"
+const MANIFEST_PATH := "res://data/character_kit_manifest.json"
 const PROFILE_PATH := "user://otherworlds_profile.json"
-const CATALOG_PATH := "res://character_pieces_catalog.json"
+const CATALOG_PATH := "res://data/character_pieces_catalog.json"
 
 # Northfolk pieces are merged into the base male/female kits, but they add
 # the Accessories slot, so female/male slot lists include it too.
@@ -648,7 +648,7 @@ func _reload_anim_list_for_kit() -> void:
 	_all_anims.clear()
 	var path := CATALOG_PATH
 	if _kit == "goblin":
-		path = "res://monster_anim_catalog.json"
+		path = "res://data/monster_anim_catalog.json"
 	var f := FileAccess.open(path, FileAccess.READ)
 	if f == null:
 		return

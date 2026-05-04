@@ -5,11 +5,11 @@ extends CanvasLayer
 # Has its own slider set + preview, independent of the monster debug panel.
 
 const ROOT_DIR := "res://assets/shader_assets"
-const SHADER_PATH := "res://monster_painterly.gdshader"
-const ISO_GROUND_SHADER_PATH := "res://iso_ground.gdshader"
+const SHADER_PATH := "res://shaders/monster_painterly.gdshader"
+const ISO_GROUND_SHADER_PATH := "res://shaders/iso_ground.gdshader"
 const TILE_W := 128
 const TILE_H := 64
-const SWATCH_PATH := "res://swatch_palette.json"
+const SWATCH_PATH := "res://data/swatch_palette.json"
 
 const PARAMS := [
 	{"name": "pixel_size",       "min": 1.0,  "max": 24.0, "step": 0.1, "default": 3.0,  "type": "f"},

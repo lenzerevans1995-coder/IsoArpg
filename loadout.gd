@@ -47,7 +47,7 @@ const PALETTE := {
 	"bag":   ["#ffffff", "#905937", "#3d3d3d"],
 }
 
-const PRESETS_PATH := "res://gear_presets.json"
+const PRESETS_PATH := "res://data/gear_presets.json"
 static var _presets_cache: Array = []
 
 static func presets() -> Array:

@@ -55,7 +55,7 @@ var hedge_maze_pool: Array[Texture2D] = []   # Tree B4/B5 hedge wall pieces
 
 # Water: uses Ground C tiles whose dark portion is recolored to animated water.
 # C3 = solid bed (interior), C2 = 2-edge corner, C1 = 1-edge (water side touches land).
-const WATER_SHADER := preload("res://water.gdshader")
+const WATER_SHADER := preload("res://shaders/water.gdshader")
 var water_solid_pool: Array[Texture2D] = []     # C3 (all 4 dirs)
 var water_corner_dir: Dictionary = {}           # C2 - asset suffix preserved as direction key
 var water_edge_dir: Dictionary = {}             # C1
@@ -82,9 +82,9 @@ var path_single_dir: Dictionary = {}
 
 var tree_shadow_tex: Texture2D
 
-const FLORA_SHADER := preload("res://flora_wind.gdshader")
-const FROTH_SHADER := preload("res://ripple_froth.gdshader")
-const BREATHE_SHADER := preload("res://breathe.gdshader")
+const FLORA_SHADER := preload("res://shaders/flora_wind.gdshader")
+const FROTH_SHADER := preload("res://shaders/ripple_froth.gdshader")
+const BREATHE_SHADER := preload("res://shaders/breathe.gdshader")
 
 # Flower families (each is the 4 directional variants of one flower TYPE).
 # Built from decor/flowers/ so we can pick one consistent family per

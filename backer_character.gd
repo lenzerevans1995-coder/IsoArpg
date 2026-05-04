@@ -8,7 +8,7 @@ class_name BackerCharacter
 #   - Each anim has a CARDINAL range (4 dirs S,W,E,N) and a DIAGONAL range
 #     (4 dirs SW,NW,SE,NE), defined in backer_anim_catalog.json by sheet#
 
-const CATALOG_PATH := "res://backer_anim_catalog.json"
+const CATALOG_PATH := "res://data/backer_anim_catalog.json"
 const ROOT := "res://assets/backer_characters"
 
 # Standard layering: skin first, then clothing, then weapons / accessories.

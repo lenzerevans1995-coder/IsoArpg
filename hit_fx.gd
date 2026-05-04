@@ -107,15 +107,15 @@ func _flash_ring() -> void:
 # CFXR cartoon-font atlas. Unity stores rects with origin at the BOTTOM
 # of the image, so we flip Y to match Godot's top-origin region_rect.
 const CFXR_FONT_PATH := "res://assets/effects/cfxr/cfxr_font_AmazGoDaBold.png"
-const CFXR_FONT_GLYPHS_PATH := "res://cfxr_font_glyphs.json"
+const CFXR_FONT_GLYPHS_PATH := "res://data/cfxr_font_glyphs.json"
 const CFXR_FONT_TEX_HEIGHT := 72
 static var _font_tex: Texture2D = null
 static var _font_glyphs: Dictionary = {}    # char -> Rect2 (already y-flipped)
 
 static var _pix_shader: Shader = null
 static func _pixelize_shader() -> Shader:
-	if _pix_shader == null and ResourceLoader.exists("res://pixelize.gdshader"):
-		_pix_shader = load("res://pixelize.gdshader")
+	if _pix_shader == null and ResourceLoader.exists("res://shaders/pixelize.gdshader"):
+		_pix_shader = load("res://shaders/pixelize.gdshader")
 	return _pix_shader
 
 static func _load_font() -> void:

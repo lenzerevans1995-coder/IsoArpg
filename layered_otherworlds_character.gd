@@ -5,12 +5,12 @@ class_name LayeredOtherworldsCharacter
 # Keeps all 7 layers loaded simultaneously so equipment swaps are O(1)
 # (just reassigns one layer's texture).
 
-const CATALOG_PATH := "res://character_pieces_catalog.json"
+const CATALOG_PATH := "res://data/character_pieces_catalog.json"
 const PIECES_ROOT := "res://assets/character_pieces"
 # Some kits ship as the 21x21 monster format (Goblin) instead of the 50x50
 # CharacterPieces format. Map them to a different catalog.
 const KIT_CATALOG_OVERRIDE := {
-	"goblin": "res://monster_anim_catalog.json",
+	"goblin": "res://data/monster_anim_catalog.json",
 }
 
 # Render order: bottom -> top. Shadow first, weapons on top.
@@ -20,8 +20,8 @@ const SLOT_ORDER_OVERRIDE := {
 	"backer_female": ["Shadow", "Base", "Bottom", "Top", "Hair", "Head", "FacialHair", "Accessories", "Weapons"],
 	"backer_male":   ["Shadow", "Base", "Bottom", "Top", "Hair", "Head", "FacialHair", "Accessories", "Weapons"],
 }
-const SHADER_PATH := "res://monster_painterly.gdshader"
-const SWATCH_PATH := "res://swatch_palette.json"
+const SHADER_PATH := "res://shaders/monster_painterly.gdshader"
+const SWATCH_PATH := "res://data/swatch_palette.json"
 
 # Catalog directions: [S, W, E, N, SW, NW, SE, NE].
 # Maps player_layered.gd's 0..7 (E=0, CCW with y-down) to catalog index.

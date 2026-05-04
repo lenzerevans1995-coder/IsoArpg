@@ -4,7 +4,7 @@ extends CanvasLayer
 # main.world via a single shared ShaderMaterial; tweaking sliders updates the
 # whole world live.
 
-const SHADER_PATH := "res://world_pixelate.gdshader"
+const SHADER_PATH := "res://shaders/world_pixelate.gdshader"
 
 const PARAMS := [
 	{"name": "pixel_size",       "min": 1.0,  "max": 32.0, "step": 0.1, "default": 5.0,  "type": "f"},

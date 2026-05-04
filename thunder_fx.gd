@@ -6,7 +6,7 @@ class_name ThunderFX
 # Pixelised through the same shader the hit popup uses for a chunky look.
 
 const SHEET_PATH := "res://assets/effects/tests/2021 Wave 2 - Elemental Pack/PNG format - 192x192 cells/W2_Thunder.png"
-const PIX_SHADER_PATH := "res://pixelize.gdshader"
+const PIX_SHADER_PATH := "res://shaders/pixelize.gdshader"
 const COLS := 5
 const ROWS := 3
 const CELL := 192

@@ -67,7 +67,7 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 const _SkillDB := preload("res://skill_db.gd")
-const _PIXELIZE_SHADER := preload("res://skill_icon_pixelize.gdshader")
+const _PIXELIZE_SHADER := preload("res://shaders/skill_icon_pixelize.gdshader")
 var _icon_node: TextureRect
 
 func _ready() -> void:

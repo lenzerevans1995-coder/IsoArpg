@@ -12,7 +12,7 @@ const EFKEFC_PATH := EFKEFC_IMPACT_PATH
 const TEX_DIR := "res://assets/effects/tests/MGC_IceSpikes_MZ_V1.2/MZ/Texture/MGC_IceSpike_2021W1"
 const SPIKE_TEX_PATH := TEX_DIR + "/IceSpike_1.png"
 const STARGLOW_TEX_PATH := TEX_DIR + "/StarGlow_.png"
-const PIX_SHADER_PATH := "res://pixelize.gdshader"
+const PIX_SHADER_PATH := "res://shaders/pixelize.gdshader"
 
 const COLOR_ICE := Color(0.65, 0.92, 1.2, 1.0)
 const SPIKE_COLS := 4

@@ -6,7 +6,7 @@ class_name ChainLightningFX
 # times. Each jump spawns its own anim and damages.
 
 const SHEET_PATH := "res://assets/effects/tests/2021 Wave 2 - Elemental Pack/PNG format - 192x192 cells/W2_Aoe_Lv2.png"
-const PIX_SHADER_PATH := "res://pixelize.gdshader"
+const PIX_SHADER_PATH := "res://shaders/pixelize.gdshader"
 const COLS := 5
 const ROWS := 4
 const CELL := 192

@@ -5,11 +5,11 @@ class_name CompositeCharacter
 # instead of stacking 9 live layers. Same animation API as
 # LayeredOtherworldsCharacter — just much cheaper (one texture, one Sprite2D).
 
-const CATALOG_PATH := "res://character_pieces_catalog.json"
-const SHADER_PATH := "res://monster_painterly.gdshader"
-const SWATCH_PATH := "res://swatch_palette.json"
+const CATALOG_PATH := "res://data/character_pieces_catalog.json"
+const SHADER_PATH := "res://shaders/monster_painterly.gdshader"
+const SWATCH_PATH := "res://data/swatch_palette.json"
 const KIT_CATALOG_OVERRIDE := {
-	"goblin": "res://monster_anim_catalog.json",
+	"goblin": "res://data/monster_anim_catalog.json",
 }
 const DIR_TO_CATALOG := [2, 6, 0, 4, 1, 5, 3, 7]   # E,SE,S,SW,W,NW,N,NE -> S,W,E,N,SW,NW,SE,NE
 

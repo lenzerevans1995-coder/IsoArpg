@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b0iso0main00"]
 
 [ext_resource type="Script" uid="uid://bxafbhn6un4sh" path="res://main.gd" id="1_main"]
-[ext_resource type="Shader" uid="uid://c71lgwh1xpelk" path="res://beams.gdshader" id="3_beams"]
+[ext_resource type="Shader" uid="uid://c71lgwh1xpelk" path="res://shaders/beams.gdshader" id="3_beams"]
 
 [sub_resource type="Gradient" id="Grad_rain"]
 colors = PackedColorArray(0.7, 0.85, 1, 0.55, 0.7, 0.85, 1, 0)
