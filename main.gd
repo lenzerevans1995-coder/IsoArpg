@@ -238,7 +238,6 @@ var current_wave: int = 0
 var spiders_remaining_in_wave: int = 0
 var asset_placer: CanvasLayer = null
 var world_shader_panel: CanvasLayer = null
-var otherworlds_creator: CanvasLayer = null
 
 const GOBLIN_SCRIPT := preload("res://goblin.gd")
 var goblins: Array[Node2D] = []
@@ -326,12 +325,6 @@ func _cycle_goblin_target(direction: int = 1) -> void:
 		if is_instance_valid(g) and not g.dead:
 			return
 
-func _toggle_otherworlds_creator() -> void:
-	if otherworlds_creator == null:
-		otherworlds_creator = load("res://otherworlds_creator.gd").new()
-		otherworlds_creator.main_ref = self
-		add_child(otherworlds_creator)
-	otherworlds_creator.toggle()
 
 const BOSS_NAMES := [
 	"Medieval_Bosses_Gollageth", "Medieval_Bosses_Haelerion", "Medieval_Bosses_Hive",
