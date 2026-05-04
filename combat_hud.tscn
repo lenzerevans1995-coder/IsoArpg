@@ -1,0 +1,583 @@
+[gd_scene format=3 uid="uid://c8owfe8vuyvfa"]
+
+[ext_resource type="Script" uid="uid://csu5hsvfgk5t4" path="res://combat_hud.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://dldi8ao1sgame" path="res://hud_orb.gd" id="2_orb"]
+[ext_resource type="Script" uid="uid://fyiijg625kyr" path="res://hud_skill_square.gd" id="4_skill"]
+[ext_resource type="Script" uid="uid://bllpj33xas1sa" path="res://hud_center_bar.gd" id="8_centre_panel"]
+[ext_resource type="Script" uid="uid://dpwrfp66yb3ic" path="res://hud_stamina_bar.gd" id="9_stamina"]
+[ext_resource type="Script" uid="uid://c27v3baoxbntg" path="res://hud_stone_button.gd" id="10_stbtn"]
+
+[node name="CombatHUD" type="CanvasLayer" unique_id=961958329]
+layer = 40
+script = ExtResource("1_main")
+
+[node name="Root" type="Control" parent="." unique_id=300170126]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CentreBar" type="Control" parent="Root" unique_id=64905321]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -383.0
+offset_top = -159.0
+offset_right = 282.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("8_centre_panel")
+
+[node name="HpOrb" type="Control" parent="Root" unique_id=658827338]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -460.0
+offset_top = -169.0
+offset_right = -332.0
+offset_bottom = -41.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("2_orb")
+
+[node name="HpLabel" type="Label" parent="Root" unique_id=742434867]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -467.0
+offset_top = -113.0
+offset_right = -323.0
+offset_bottom = -95.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.92, 0.92, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.95)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 13
+text = " 0 / 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UiButtons" type="GridContainer" parent="Root" unique_id=1060855819]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -317.0
+offset_top = -132.0
+offset_right = -201.0
+offset_bottom = -66.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 4
+
+[node name="BtnC" type="Button" parent="Root/UiButtons" unique_id=1446531612]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+tooltip_text = "Character (C)"
+theme_override_colors/font_color = Color(0.78, 0.76, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+text = "C"
+flat = true
+script = ExtResource("10_stbtn")
+icon_col = 4
+icon_row = 12
+
+[node name="BtnI" type="Button" parent="Root/UiButtons" unique_id=1640556763]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+tooltip_text = "Inventory (I)"
+theme_override_colors/font_color = Color(0.78, 0.76, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+text = "I"
+flat = true
+script = ExtResource("10_stbtn")
+icon_col = 0
+icon_row = 12
+
+[node name="BtnK" type="Button" parent="Root/UiButtons" unique_id=1468821351]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+tooltip_text = "Skill Tree (K)"
+theme_override_colors/font_color = Color(0.78, 0.76, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+text = "K"
+flat = true
+script = ExtResource("10_stbtn")
+icon_col = 8
+icon_row = 12
+
+[node name="BtnM" type="Button" parent="Root/UiButtons" unique_id=1767311451]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+tooltip_text = "Map (M) — coming soon"
+theme_override_colors/font_color = Color(0.78, 0.76, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+text = "M"
+flat = true
+script = ExtResource("10_stbtn")
+icon_col = 7
+icon_row = 12
+
+[node name="BtnQ" type="Button" parent="Root/UiButtons" unique_id=1099381064]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+tooltip_text = "Quest Log (Q) — coming soon"
+theme_override_colors/font_color = Color(0.78, 0.76, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+text = "Q"
+flat = true
+script = ExtResource("10_stbtn")
+icon_col = 11
+icon_row = 12
+
+[node name="BtnP" type="Button" parent="Root/UiButtons" unique_id=1946366995]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+tooltip_text = "Party (P) — coming soon"
+theme_override_colors/font_color = Color(0.78, 0.76, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+text = "P"
+flat = true
+script = ExtResource("10_stbtn")
+icon_col = 13
+icon_row = 12
+
+[node name="BtnHelp" type="Button" parent="Root/UiButtons" unique_id=1086889086]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+tooltip_text = "Help (H)"
+theme_override_colors/font_color = Color(0.78, 0.76, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+text = "?"
+flat = true
+script = ExtResource("10_stbtn")
+icon_col = 12
+icon_row = 12
+
+[node name="BtnMenu" type="Button" parent="Root/UiButtons" unique_id=739841664]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+tooltip_text = "Menu (Esc)"
+theme_override_colors/font_color = Color(0.78, 0.76, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+text = "≡"
+flat = true
+script = ExtResource("10_stbtn")
+icon_col = 1
+icon_row = 12
+
+[node name="LmbSquare" type="Control" parent="Root" unique_id=959384528]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -184.0
+offset_top = -119.0
+offset_right = -140.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("4_skill")
+sz = 44
+skill_id = "warrior_basic"
+icon_pixel_size = 9.0
+
+[node name="KeyLbl" type="Label" parent="Root/LmbSquare" unique_id=2095667257]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -14.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 9
+text = "RMB"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="RmbSquare" type="Control" parent="Root" unique_id=348233938]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -136.0
+offset_top = -119.0
+offset_right = -92.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("4_skill")
+sz = 44
+skill_id = "warrior_cleave"
+
+[node name="KeyLbl" type="Label" parent="Root/RmbSquare" unique_id=1730287026]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -14.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 9
+text = "1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BeltSlot1" type="Control" parent="Root" unique_id=1455877635]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -88.0
+offset_top = -119.0
+offset_right = -44.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("4_skill")
+sz = 44
+skill_id = "warrior_whirlwind"
+icon_pixel_size = 9.0
+
+[node name="KeyLbl" type="Label" parent="Root/BeltSlot1" unique_id=1930188467]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -14.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "2"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BeltSlot2" type="Control" parent="Root" unique_id=612425127]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -119.0
+offset_right = 4.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("4_skill")
+sz = 44
+skill_id = "warrior_slam"
+icon_pixel_size = 9.0
+
+[node name="KeyLbl" type="Label" parent="Root/BeltSlot2" unique_id=1089197356]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -14.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "3"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BeltSlot3" type="Control" parent="Root" unique_id=584102097]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -119.0
+offset_right = 52.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("4_skill")
+sz = 44
+skill_id = "warrior_berserk"
+icon_pixel_size = 9.0
+
+[node name="KeyLbl" type="Label" parent="Root/BeltSlot3" unique_id=92195456]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -14.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "4"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BeltSlot4" type="Control" parent="Root" unique_id=756949033]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 56.0
+offset_top = -119.0
+offset_right = 100.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("4_skill")
+sz = 44
+skill_id = "warrior_execute"
+icon_pixel_size = 9.0
+
+[node name="KeyLbl" type="Label" parent="Root/BeltSlot4" unique_id=466822531]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -14.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 10
+text = "5"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Stamina" type="Control" parent="Root" unique_id=1538886307]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -179.0
+offset_top = -141.0
+offset_right = 214.0
+offset_bottom = -131.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("9_stamina")
+
+[node name="XPLabel" type="Label" parent="Root/Stamina" unique_id=93378278]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.95)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 9
+text = "XP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HpPotion" type="Control" parent="Root" unique_id=69799462]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 115.0
+offset_top = -119.0
+offset_right = 159.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("4_skill")
+sz = 44
+icon_pixel_size = null
+
+[node name="KeyLbl" type="Label" parent="Root/HpPotion" unique_id=609427744]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -14.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.55, 0.45, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 9
+text = "HP"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ManaPotion" type="Control" parent="Root" unique_id=1826722617]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 163.0
+offset_top = -119.0
+offset_right = 207.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("4_skill")
+sz = 44
+icon_pixel_size = null
+
+[node name="KeyLbl" type="Label" parent="Root/ManaPotion" unique_id=791277318]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -14.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.55, 0.85, 1, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.9)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 9
+text = "MP"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MpOrb" type="Control" parent="Root" unique_id=753890050]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 216.0
+offset_top = -168.0
+offset_right = 344.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("2_orb")
+kind = "mp"
+
+[node name="MpLabel" type="Label" parent="Root" unique_id=757097818]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 213.0
+offset_top = -115.0
+offset_right = 357.0
+offset_bottom = -97.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.92, 0.92, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.06, 0.95)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 13
+text = "0 / 0"
+horizontal_alignment = 1
+vertical_alignment = 1

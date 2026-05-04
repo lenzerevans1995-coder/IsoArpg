@@ -1,0 +1,362 @@
+{
+  "_doc": "PVGames CharacterPieces 50x50 grid layout. Each pack spritesheet is 10000x10000 px, 200x200 per frame. 8 directional facings per anim (S, W, E, N, SW, NW, SE, NE).",
+  "grid": 50,
+  "frame_size": 200,
+  "directions": [
+    "S",
+    "W",
+    "E",
+    "N",
+    "SW",
+    "NW",
+    "SE",
+    "NE"
+  ],
+  "animations": {
+    "Walk": {
+      "start": 0,
+      "total": 64,
+      "per_dir": 8
+    },
+    "Run": {
+      "start": 64,
+      "total": 64,
+      "per_dir": 8
+    },
+    "Idle 1": {
+      "start": 128,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Idle 2": {
+      "start": 168,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Idle 3": {
+      "start": 208,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Idle 4": {
+      "start": 248,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Idle Fidget 1": {
+      "start": 288,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Idle Fidget 2": {
+      "start": 312,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Idle Fidget 3": {
+      "start": 336,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Talking 1": {
+      "start": 360,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Talking 2": {
+      "start": 400,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Interact": {
+      "start": 440,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Use Item": {
+      "start": 480,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Sitting": {
+      "start": 504,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Climb": {
+      "start": 528,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Praying": {
+      "start": 568,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Jump": {
+      "start": 592,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Sneaking": {
+      "start": 632,
+      "total": 64,
+      "per_dir": 8
+    },
+    "Crouch": {
+      "start": 696,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Casting": {
+      "start": 720,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Dead/Down Forward": {
+      "start": 744,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Dead/Down Backward": {
+      "start": 784,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Down Pose s": {
+      "start": 824,
+      "total": 32,
+      "per_dir": 4
+    },
+    "Evade Roll": {
+      "start": 856,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Get Hit 1": {
+      "start": 896,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Get Hit 2": {
+      "start": 920,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Critical Idle 1": {
+      "start": 944,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Critical Idle 2": {
+      "start": 968,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Block": {
+      "start": 992,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Drink": {
+      "start": 1016,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Riding": {
+      "start": 1040,
+      "total": 24,
+      "per_dir": 3
+    },
+    "1-H Walk": {
+      "start": 1064,
+      "total": 64,
+      "per_dir": 8
+    },
+    "1-H Idle": {
+      "start": 1128,
+      "total": 40,
+      "per_dir": 5
+    },
+    "1-H Attack 1": {
+      "start": 1168,
+      "total": 24,
+      "per_dir": 3
+    },
+    "1-H Attack 2": {
+      "start": 1192,
+      "total": 24,
+      "per_dir": 3
+    },
+    "1-H Attack 3": {
+      "start": 1216,
+      "total": 24,
+      "per_dir": 3
+    },
+    "1-H Fidget": {
+      "start": 1240,
+      "total": 24,
+      "per_dir": 3
+    },
+    "2-H Walk": {
+      "start": 1264,
+      "total": 64,
+      "per_dir": 8
+    },
+    "2-H Idle": {
+      "start": 1328,
+      "total": 40,
+      "per_dir": 5
+    },
+    "2-H Run": {
+      "start": 1368,
+      "total": 64,
+      "per_dir": 8
+    },
+    "2-H Attack 1": {
+      "start": 1432,
+      "total": 24,
+      "per_dir": 3
+    },
+    "2-H Attack 2": {
+      "start": 1456,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Dual Wield Walk": {
+      "start": 1480,
+      "total": 64,
+      "per_dir": 8
+    },
+    "Dual Wield I dle": {
+      "start": 1544,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Dual Wield Attack 1": {
+      "start": 1584,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Dual Wield Attack 2": {
+      "start": 1608,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Dual Wield Fidget": {
+      "start": 1632,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Bow Walk": {
+      "start": 1656,
+      "total": 64,
+      "per_dir": 8
+    },
+    "Bow Idle": {
+      "start": 1720,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Bow Attack 1": {
+      "start": 1760,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Bow Fidget": {
+      "start": 1800,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Unarmed Idle": {
+      "start": 1824,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Unarmed Attack 1": {
+      "start": 1864,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Unarmed Attack 2": {
+      "start": 1904,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Unarmed Fidget": {
+      "start": 1928,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Polearm/Staff Walk": {
+      "start": 1952,
+      "total": 64,
+      "per_dir": 8
+    },
+    "Polearm/Staff Run": {
+      "start": 2016,
+      "total": 64,
+      "per_dir": 8
+    },
+    "Polearm/Staff Idle": {
+      "start": 2080,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Polearm/Staff Attack 1": {
+      "start": 2120,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Polearm/Staff Attack 2": {
+      "start": 2144,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Pistol Walk": {
+      "start": 2168,
+      "total": 64,
+      "per_dir": 8
+    },
+    "Pistol Idle": {
+      "start": 2232,
+      "total": 40,
+      "per_dir": 5
+    },
+    "Pistol Attack 1": {
+      "start": 2272,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Pistol Attack 2": {
+      "start": 2296,
+      "total": 24,
+      "per_dir": 3
+    },
+    "Pistol Fidget": {
+      "start": 2320,
+      "total": 24,
+      "per_dir": 3
+    },
+    "MG/Rifle/ Xbow Walk": {
+      "start": 2344,
+      "total": 64,
+      "per_dir": 8
+    },
+    "MG/Rifle/ Xbow Idle": {
+      "start": 2408,
+      "total": 40,
+      "per_dir": 5
+    },
+    "MG/Rifle/ Xbow Attack 1": {
+      "start": 2448,
+      "total": 24,
+      "per_dir": 3
+    },
+    "MG/Rifle/ Xbow Fidget": {
+      "start": 2471,
+      "total": 24,
+      "per_dir": 3
+    }
+  }
+}

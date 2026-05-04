@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bbxdvh8lxnt6g"]
+
+[ext_resource type="Script" uid="uid://do387atnhpvtx" path="res://loot_beam_editor.gd" id="1_main"]
+
+[node name="LootBeamEditor" type="Node2D" unique_id=1100]
+script = ExtResource("1_main")
+beam_offset_y = 83.0
+beam_width = 4.0
+beam_height = 160.0
+rarity = 4
+
+[node name="Background" type="ColorRect" parent="." unique_id=1101]
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+mouse_filter = 2
+color = Color(0.08, 0.08, 0.1, 1)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1102]
+zoom = Vector2(2, 2)

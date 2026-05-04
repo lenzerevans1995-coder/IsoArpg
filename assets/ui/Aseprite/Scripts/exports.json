@@ -1,0 +1,744 @@
+{
+    "directory": "../",
+    "destinations": [
+        "..\\..\\Sprites\\"
+    ],
+    "exports": [
+        {
+            "file": "SkillTree",
+            "presets": [
+                {
+                    "type": "layer_slices",
+                    "filename": "{name}.png"
+                },
+                {
+                    "type": "sheet",
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "Banners",
+            "presets": [
+                {
+                    "type": "sheet",
+                    "filename": "All.png"
+                },
+                {
+                    "type": "slices",
+                    "filename": "{name}.png"
+                }
+            ]
+        },
+        {
+            "file": "Buttons",
+            "presets": [
+                {
+                    "type": "slice_tags",
+                    "layer": "Blue",
+                    "filename": "{layer}/{slicename}_{tagname}.png"
+                },
+                {
+                    "type": "slice_tags",
+                    "layer": "Purple",
+                    "filename": "{layer}/{slicename}_{tagname}.png"
+                },
+                {
+                    "type": "slice_tags",
+                    "layer": "Red",
+                    "filename": "{layer}/{slicename}_{tagname}.png"
+                },
+                {
+                    "type": "slice_tags",
+                    "layer": "Orange",
+                    "filename": "{layer}/{slicename}_{tagname}.png"
+                },
+                {
+                    "type": "slice_tags",
+                    "layer": "Gold",
+                    "filename": "{layer}/{slicename}_{tagname}.png"
+                },
+                {
+                    "type": "slice_tags",
+                    "layer": "Black",
+                    "filename": "{layer}/{slicename}_{tagname}.png"
+                },
+                {
+                    "type": "slice_tags",
+                    "layer": "White",
+                    "filename": "{layer}/{slicename}_{tagname}.png"
+                },
+                {
+                    "type": "sheet",
+                    "filename": "All.png",
+                    "splitLayers": true
+                }
+            ]
+        },
+        {
+            "file": "Tooltips",
+            "presets": [
+                {
+                    "type": "layer_slices",
+                    "layer": "Blue",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Purple",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Red",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Orange",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Brown",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Gold",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Black",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "White",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "Cursors",
+            "presets": [
+                {
+                    "type": "layer_slices",
+                    "layer": "Blue",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Purple",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Red",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Orange",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Gold",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Black",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "White",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "Lists",
+            "presets": [
+                {
+                    "type": "layer_slices",
+                    "layer": "Blue",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Purple",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Red",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Orange",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Gold",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "White",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "Jewel",
+            "presets": [
+                {
+                    "type": "tags",
+                    "layer": "Blue",
+                    "folder": "",
+                    "filename": "{layer}/{name}_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Purple",
+                    "folder": "",
+                    "filename": "{layer}/{name}_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Red",
+                    "folder": "",
+                    "filename": "{layer}/{name}_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Orange",
+                    "folder": "",
+                    "filename": "{layer}/{name}_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Green",
+                    "folder": "",
+                    "filename": "{layer}/{name}_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Black",
+                    "folder": "",
+                    "filename": "{layer}/{name}_{tagname}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "Hearts",
+            "presets": [
+                {
+                    "type": "tags",
+                    "layer": "BlueMinimal",
+                    "folder": "",
+                    "filename": "Blue/HeartMinimal_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "PurpleMinimal",
+                    "folder": "",
+                    "filename": "Purple/HeartMinimal_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "RedMinimal",
+                    "folder": "",
+                    "filename": "Red/HeartMinimal_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "BlueDetailed",
+                    "folder": "",
+                    "filename": "Blue/HeartDetailed_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "RedDetailed",
+                    "folder": "",
+                    "filename": "Red/HeartDetailed_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "PurpleDetailed",
+                    "folder": "",
+                    "filename": "Purple/HeartDetailed_{tagname}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "Stars",
+            "presets": [
+                {
+                    "type": "tags",
+                    "layer": "Blue",
+                    "folder": "",
+                    "filename": "Blue/Star_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Purple",
+                    "folder": "",
+                    "filename": "Purple/Star_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Red",
+                    "folder": "",
+                    "filename": "Red/Star_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Gold",
+                    "folder": "",
+                    "filename": "Gold/Star_{tagname}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png",
+                    "trim": true
+                }
+            ]
+        },
+        {
+            "file": "Minimap",
+            "presets": [
+                {
+                    "type": "sheet",
+                    "layer": "Color",
+                    "filename": "Color/MinimapTileset.png"
+                },
+                {
+                    "type": "sheet",
+                    "layer": "White",
+                    "filename": "White/MinimapTileset.png"
+                }
+            ]
+        },
+        {
+            "file": "FormElements",
+            "presets": [
+                {
+                    "type": "layer_slices",
+                    "layer": "Blue",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Purple",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Red",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Orange",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Black",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "White",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "Decorators",
+            "presets": [
+                {
+                    "type": "layer_slices",
+                    "layer": "Blue",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Purple",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Red",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Orange",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Gold",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "White",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "Panels",
+            "presets": [
+                {
+                    "type": "layer_slices",
+                    "layer": "Blue",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Purple",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Red",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Gold",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Wood",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Black",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "White",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "PanelsThemed",
+            "presets": [
+                {
+                    "type": "slices",
+                    "folder": "Panels",
+                    "filename": "{slicename}.png"
+                }
+            ]
+        },
+        {
+            "file": "GridSlots",
+            "presets": [
+                {
+                    "type": "slices",
+                    "folder": "Grid",
+                    "filename": "{slicename}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "folder": "Grid",
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "GridSlotsAnimated",
+            "presets": [
+                {
+                    "type": "tags",
+                    "layer": "ThickBlue",
+                    "folder": "Grid",
+                    "filename": "Blue/SelectorThick_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThickPurple",
+                    "folder": "Grid",
+                    "filename": "Purple/SelectorThick_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThickRed",
+                    "folder": "Grid",
+                    "filename": "Red/SelectorThick_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThickOrange",
+                    "folder": "Grid",
+                    "filename": "Orange/SelectorThick_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThickBlack",
+                    "folder": "Grid",
+                    "filename": "Black/SelectorThick_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThickWhite",
+                    "folder": "Grid",
+                    "filename": "White/SelectorThick_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThinBlue",
+                    "folder": "Grid",
+                    "filename": "Blue/SelectorThin_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThinPurple",
+                    "folder": "Grid",
+                    "filename": "Purple/SelectorThin_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThinRed",
+                    "folder": "Grid",
+                    "filename": "Red/SelectorThin_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThinOrange",
+                    "folder": "Grid",
+                    "filename": "Orange/SelectorThin_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThinBlack",
+                    "folder": "Grid",
+                    "filename": "Black/SelectorThin_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ThinWhite",
+                    "folder": "Grid",
+                    "filename": "White/SelectorThin_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "EdgeBlack",
+                    "folder": "Grid",
+                    "filename": "Black/SelectorEdge_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "EdgeWhite",
+                    "folder": "Grid",
+                    "filename": "White/SelectorEdge_{tagname}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "folder": "Grid",
+                    "filename": "AllAnimated.png"
+                }
+            ]
+        },
+        {
+            "file": "SkillTreeAnimated",
+            "presets": [
+                {
+                    "type": "tags",
+                    "folder": "SkillTree",
+                    "filename": "SkillSlot_{tag}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "folder": "SkillTree",
+                    "filename": "AllAnimated.png"
+                }
+            ]
+        },
+        {
+            "file": "Selectors",
+            "presets": [
+                {
+                    "type": "tags",
+                    "layer": "ChevronDown",
+                    "folder": "Selectors",
+                    "filename": "{layer}_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "ChevronRight",
+                    "folder": "Selectors",
+                    "filename": "{layer}_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Dashed",
+                    "folder": "Selectors",
+                    "filename": "{layer}_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Square",
+                    "folder": "Selectors",
+                    "filename": "{layer}_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Angled",
+                    "folder": "Selectors",
+                    "filename": "{layer}_{tagname}.png"
+                },
+                {
+                    "type": "tags",
+                    "layer": "Reticle",
+                    "folder": "Selectors",
+                    "filename": "{layer}_{tagname}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "ValueSlots",
+            "presets": [
+                {
+                    "type": "layer_slices",
+                    "layer": "Blue",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Purple",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Red",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Orange",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Green",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "White",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        },
+        {
+            "file": "ValueBars",
+            "presets": [
+                {
+                    "type": "layer_slices",
+                    "layer": "Blue",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Purple",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Red",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Orange",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "Green",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "layer_slices",
+                    "layer": "White",
+                    "filename": "{layer}/{slicename}.png"
+                },
+                {
+                    "type": "sheet",
+                    "splitLayers": true,
+                    "filename": "All.png"
+                }
+            ]
+        }
+    ]
+}

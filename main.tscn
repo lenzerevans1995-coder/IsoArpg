@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://b0iso0main00"]
+
+[ext_resource type="Script" uid="uid://bxafbhn6un4sh" path="res://main.gd" id="1_main"]
+[ext_resource type="Shader" uid="uid://c71lgwh1xpelk" path="res://beams.gdshader" id="3_beams"]
+
+[sub_resource type="Gradient" id="Grad_rain"]
+colors = PackedColorArray(0.7, 0.85, 1, 0.55, 0.7, 0.85, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="Mat_beams"]
+shader = ExtResource("3_beams")
+shader_parameter/intensity = 0.32
+shader_parameter/ray_color = Color(1, 0.94, 0.72, 1)
+shader_parameter/angle = 0.55
+shader_parameter/frequency = 18.0
+shader_parameter/drift_speed = 0.18
+shader_parameter/sharpness = 6.0
+
+[node name="Main" type="Node2D" unique_id=130589620]
+script = ExtResource("1_main")
+
+[node name="Ambient" type="CanvasModulate" parent="." unique_id=1034215082]
+color = Color(0.62, 0.66, 0.78, 1)
+
+[node name="Sun" type="DirectionalLight2D" parent="." unique_id=77213188]
+rotation = 0.85
+color = Color(1, 0.96, 0.85, 1)
+energy = 0.35
+height = 0.5
+
+[node name="World" type="Node2D" parent="." unique_id=2122235246]
+y_sort_enabled = true
+
+[node name="Weather" type="CanvasLayer" parent="." unique_id=392514524]
+layer = 5
+
+[node name="Rain" type="CPUParticles2D" parent="Weather" unique_id=1366280296]
+position = Vector2(640, -40)
+emitting = false
+amount = 220
+lifetime = 1.6
+preprocess = 1.6
+emission_shape = 3
+emission_rect_extents = Vector2(900, 20)
+direction = Vector2(0.25, 1)
+spread = 4.0
+gravity = Vector2(0, 700)
+initial_velocity_min = 700.0
+initial_velocity_max = 950.0
+scale_amount_max = 1.6
+color_ramp = SubResource("Grad_rain")
+
+[node name="Atmosphere" type="CanvasLayer" parent="." unique_id=540022019]
+layer = 6
+visible = false
+
+[node name="Beams" type="ColorRect" parent="Atmosphere" unique_id=1052296664]
+material = SubResource("Mat_beams")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Clouds" type="Node2D" parent="." unique_id=1012105282]
+z_index = 100
+z_as_relative = false
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=565631523]
+layer = 10
+
+[node name="Label" type="Label" parent="HUD" unique_id=728513278]
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 700.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "WASD/LMB - walk    RMB - attack    1 - editor    F1-F4 lighting    5 rain    6 clouds    7 beams"
+
+[node name="TextureRect" type="TextureRect" parent="HUD" unique_id=2138399657]
+offset_right = 481.0
+offset_bottom = 254.0
+
+[node name="EffekseerEmitter2D" type="EffekseerEmitter2D" parent="." unique_id=1940599020]

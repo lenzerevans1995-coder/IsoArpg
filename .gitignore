@@ -1,0 +1,70 @@
+# --- Godot ---
+.godot/
+.import/
+export.cfg
+export_presets.cfg
+*.translation
+# Godot import sidecars — useless without their source images (which we ignore)
+*.import
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.tmp
+.vscode/
+.idea/
+
+# --- Builds / archives ---
+build/
+dist/
+exports/
+*.exe
+*.pck
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+
+# --- Character generator (third-party standalone tool — large) ---
+assets/charachters/Stand-alone Character creator - 2D Fantasy V1-0-3/
+assets/charachters/Stand-alone Character creator - 2D Fantasy V1-0-3.zip
+
+# --- All images (asset binaries — keep repo lean) ---
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.bmp
+*.tga
+*.gif
+*.psd
+*.ai
+*.svg
+*.ico
+
+# --- Audio (also large binary) ---
+*.wav
+*.ogg
+*.mp3
+*.flac
+*.m4a
+
+# --- Other large binary asset formats ---
+*.aseprite
+*.efkefc
+*.efkmat
+*.efkmodel
+*.fbx
+*.blend
+*.blend1
+*.anim
+*.controller
+*.unity
+*.prefab
+
+# --- Local user data ---
+*.log
+draft_*.json

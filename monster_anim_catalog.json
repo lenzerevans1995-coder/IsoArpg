@@ -1,0 +1,36 @@
+{
+  "_doc": "OtherWorlds_Monsters spritesheet layout, extracted from Info_MonsterSheet.docx (RpgTools/PVGames). Each spritesheet is 21x21 frames (square). Frame size = sheet_width / 21. 8 directional facings per anim, in order: S, W, E, N, SW, NW, SE, NE. Frames are 1-indexed in the doc; this file uses 0-indexed [start, count] tuples.",
+  "grid": 21,
+  "directions": ["S", "W", "E", "N", "SW", "NW", "SE", "NE"],
+  "animations": {
+    "Walking":     { "start": 0,   "total": 64, "per_dir": 8, "type": "Loop" },
+    "Running":     { "start": 64,  "total": 64, "per_dir": 8, "type": "Loop" },
+    "Idle":        { "start": 128, "total": 40, "per_dir": 5, "type": "Loop" },
+    "IdleFidget":  { "start": 168, "total": 24, "per_dir": 3, "type": "PingPongSingular" },
+    "Attack1":     { "start": 192, "total": 24, "per_dir": 3, "type": "Singular" },
+    "Attack2":     { "start": 216, "total": 24, "per_dir": 3, "type": "Singular" },
+    "UseSkill":    { "start": 240, "total": 24, "per_dir": 3, "type": "Singular" },
+    "Block":       { "start": 264, "total": 24, "per_dir": 3, "type": "Singular" },
+    "Evade":       { "start": 288, "total": 24, "per_dir": 3, "type": "Singular" },
+    "GetHit":      { "start": 312, "total": 24, "per_dir": 3, "type": "Singular" },
+    "CriticalHP":  { "start": 336, "total": 24, "per_dir": 3, "type": "PingPong" },
+    "DeadToDown":  { "start": 360, "total": 24, "per_dir": 3, "type": "Singular" },
+    "DownPoses":   { "start": 384, "total": 32, "per_dir": 4, "type": "Static", "_note": "4 down poses x 8 dirs" },
+    "Behavior":    { "start": 416, "total": 24, "per_dir": 3, "type": "PingPong" }
+  },
+  "_layout_assumption": "Frames are stored row-major in the 21x21 grid. Within each anim, frames are grouped by direction in the listed order: all per_dir frames for S, then W, then E, then N, then SW, NW, SE, NE.",
+  "overrides": {
+    "UrukCrusher": {
+      "_doc": "PVGames CharacterPieces format: 50x50 grid at 200px/frame. UrukCrusher is a 20x20 cropped sheet (first 400 frames) using the same row-major layout. Anim frame ranges below match the CharacterPieces lexicon for the frames present in those 400 cells.",
+      "grid": 20,
+      "directions": ["S", "W", "E", "N", "SW", "NW", "SE", "NE"],
+      "animations": {
+        "Walking":   { "start": 0,   "total": 64, "per_dir": 8, "type": "Loop" },
+        "Running":   { "start": 64,  "total": 64, "per_dir": 8, "type": "Loop" },
+        "Idle":      { "start": 128, "total": 40, "per_dir": 5, "type": "Loop" },
+        "Idle2":     { "start": 168, "total": 40, "per_dir": 5, "type": "Loop" },
+        "IdleFidget":{ "start": 288, "total": 24, "per_dir": 3, "type": "Singular" }
+      }
+    }
+  }
+}

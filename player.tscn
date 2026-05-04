@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0iso0player0"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_player"]
+
+[node name="Player" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_player")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Lantern" type="PointLight2D" parent="."]
+energy = 1.6
+color = Color(1.0, 0.86, 0.64, 1.0)
+texture_scale = 4.5
+shadow_enabled = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)

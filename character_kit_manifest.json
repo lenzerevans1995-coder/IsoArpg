@@ -1,0 +1,1960 @@
+{
+  "_doc": "PVGames OtherWorlds + RPGTools + Backer-converted character pieces. Backer kits live separate from female/male because their body proportions differ.",
+  "backer_female": {
+    "Accessories": [
+      {
+        "name": "Backer_Female_Archer_Back",
+        "spritesheet": "assets/character_pieces/backer_female/Accessories/Backer_Female_Archer_Back/Spritesheet.png"
+      }
+    ],
+    "Base": [
+      {
+        "name": "Backer_Female_Archer_Base",
+        "spritesheet": "assets/character_pieces/backer_female/Base/Backer_Female_Archer_Base/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Bard_Base",
+        "spritesheet": "assets/character_pieces/backer_female/Base/Backer_Female_Bard_Base/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Battleguard_Base",
+        "spritesheet": "assets/character_pieces/backer_female/Base/Backer_Female_Battleguard_Base/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Cleric_Base",
+        "spritesheet": "assets/character_pieces/backer_female/Base/Backer_Female_Cleric_Base/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Mage_Base",
+        "spritesheet": "assets/character_pieces/backer_female/Base/Backer_Female_Mage_Base/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Orc1_Base",
+        "spritesheet": "assets/character_pieces/backer_female/Base/Backer_Female_Orc1_Base/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Rogue_Base",
+        "spritesheet": "assets/character_pieces/backer_female/Base/Backer_Female_Rogue_Base/Spritesheet.png"
+      }
+    ],
+    "Bottom": [
+      {
+        "name": "Backer_Female_Archer_Bottom",
+        "spritesheet": "assets/character_pieces/backer_female/Bottom/Backer_Female_Archer_Bottom/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Bard_Bottom",
+        "spritesheet": "assets/character_pieces/backer_female/Bottom/Backer_Female_Bard_Bottom/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Battleguard_Bottom",
+        "spritesheet": "assets/character_pieces/backer_female/Bottom/Backer_Female_Battleguard_Bottom/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Cleric_Bottom",
+        "spritesheet": "assets/character_pieces/backer_female/Bottom/Backer_Female_Cleric_Bottom/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Mage_Bottom",
+        "spritesheet": "assets/character_pieces/backer_female/Bottom/Backer_Female_Mage_Bottom/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Orc1_Bottom",
+        "spritesheet": "assets/character_pieces/backer_female/Bottom/Backer_Female_Orc1_Bottom/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Rogue_Bottom",
+        "spritesheet": "assets/character_pieces/backer_female/Bottom/Backer_Female_Rogue_Bottom/Spritesheet.png"
+      }
+    ],
+    "Hair": [
+      {
+        "name": "Backer_Female_Archer_Hair",
+        "spritesheet": "assets/character_pieces/backer_female/Hair/Backer_Female_Archer_Hair/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Bard_Hair",
+        "spritesheet": "assets/character_pieces/backer_female/Hair/Backer_Female_Bard_Hair/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Battleguard_Hair",
+        "spritesheet": "assets/character_pieces/backer_female/Hair/Backer_Female_Battleguard_Hair/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Cleric_Hair",
+        "spritesheet": "assets/character_pieces/backer_female/Hair/Backer_Female_Cleric_Hair/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Mage_Hair",
+        "spritesheet": "assets/character_pieces/backer_female/Hair/Backer_Female_Mage_Hair/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Rogue_Hair",
+        "spritesheet": "assets/character_pieces/backer_female/Hair/Backer_Female_Rogue_Hair/Spritesheet.png"
+      }
+    ],
+    "Head": [
+      {
+        "name": "Backer_Female_Archer_Head",
+        "spritesheet": "assets/character_pieces/backer_female/Head/Backer_Female_Archer_Head/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Mage_Head",
+        "spritesheet": "assets/character_pieces/backer_female/Head/Backer_Female_Mage_Head/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Orc1_Head",
+        "spritesheet": "assets/character_pieces/backer_female/Head/Backer_Female_Orc1_Head/Spritesheet.png"
+      }
+    ],
+    "Top": [
+      {
+        "name": "Backer_Female_Archer_Top",
+        "spritesheet": "assets/character_pieces/backer_female/Top/Backer_Female_Archer_Top/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Bard_Top",
+        "spritesheet": "assets/character_pieces/backer_female/Top/Backer_Female_Bard_Top/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Battleguard_Top",
+        "spritesheet": "assets/character_pieces/backer_female/Top/Backer_Female_Battleguard_Top/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Cleric_Top",
+        "spritesheet": "assets/character_pieces/backer_female/Top/Backer_Female_Cleric_Top/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Mage_Top",
+        "spritesheet": "assets/character_pieces/backer_female/Top/Backer_Female_Mage_Top/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Orc1_Top",
+        "spritesheet": "assets/character_pieces/backer_female/Top/Backer_Female_Orc1_Top/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Rogue_Top",
+        "spritesheet": "assets/character_pieces/backer_female/Top/Backer_Female_Rogue_Top/Spritesheet.png"
+      }
+    ],
+    "Weapons": [
+      {
+        "name": "Backer_Female_Archer_Bow",
+        "spritesheet": "assets/character_pieces/backer_female/Weapons/Backer_Female_Archer_Bow/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Battleguard_Mace",
+        "spritesheet": "assets/character_pieces/backer_female/Weapons/Backer_Female_Battleguard_Mace/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Cleric_Mace",
+        "spritesheet": "assets/character_pieces/backer_female/Weapons/Backer_Female_Cleric_Mace/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Mage_Staff",
+        "spritesheet": "assets/character_pieces/backer_female/Weapons/Backer_Female_Mage_Staff/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Female_Orc1_Sword",
+        "spritesheet": "assets/character_pieces/backer_female/Weapons/Backer_Female_Orc1_Sword/Spritesheet.png"
+      }
+    ]
+  },
+  "backer_male": {
+    "Base": [
+      {
+        "name": "Backer_Male_Miner_Base",
+        "spritesheet": "assets/character_pieces/backer_male/Base/Backer_Male_Miner_Base/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Male_Musketeer_Base",
+        "spritesheet": "assets/character_pieces/backer_male/Base/Backer_Male_Musketeer_Base/Spritesheet.png"
+      }
+    ],
+    "Bottom": [
+      {
+        "name": "Backer_Male_Miner_Bottom",
+        "spritesheet": "assets/character_pieces/backer_male/Bottom/Backer_Male_Miner_Bottom/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Male_Musketeer_Bottom",
+        "spritesheet": "assets/character_pieces/backer_male/Bottom/Backer_Male_Musketeer_Bottom/Spritesheet.png"
+      }
+    ],
+    "FacialHair": [
+      {
+        "name": "Backer_Male_Musketeer_FacialHair",
+        "spritesheet": "assets/character_pieces/backer_male/FacialHair/Backer_Male_Musketeer_FacialHair/Spritesheet.png"
+      }
+    ],
+    "Hair": [
+      {
+        "name": "Backer_Male_Miner_Hair",
+        "spritesheet": "assets/character_pieces/backer_male/Hair/Backer_Male_Miner_Hair/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Male_Musketeer_Hair",
+        "spritesheet": "assets/character_pieces/backer_male/Hair/Backer_Male_Musketeer_Hair/Spritesheet.png"
+      }
+    ],
+    "Head": [
+      {
+        "name": "Backer_Male_Musketeer_Head",
+        "spritesheet": "assets/character_pieces/backer_male/Head/Backer_Male_Musketeer_Head/Spritesheet.png"
+      }
+    ],
+    "Top": [
+      {
+        "name": "Backer_Male_Miner_Top",
+        "spritesheet": "assets/character_pieces/backer_male/Top/Backer_Male_Miner_Top/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Male_Musketeer_Top",
+        "spritesheet": "assets/character_pieces/backer_male/Top/Backer_Male_Musketeer_Top/Spritesheet.png"
+      }
+    ],
+    "Weapons": [
+      {
+        "name": "Backer_Male_Miner_Pickaxe",
+        "spritesheet": "assets/character_pieces/backer_male/Weapons/Backer_Male_Miner_Pickaxe/Spritesheet.png"
+      },
+      {
+        "name": "Backer_Male_Musketeer_Rifle",
+        "spritesheet": "assets/character_pieces/backer_male/Weapons/Backer_Male_Musketeer_Rifle/Spritesheet.png"
+      }
+    ]
+  },
+  "female": {
+    "Accessories": [
+      {
+        "name": "Northfolk_Accessories_1",
+        "spritesheet": "assets/character_pieces/female/Accessories/Northfolk_Accessories_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Accessories_2",
+        "spritesheet": "assets/character_pieces/female/Accessories/Northfolk_Accessories_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Accessories_3",
+        "spritesheet": "assets/character_pieces/female/Accessories/Northfolk_Accessories_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Accessories_4",
+        "spritesheet": "assets/character_pieces/female/Accessories/Northfolk_Accessories_4/Spritesheet.png"
+      }
+    ],
+    "Base": [
+      {
+        "name": "Addon_Female_Base1",
+        "spritesheet": "assets/character_pieces/female/Base/Addon_Female_Base1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Base2",
+        "spritesheet": "assets/character_pieces/female/Base/Addon_Female_Base2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Base3",
+        "spritesheet": "assets/character_pieces/female/Base/Addon_Female_Base3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Female_1",
+        "spritesheet": "assets/character_pieces/female/Base/Northfolk_Female_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Female_2",
+        "spritesheet": "assets/character_pieces/female/Base/Northfolk_Female_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Female_3",
+        "spritesheet": "assets/character_pieces/female/Base/Northfolk_Female_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Female_4",
+        "spritesheet": "assets/character_pieces/female/Base/Northfolk_Female_4/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Female_5",
+        "spritesheet": "assets/character_pieces/female/Base/Northfolk_Female_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/female/Base/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/female/Base/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_3",
+        "spritesheet": "assets/character_pieces/female/Base/OtherWorlds_3/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_4",
+        "spritesheet": "assets/character_pieces/female/Base/OtherWorlds_4/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_5",
+        "spritesheet": "assets/character_pieces/female/Base/OtherWorlds_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_6",
+        "spritesheet": "assets/character_pieces/female/Base/OtherWorlds_6/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/female/Base/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/female/Base/RTP_2/Spritesheet.png"
+      },
+      {
+        "name": "RTP_3",
+        "spritesheet": "assets/character_pieces/female/Base/RTP_3/Spritesheet.png"
+      }
+    ],
+    "Bottom": [
+      {
+        "name": "Addon_Female_Bottom1",
+        "spritesheet": "assets/character_pieces/female/Bottom/Addon_Female_Bottom1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Bottom2",
+        "spritesheet": "assets/character_pieces/female/Bottom/Addon_Female_Bottom2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Bottom3",
+        "spritesheet": "assets/character_pieces/female/Bottom/Addon_Female_Bottom3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Bottom4",
+        "spritesheet": "assets/character_pieces/female/Bottom/Addon_Female_Bottom4/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_1",
+        "spritesheet": "assets/character_pieces/female/Bottom/Northfolk_Bottom_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_2",
+        "spritesheet": "assets/character_pieces/female/Bottom/Northfolk_Bottom_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_3",
+        "spritesheet": "assets/character_pieces/female/Bottom/Northfolk_Bottom_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_4",
+        "spritesheet": "assets/character_pieces/female/Bottom/Northfolk_Bottom_4/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_5",
+        "spritesheet": "assets/character_pieces/female/Bottom/Northfolk_Bottom_5/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_6",
+        "spritesheet": "assets/character_pieces/female/Bottom/Northfolk_Bottom_6/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_10",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_10/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_11",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_11/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_12",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_12/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_13",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_13/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_14",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_14/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_3",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_3/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_4",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_4/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_5",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_6",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_6/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_7",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_7/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_8",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_8/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_9",
+        "spritesheet": "assets/character_pieces/female/Bottom/OtherWorlds_9/Spritesheet.png"
+      },
+      {
+        "name": "Patreon_Exclusive_Bottom_1",
+        "spritesheet": "assets/character_pieces/female/Bottom/Patreon_Exclusive_Bottom_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/female/Bottom/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/female/Bottom/RTP_2/Spritesheet.png"
+      },
+      {
+        "name": "RTP_3",
+        "spritesheet": "assets/character_pieces/female/Bottom/RTP_3/Spritesheet.png"
+      },
+      {
+        "name": "RTP_4",
+        "spritesheet": "assets/character_pieces/female/Bottom/RTP_4/Spritesheet.png"
+      },
+      {
+        "name": "RTP_5",
+        "spritesheet": "assets/character_pieces/female/Bottom/RTP_5/Spritesheet.png"
+      },
+      {
+        "name": "RTP_6",
+        "spritesheet": "assets/character_pieces/female/Bottom/RTP_6/Spritesheet.png"
+      },
+      {
+        "name": "RTP_7",
+        "spritesheet": "assets/character_pieces/female/Bottom/RTP_7/Spritesheet.png"
+      }
+    ],
+    "Hair": [
+      {
+        "name": "Addon_Female_Hair1",
+        "spritesheet": "assets/character_pieces/female/Hair/Addon_Female_Hair1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Hair2",
+        "spritesheet": "assets/character_pieces/female/Hair/Addon_Female_Hair2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Hair3",
+        "spritesheet": "assets/character_pieces/female/Hair/Addon_Female_Hair3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Hair4",
+        "spritesheet": "assets/character_pieces/female/Hair/Addon_Female_Hair4/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Hair5",
+        "spritesheet": "assets/character_pieces/female/Hair/Addon_Female_Hair5/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Hair6",
+        "spritesheet": "assets/character_pieces/female/Hair/Addon_Female_Hair6/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Hair7",
+        "spritesheet": "assets/character_pieces/female/Hair/Addon_Female_Hair7/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_1",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_10",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_10/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_11",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_11/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_2",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_3",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_4",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_4/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_5",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_5/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_6",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_6/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_7",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_7/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_8",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_8/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_9",
+        "spritesheet": "assets/character_pieces/female/Hair/Northfolk_Hair_9/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_10",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_10/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_11",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_11/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_12",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_12/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_13",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_13/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_14",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_14/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_3",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_3/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_4",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_4/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_5",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_6",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_6/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_7",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_7/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_8",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_8/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_9",
+        "spritesheet": "assets/character_pieces/female/Hair/OtherWorlds_9/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/female/Hair/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/female/Hair/RTP_2/Spritesheet.png"
+      },
+      {
+        "name": "RTP_3",
+        "spritesheet": "assets/character_pieces/female/Hair/RTP_3/Spritesheet.png"
+      },
+      {
+        "name": "RTP_4",
+        "spritesheet": "assets/character_pieces/female/Hair/RTP_4/Spritesheet.png"
+      },
+      {
+        "name": "RTP_5",
+        "spritesheet": "assets/character_pieces/female/Hair/RTP_5/Spritesheet.png"
+      },
+      {
+        "name": "RTP_6",
+        "spritesheet": "assets/character_pieces/female/Hair/RTP_6/Spritesheet.png"
+      },
+      {
+        "name": "RTP_7",
+        "spritesheet": "assets/character_pieces/female/Hair/RTP_7/Spritesheet.png"
+      }
+    ],
+    "Head": [
+      {
+        "name": "Northfolk_Head_1",
+        "spritesheet": "assets/character_pieces/female/Head/Northfolk_Head_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Head_2",
+        "spritesheet": "assets/character_pieces/female/Head/Northfolk_Head_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/female/Head/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/female/Head/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "Patreon_Exclusive_Head_1",
+        "spritesheet": "assets/character_pieces/female/Head/Patreon_Exclusive_Head_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/female/Head/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/female/Head/RTP_2/Spritesheet.png"
+      }
+    ],
+    "Shadow": [],
+    "Top": [
+      {
+        "name": "Addon_Female_Top1",
+        "spritesheet": "assets/character_pieces/female/Top/Addon_Female_Top1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Top2",
+        "spritesheet": "assets/character_pieces/female/Top/Addon_Female_Top2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Top3",
+        "spritesheet": "assets/character_pieces/female/Top/Addon_Female_Top3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Top4",
+        "spritesheet": "assets/character_pieces/female/Top/Addon_Female_Top4/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Top5",
+        "spritesheet": "assets/character_pieces/female/Top/Addon_Female_Top5/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Top6",
+        "spritesheet": "assets/character_pieces/female/Top/Addon_Female_Top6/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_1",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_10",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_10/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_11",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_11/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_2",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_3",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_4",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_4/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_5",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_5/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_6",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_6/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_7",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_7/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_8",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_8/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_9",
+        "spritesheet": "assets/character_pieces/female/Top/Northfolk_Top_9/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_10",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_10/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_11",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_11/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_12",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_12/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_13",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_13/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_14",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_14/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_15",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_15/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_16",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_16/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_17",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_17/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_18",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_18/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_3",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_3/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_4",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_4/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_5",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_6",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_6/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_7",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_7/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_8",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_8/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_9",
+        "spritesheet": "assets/character_pieces/female/Top/OtherWorlds_9/Spritesheet.png"
+      },
+      {
+        "name": "Patreon_Exclusive_Top_1",
+        "spritesheet": "assets/character_pieces/female/Top/Patreon_Exclusive_Top_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/female/Top/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/female/Top/RTP_2/Spritesheet.png"
+      },
+      {
+        "name": "RTP_3",
+        "spritesheet": "assets/character_pieces/female/Top/RTP_3/Spritesheet.png"
+      },
+      {
+        "name": "RTP_4",
+        "spritesheet": "assets/character_pieces/female/Top/RTP_4/Spritesheet.png"
+      },
+      {
+        "name": "RTP_5",
+        "spritesheet": "assets/character_pieces/female/Top/RTP_5/Spritesheet.png"
+      },
+      {
+        "name": "RTP_6",
+        "spritesheet": "assets/character_pieces/female/Top/RTP_6/Spritesheet.png"
+      },
+      {
+        "name": "RTP_7",
+        "spritesheet": "assets/character_pieces/female/Top/RTP_7/Spritesheet.png"
+      }
+    ],
+    "Weapons": [
+      {
+        "name": "Addon_Female_Axe1",
+        "spritesheet": "assets/character_pieces/female/Weapons/Addon_Female_Axe1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Dagger1",
+        "spritesheet": "assets/character_pieces/female/Weapons/Addon_Female_Dagger1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Dagger1Offhand",
+        "spritesheet": "assets/character_pieces/female/Weapons/Addon_Female_Dagger1Offhand/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Mace1",
+        "spritesheet": "assets/character_pieces/female/Weapons/Addon_Female_Mace1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Shield1",
+        "spritesheet": "assets/character_pieces/female/Weapons/Addon_Female_Shield1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Female_Sword1",
+        "spritesheet": "assets/character_pieces/female/Weapons/Addon_Female_Sword1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Axe_1",
+        "spritesheet": "assets/character_pieces/female/Weapons/Northfolk_Axe_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Axe_2",
+        "spritesheet": "assets/character_pieces/female/Weapons/Northfolk_Axe_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Shield_1",
+        "spritesheet": "assets/character_pieces/female/Weapons/Northfolk_Shield_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Shield_2",
+        "spritesheet": "assets/character_pieces/female/Weapons/Northfolk_Shield_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Shield_3",
+        "spritesheet": "assets/character_pieces/female/Weapons/Northfolk_Shield_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Spear_1",
+        "spritesheet": "assets/character_pieces/female/Weapons/Northfolk_Spear_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Sword_1",
+        "spritesheet": "assets/character_pieces/female/Weapons/Northfolk_Sword_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Axe1",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds_Axe1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Dagger1",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds_Dagger1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Dagger1Offhand",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds_Dagger1Offhand/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Mace1",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds_Mace1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Shield2",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds_Shield2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Sword2",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds_Sword2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds__Bow1",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds__Bow1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds__Halberd",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds__Halberd/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds__Shield1",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds__Shield1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds__Staff1",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds__Staff1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds__Sword1",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds__Sword1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds__Xbow1",
+        "spritesheet": "assets/character_pieces/female/Weapons/OtherWorlds__Xbow1/Spritesheet.png"
+      },
+      {
+        "name": "Patreon_Exclusive_Sword_1",
+        "spritesheet": "assets/character_pieces/female/Weapons/Patreon_Exclusive_Sword_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Bow",
+        "spritesheet": "assets/character_pieces/female/Weapons/RTP_Bow/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Halberd",
+        "spritesheet": "assets/character_pieces/female/Weapons/RTP_Halberd/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Shield",
+        "spritesheet": "assets/character_pieces/female/Weapons/RTP_Shield/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Staff",
+        "spritesheet": "assets/character_pieces/female/Weapons/RTP_Staff/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Sword",
+        "spritesheet": "assets/character_pieces/female/Weapons/RTP_Sword/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Xbow",
+        "spritesheet": "assets/character_pieces/female/Weapons/RTP_Xbow/Spritesheet.png"
+      }
+    ]
+  },
+  "goblin": {
+    "Base": [
+      {
+        "name": "Addon_Goblin_Base1",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base10",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base10/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base11",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base11/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base12",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base12/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base2",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base3",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base4",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base4/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base5",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base5/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base6",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base6/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base7",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base7/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base8",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base8/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Base9",
+        "spritesheet": "assets/character_pieces/goblin/Base/Addon_Goblin_Base9/Spritesheet.png"
+      }
+    ],
+    "Bottom": [
+      {
+        "name": "Addon_Goblin_Bottom1",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom10",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom10/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom11",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom11/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom12",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom12/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom13",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom13/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom14",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom14/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom2",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom3",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom4",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom4/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom5",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom5/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom6",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom6/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom7",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom7/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom8",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom8/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Bottom9",
+        "spritesheet": "assets/character_pieces/goblin/Bottom/Addon_Goblin_Bottom9/Spritesheet.png"
+      }
+    ],
+    "FacialHair": [
+      {
+        "name": "Addon_Goblin_FacialHair1",
+        "spritesheet": "assets/character_pieces/goblin/FacialHair/Addon_Goblin_FacialHair1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_FacialHair2",
+        "spritesheet": "assets/character_pieces/goblin/FacialHair/Addon_Goblin_FacialHair2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_FacialHair3",
+        "spritesheet": "assets/character_pieces/goblin/FacialHair/Addon_Goblin_FacialHair3/Spritesheet.png"
+      }
+    ],
+    "Hair": [
+      {
+        "name": "Addon_Goblin_Hair1",
+        "spritesheet": "assets/character_pieces/goblin/Hair/Addon_Goblin_Hair1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Hair2",
+        "spritesheet": "assets/character_pieces/goblin/Hair/Addon_Goblin_Hair2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Hair3",
+        "spritesheet": "assets/character_pieces/goblin/Hair/Addon_Goblin_Hair3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Hair4",
+        "spritesheet": "assets/character_pieces/goblin/Hair/Addon_Goblin_Hair4/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Hair5",
+        "spritesheet": "assets/character_pieces/goblin/Hair/Addon_Goblin_Hair5/Spritesheet.png"
+      }
+    ],
+    "Head": [
+      {
+        "name": "Addon_Goblin_Head1",
+        "spritesheet": "assets/character_pieces/goblin/Head/Addon_Goblin_Head1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Head2",
+        "spritesheet": "assets/character_pieces/goblin/Head/Addon_Goblin_Head2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Head3",
+        "spritesheet": "assets/character_pieces/goblin/Head/Addon_Goblin_Head3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Head4",
+        "spritesheet": "assets/character_pieces/goblin/Head/Addon_Goblin_Head4/Spritesheet.png"
+      }
+    ],
+    "Shadow": [],
+    "Top": [
+      {
+        "name": "Addon_Goblin_Top1",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top10",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top10/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top11",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top11/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top12",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top12/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top13",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top13/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top14",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top14/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top15",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top15/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top2",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top3",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top4",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top4/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top5",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top5/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top6",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top6/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top7",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top7/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top8",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top8/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Top9",
+        "spritesheet": "assets/character_pieces/goblin/Top/Addon_Goblin_Top9/Spritesheet.png"
+      }
+    ],
+    "Weapons": [
+      {
+        "name": "Addon_Goblin_Axe1",
+        "spritesheet": "assets/character_pieces/goblin/Weapons/Addon_Goblin_Axe1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Axe2",
+        "spritesheet": "assets/character_pieces/goblin/Weapons/Addon_Goblin_Axe2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Dagger1",
+        "spritesheet": "assets/character_pieces/goblin/Weapons/Addon_Goblin_Dagger1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Dagger2",
+        "spritesheet": "assets/character_pieces/goblin/Weapons/Addon_Goblin_Dagger2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Mace1",
+        "spritesheet": "assets/character_pieces/goblin/Weapons/Addon_Goblin_Mace1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Mace2",
+        "spritesheet": "assets/character_pieces/goblin/Weapons/Addon_Goblin_Mace2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Staff1",
+        "spritesheet": "assets/character_pieces/goblin/Weapons/Addon_Goblin_Staff1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Sword1",
+        "spritesheet": "assets/character_pieces/goblin/Weapons/Addon_Goblin_Sword1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Sword2",
+        "spritesheet": "assets/character_pieces/goblin/Weapons/Addon_Goblin_Sword2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Goblin_Sword3",
+        "spritesheet": "assets/character_pieces/goblin/Weapons/Addon_Goblin_Sword3/Spritesheet.png"
+      }
+    ]
+  },
+  "male": {
+    "Accessories": [
+      {
+        "name": "Northfolk_Accessories_1",
+        "spritesheet": "assets/character_pieces/male/Accessories/Northfolk_Accessories_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Accessories_2",
+        "spritesheet": "assets/character_pieces/male/Accessories/Northfolk_Accessories_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Accessories_3",
+        "spritesheet": "assets/character_pieces/male/Accessories/Northfolk_Accessories_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Accessories_4",
+        "spritesheet": "assets/character_pieces/male/Accessories/Northfolk_Accessories_4/Spritesheet.png"
+      }
+    ],
+    "Base": [
+      {
+        "name": "Addon_Male_Base1",
+        "spritesheet": "assets/character_pieces/male/Base/Addon_Male_Base1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Base2",
+        "spritesheet": "assets/character_pieces/male/Base/Addon_Male_Base2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Base3",
+        "spritesheet": "assets/character_pieces/male/Base/Addon_Male_Base3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Male_1",
+        "spritesheet": "assets/character_pieces/male/Base/Northfolk_Male_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Male_2",
+        "spritesheet": "assets/character_pieces/male/Base/Northfolk_Male_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Male_3",
+        "spritesheet": "assets/character_pieces/male/Base/Northfolk_Male_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Male_4",
+        "spritesheet": "assets/character_pieces/male/Base/Northfolk_Male_4/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Male_5",
+        "spritesheet": "assets/character_pieces/male/Base/Northfolk_Male_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/male/Base/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/male/Base/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_3",
+        "spritesheet": "assets/character_pieces/male/Base/OtherWorlds_3/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_4",
+        "spritesheet": "assets/character_pieces/male/Base/OtherWorlds_4/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_5",
+        "spritesheet": "assets/character_pieces/male/Base/OtherWorlds_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_6",
+        "spritesheet": "assets/character_pieces/male/Base/OtherWorlds_6/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/male/Base/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/male/Base/RTP_2/Spritesheet.png"
+      },
+      {
+        "name": "RTP_3",
+        "spritesheet": "assets/character_pieces/male/Base/RTP_3/Spritesheet.png"
+      }
+    ],
+    "Bottom": [
+      {
+        "name": "Addon_Male_Bottom1",
+        "spritesheet": "assets/character_pieces/male/Bottom/Addon_Male_Bottom1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Bottom2",
+        "spritesheet": "assets/character_pieces/male/Bottom/Addon_Male_Bottom2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Bottom3",
+        "spritesheet": "assets/character_pieces/male/Bottom/Addon_Male_Bottom3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Bottom4",
+        "spritesheet": "assets/character_pieces/male/Bottom/Addon_Male_Bottom4/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Bottom5",
+        "spritesheet": "assets/character_pieces/male/Bottom/Addon_Male_Bottom5/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Bottom6",
+        "spritesheet": "assets/character_pieces/male/Bottom/Addon_Male_Bottom6/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_1",
+        "spritesheet": "assets/character_pieces/male/Bottom/Northfolk_Bottom_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_2",
+        "spritesheet": "assets/character_pieces/male/Bottom/Northfolk_Bottom_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_3",
+        "spritesheet": "assets/character_pieces/male/Bottom/Northfolk_Bottom_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_4",
+        "spritesheet": "assets/character_pieces/male/Bottom/Northfolk_Bottom_4/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_5",
+        "spritesheet": "assets/character_pieces/male/Bottom/Northfolk_Bottom_5/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Bottom_6",
+        "spritesheet": "assets/character_pieces/male/Bottom/Northfolk_Bottom_6/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_10",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_10/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_11",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_11/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_12",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_12/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_13",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_13/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_14",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_14/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_15",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_15/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_3",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_3/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_4",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_4/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_5",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_6",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_6/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_7",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_7/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_8",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_8/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_9",
+        "spritesheet": "assets/character_pieces/male/Bottom/OtherWorlds_9/Spritesheet.png"
+      },
+      {
+        "name": "Patreon_Exclusive_Bottom_1",
+        "spritesheet": "assets/character_pieces/male/Bottom/Patreon_Exclusive_Bottom_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/male/Bottom/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/male/Bottom/RTP_2/Spritesheet.png"
+      },
+      {
+        "name": "RTP_3",
+        "spritesheet": "assets/character_pieces/male/Bottom/RTP_3/Spritesheet.png"
+      },
+      {
+        "name": "RTP_4",
+        "spritesheet": "assets/character_pieces/male/Bottom/RTP_4/Spritesheet.png"
+      },
+      {
+        "name": "RTP_5",
+        "spritesheet": "assets/character_pieces/male/Bottom/RTP_5/Spritesheet.png"
+      },
+      {
+        "name": "RTP_6",
+        "spritesheet": "assets/character_pieces/male/Bottom/RTP_6/Spritesheet.png"
+      }
+    ],
+    "FacialHair": [
+      {
+        "name": "Addon_Male_FacialHair1",
+        "spritesheet": "assets/character_pieces/male/FacialHair/Addon_Male_FacialHair1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_FacialHair2",
+        "spritesheet": "assets/character_pieces/male/FacialHair/Addon_Male_FacialHair2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_FacialHair_1",
+        "spritesheet": "assets/character_pieces/male/FacialHair/Northfolk_FacialHair_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_FacialHair_2",
+        "spritesheet": "assets/character_pieces/male/FacialHair/Northfolk_FacialHair_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_FacialHair_3",
+        "spritesheet": "assets/character_pieces/male/FacialHair/Northfolk_FacialHair_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_FacialHair_4",
+        "spritesheet": "assets/character_pieces/male/FacialHair/Northfolk_FacialHair_4/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_FacialHair_5",
+        "spritesheet": "assets/character_pieces/male/FacialHair/Northfolk_FacialHair_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/male/FacialHair/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/male/FacialHair/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_3",
+        "spritesheet": "assets/character_pieces/male/FacialHair/OtherWorlds_3/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_4",
+        "spritesheet": "assets/character_pieces/male/FacialHair/OtherWorlds_4/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/male/FacialHair/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/male/FacialHair/RTP_2/Spritesheet.png"
+      }
+    ],
+    "Hair": [
+      {
+        "name": "Addon_Male_Hair1",
+        "spritesheet": "assets/character_pieces/male/Hair/Addon_Male_Hair1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Hair2",
+        "spritesheet": "assets/character_pieces/male/Hair/Addon_Male_Hair2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Hair3",
+        "spritesheet": "assets/character_pieces/male/Hair/Addon_Male_Hair3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Hair4",
+        "spritesheet": "assets/character_pieces/male/Hair/Addon_Male_Hair4/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Hair5",
+        "spritesheet": "assets/character_pieces/male/Hair/Addon_Male_Hair5/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_1",
+        "spritesheet": "assets/character_pieces/male/Hair/Northfolk_Hair_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_2",
+        "spritesheet": "assets/character_pieces/male/Hair/Northfolk_Hair_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_3",
+        "spritesheet": "assets/character_pieces/male/Hair/Northfolk_Hair_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_4",
+        "spritesheet": "assets/character_pieces/male/Hair/Northfolk_Hair_4/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_5",
+        "spritesheet": "assets/character_pieces/male/Hair/Northfolk_Hair_5/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_6",
+        "spritesheet": "assets/character_pieces/male/Hair/Northfolk_Hair_6/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_7",
+        "spritesheet": "assets/character_pieces/male/Hair/Northfolk_Hair_7/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_8",
+        "spritesheet": "assets/character_pieces/male/Hair/Northfolk_Hair_8/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Hair_9",
+        "spritesheet": "assets/character_pieces/male/Hair/Northfolk_Hair_9/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/male/Hair/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/male/Hair/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_3",
+        "spritesheet": "assets/character_pieces/male/Hair/OtherWorlds_3/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_4",
+        "spritesheet": "assets/character_pieces/male/Hair/OtherWorlds_4/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_5",
+        "spritesheet": "assets/character_pieces/male/Hair/OtherWorlds_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_6",
+        "spritesheet": "assets/character_pieces/male/Hair/OtherWorlds_6/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_7",
+        "spritesheet": "assets/character_pieces/male/Hair/OtherWorlds_7/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_8",
+        "spritesheet": "assets/character_pieces/male/Hair/OtherWorlds_8/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_9",
+        "spritesheet": "assets/character_pieces/male/Hair/OtherWorlds_9/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/male/Hair/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/male/Hair/RTP_2/Spritesheet.png"
+      },
+      {
+        "name": "RTP_3",
+        "spritesheet": "assets/character_pieces/male/Hair/RTP_3/Spritesheet.png"
+      },
+      {
+        "name": "RTP_4",
+        "spritesheet": "assets/character_pieces/male/Hair/RTP_4/Spritesheet.png"
+      }
+    ],
+    "Head": [
+      {
+        "name": "Addon_Male_Head1",
+        "spritesheet": "assets/character_pieces/male/Head/Addon_Male_Head1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Head2",
+        "spritesheet": "assets/character_pieces/male/Head/Addon_Male_Head2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Head_1",
+        "spritesheet": "assets/character_pieces/male/Head/Northfolk_Head_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Head_2",
+        "spritesheet": "assets/character_pieces/male/Head/Northfolk_Head_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/male/Head/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/male/Head/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_3",
+        "spritesheet": "assets/character_pieces/male/Head/OtherWorlds_3/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_4",
+        "spritesheet": "assets/character_pieces/male/Head/OtherWorlds_4/Spritesheet.png"
+      },
+      {
+        "name": "Patreon_Exclusive_Head_1",
+        "spritesheet": "assets/character_pieces/male/Head/Patreon_Exclusive_Head_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/male/Head/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/male/Head/RTP_2/Spritesheet.png"
+      }
+    ],
+    "Shadow": [],
+    "Top": [
+      {
+        "name": "Addon_Male_Top1",
+        "spritesheet": "assets/character_pieces/male/Top/Addon_Male_Top1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Top2",
+        "spritesheet": "assets/character_pieces/male/Top/Addon_Male_Top2/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Top3",
+        "spritesheet": "assets/character_pieces/male/Top/Addon_Male_Top3/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Top4",
+        "spritesheet": "assets/character_pieces/male/Top/Addon_Male_Top4/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Top5",
+        "spritesheet": "assets/character_pieces/male/Top/Addon_Male_Top5/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Top6",
+        "spritesheet": "assets/character_pieces/male/Top/Addon_Male_Top6/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Top7",
+        "spritesheet": "assets/character_pieces/male/Top/Addon_Male_Top7/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_1",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_10",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_10/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_11",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_11/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_2",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_3",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_4",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_4/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_5",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_5/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_6",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_6/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_7",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_7/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_8",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_8/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Top_9",
+        "spritesheet": "assets/character_pieces/male/Top/Northfolk_Top_9/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_1",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_10",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_10/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_11",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_11/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_12",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_12/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_13",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_13/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_14",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_14/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_15",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_15/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_16",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_16/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_17",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_17/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_18",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_18/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_19",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_19/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_2",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_3",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_3/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_4",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_4/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_5",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_5/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_6",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_6/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_7",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_7/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_8",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_8/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_9",
+        "spritesheet": "assets/character_pieces/male/Top/OtherWorlds_9/Spritesheet.png"
+      },
+      {
+        "name": "Patreon_Exclusive_Top_1",
+        "spritesheet": "assets/character_pieces/male/Top/Patreon_Exclusive_Top_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_1",
+        "spritesheet": "assets/character_pieces/male/Top/RTP_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_2",
+        "spritesheet": "assets/character_pieces/male/Top/RTP_2/Spritesheet.png"
+      },
+      {
+        "name": "RTP_3",
+        "spritesheet": "assets/character_pieces/male/Top/RTP_3/Spritesheet.png"
+      },
+      {
+        "name": "RTP_4",
+        "spritesheet": "assets/character_pieces/male/Top/RTP_4/Spritesheet.png"
+      },
+      {
+        "name": "RTP_5",
+        "spritesheet": "assets/character_pieces/male/Top/RTP_5/Spritesheet.png"
+      },
+      {
+        "name": "RTP_6",
+        "spritesheet": "assets/character_pieces/male/Top/RTP_6/Spritesheet.png"
+      },
+      {
+        "name": "RTP_7",
+        "spritesheet": "assets/character_pieces/male/Top/RTP_7/Spritesheet.png"
+      }
+    ],
+    "Weapons": [
+      {
+        "name": "Addon_Male_Axe1",
+        "spritesheet": "assets/character_pieces/male/Weapons/Addon_Male_Axe1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Dagger1",
+        "spritesheet": "assets/character_pieces/male/Weapons/Addon_Male_Dagger1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Dagger1OffHand",
+        "spritesheet": "assets/character_pieces/male/Weapons/Addon_Male_Dagger1OffHand/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Mace1",
+        "spritesheet": "assets/character_pieces/male/Weapons/Addon_Male_Mace1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Shield1",
+        "spritesheet": "assets/character_pieces/male/Weapons/Addon_Male_Shield1/Spritesheet.png"
+      },
+      {
+        "name": "Addon_Male_Sword1",
+        "spritesheet": "assets/character_pieces/male/Weapons/Addon_Male_Sword1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Axe_1",
+        "spritesheet": "assets/character_pieces/male/Weapons/Northfolk_Axe_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Axe_2",
+        "spritesheet": "assets/character_pieces/male/Weapons/Northfolk_Axe_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Shield_1",
+        "spritesheet": "assets/character_pieces/male/Weapons/Northfolk_Shield_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Shield_2",
+        "spritesheet": "assets/character_pieces/male/Weapons/Northfolk_Shield_2/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Shield_3",
+        "spritesheet": "assets/character_pieces/male/Weapons/Northfolk_Shield_3/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Spear_1",
+        "spritesheet": "assets/character_pieces/male/Weapons/Northfolk_Spear_1/Spritesheet.png"
+      },
+      {
+        "name": "Northfolk_Sword_1",
+        "spritesheet": "assets/character_pieces/male/Weapons/Northfolk_Sword_1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Axe1",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Axe1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Bow1",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Bow1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Dagger1",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Dagger1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Dagger1OffHand",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Dagger1OffHand/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Halberd1",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Halberd1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Mace1",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Mace1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Shield1",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Shield1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Shield2",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Shield2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Staff1",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Staff1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Sword1",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Sword1/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Sword2",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Sword2/Spritesheet.png"
+      },
+      {
+        "name": "OtherWorlds_Xbow1",
+        "spritesheet": "assets/character_pieces/male/Weapons/OtherWorlds_Xbow1/Spritesheet.png"
+      },
+      {
+        "name": "Patreon_Exclusive_Sword_1",
+        "spritesheet": "assets/character_pieces/male/Weapons/Patreon_Exclusive_Sword_1/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Bow",
+        "spritesheet": "assets/character_pieces/male/Weapons/RTP_Bow/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Halberd",
+        "spritesheet": "assets/character_pieces/male/Weapons/RTP_Halberd/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Shield",
+        "spritesheet": "assets/character_pieces/male/Weapons/RTP_Shield/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Staff",
+        "spritesheet": "assets/character_pieces/male/Weapons/RTP_Staff/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Sword",
+        "spritesheet": "assets/character_pieces/male/Weapons/RTP_Sword/Spritesheet.png"
+      },
+      {
+        "name": "RTP_Xbow",
+        "spritesheet": "assets/character_pieces/male/Weapons/RTP_Xbow/Spritesheet.png"
+      }
+    ]
+  }
+}

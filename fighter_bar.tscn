@@ -1,0 +1,183 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://fighter_bar.gd" id="1_main"]
+[ext_resource type="Texture2D" uid="uid://cxxecsg38vwq4" path="res://assets/ui/Sprites/ValueBars/Red/FighterBarBackground.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://cr4y6obvroxfs" path="res://assets/ui/Sprites/ValueBars/Red/FighterBarFill.png" id="3_fill"]
+[ext_resource type="Texture2D" uid="uid://dakkd6vernl4m" path="res://assets/ui/Sprites/ValueBars/Red/FighterBarSecondaryBackground.png" id="4_sbg"]
+[ext_resource type="Texture2D" uid="uid://bcjoesg13tikn" path="res://assets/ui/Sprites/ValueBars/Red/FighterBarSecondaryFill.png" id="5_sfill"]
+[ext_resource type="Texture2D" uid="uid://cpyfxrlg0b6hj" path="res://assets/ui/Sprites/ValueBars/Red/FighterBarSecondaryForeground.png" id="6_sfg"]
+
+[node name="FighterBar" type="Control"]
+custom_minimum_size = Vector2(200, 40)
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 40.0
+texture_filter = 1
+script = ExtResource("1_main")
+
+[node name="Background" type="NinePatchRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+patch_margin_left = 18
+patch_margin_top = 1
+patch_margin_right = 8
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+
+[node name="TopFillClip" type="Control" parent="."]
+clip_contents = true
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 24.0
+
+[node name="Fill" type="NinePatchRect" parent="TopFillClip"]
+texture_filter = 1
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 40.0
+texture = ExtResource("3_fill")
+patch_margin_left = 17
+patch_margin_top = 1
+patch_margin_right = 8
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+
+[node name="TagFillClip" type="Control" parent="."]
+clip_contents = true
+layout_mode = 0
+offset_top = 24.0
+offset_right = 72.0
+offset_bottom = 40.0
+
+[node name="Fill" type="NinePatchRect" parent="TagFillClip"]
+texture_filter = 1
+layout_mode = 0
+offset_top = -24.0
+offset_right = 200.0
+offset_bottom = 16.0
+texture = ExtResource("3_fill")
+patch_margin_left = 17
+patch_margin_top = 1
+patch_margin_right = 8
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+
+[node name="SecondaryA" type="Control" parent="."]
+layout_mode = 0
+offset_left = 76.0
+offset_top = 20.0
+offset_right = 136.0
+offset_bottom = 40.0
+
+[node name="BG" type="NinePatchRect" parent="SecondaryA"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_sbg")
+patch_margin_left = 4
+patch_margin_right = 4
+
+[node name="FillClip" type="Control" parent="SecondaryA"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fill" type="NinePatchRect" parent="SecondaryA/FillClip"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_sfill")
+patch_margin_right = 4
+
+[node name="Foreground" type="NinePatchRect" parent="SecondaryA"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_sfg")
+patch_margin_left = 3
+patch_margin_top = 1
+patch_margin_right = 3
+patch_margin_bottom = 1
+
+[node name="SecondaryB" type="Control" parent="."]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 20.0
+offset_right = 200.0
+offset_bottom = 40.0
+
+[node name="BG" type="NinePatchRect" parent="SecondaryB"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_sbg")
+patch_margin_left = 4
+patch_margin_right = 4
+
+[node name="FillClip" type="Control" parent="SecondaryB"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fill" type="NinePatchRect" parent="SecondaryB/FillClip"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_sfill")
+patch_margin_right = 4
+
+[node name="Foreground" type="NinePatchRect" parent="SecondaryB"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_sfg")
+patch_margin_left = 3
+patch_margin_top = 1
+patch_margin_right = 3
+patch_margin_bottom = 1
