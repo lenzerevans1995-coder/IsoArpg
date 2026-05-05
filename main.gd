@@ -3090,6 +3090,34 @@ func _apply_wind_shader(sprite: Sprite2D, cell: Vector2i) -> void:
 
 # ---- attack -----------------------------------------------------------------
 
+const _ArrowScript := preload("res://arrow.gd")
+
+# True when the player's currently-equipped mainhand is a ranged weapon
+# (bow). Drives the attack_at branch that spawns an arrow projectile
+# instead of doing a melee cone sweep.
+func _player_is_ranged() -> bool:
+	if player == null or not "_loadout" in player:
+		return false
+	return int(player._loadout.get("mainhand_class", ItemsDB.WeaponClass.NONE)) == ItemsDB.WeaponClass.RANGED
+
+# Spawn an arrow toward the cursor with the rolled per-swing damage.
+# Mirrors skeleton.gd's _fire_arrow_at_player except aimed at the
+# mouse and not flagged from_enemy.
+func _fire_player_arrow(origin: Vector2, dmg: int) -> void:
+	var aim: Vector2 = get_global_mouse_position()
+	var dir_v: Vector2 = aim - origin
+	if dir_v.length() < 1.0:
+		return
+	var parent_node: Node = dungeon if (in_dungeon and dungeon) else world
+	if parent_node == null:
+		parent_node = self
+	var arrow := _ArrowScript.new()
+	arrow.direction = dir_v.normalized()
+	arrow.aim_target_pos = aim
+	arrow.damage = dmg
+	parent_node.add_child(arrow)
+	arrow.global_position = origin + Vector2(0, -48)
+
 func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	if dir_vec.length() < 0.01:
 		return
@@ -3116,6 +3144,12 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	if player and "_loadout" in player:
 		loadout = player._loadout
 	var scaled_dmg: int = _CombatScript.compute_player_damage(stats, loadout)
+	# Ranged weapon: spawn an arrow toward cursor + skip melee cone.
+	# The arrow handles its own collision + damage on impact via
+	# arrow.gd, so we just hand off the rolled damage value.
+	if _player_is_ranged():
+		_fire_player_arrow(origin, scaled_dmg)
+		return
 	# Damage any skeletons caught in the cone (dungeon mode).
 	if in_dungeon and dungeon and "skeletons" in dungeon:
 		var skel_dmg: int = scaled_dmg
