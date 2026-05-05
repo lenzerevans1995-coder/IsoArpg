@@ -210,7 +210,9 @@ const PLAYER_MAX_HP := 100
 const PLAYER_MAX_MP := 50
 const SPIDER_HP := 45
 const SPIDER_DAMAGE := 8
-const PLAYER_ATTACK_DAMAGE := 14
+# PLAYER_ATTACK_DAMAGE removed — damage now flows through
+# combat.gd::compute_player_damage(stats, loadout). Fist fallback
+# (2-4 dmg) when no weapon equipped lives in combat.gd.
 const WAVE_BASE_COUNT := 3
 const WAVE_RING_RADIUS := 320.0
 
@@ -3103,14 +3105,13 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 		hits.append(cell)
 	for cell in hits:
 		_destroy_flora(cell)
-	# Strength scales weapon damage: stats.damage_bonus_pct() returns a
-	# percent (1% per Strength point, capped at 200% — see character_stats.gd).
-	# 30 Str → ×1.3 damage. The same multiplier applies to every strike
-	# below so spiders, goblins, and skeletons all benefit.
-	var dmg_mult: float = 1.0
-	if stats != null:
-		dmg_mult = 1.0 + stats.damage_bonus_pct() / 100.0
-	var scaled_dmg: int = int(round(float(PLAYER_ATTACK_DAMAGE) * dmg_mult))
+	# Compute one swing's damage via combat.gd: equipped-weapon range +
+	# affixes + Strength bonus. Same value applies to every enemy hit
+	# in the cone so a single click reads consistently.
+	var loadout: Dictionary = {}
+	if player and "_loadout" in player:
+		loadout = player._loadout
+	var scaled_dmg: int = Combat.compute_player_damage(stats, loadout)
 	# Damage any skeletons caught in the cone (dungeon mode).
 	if in_dungeon and dungeon and "skeletons" in dungeon:
 		var skel_dmg: int = scaled_dmg

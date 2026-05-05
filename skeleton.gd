@@ -469,6 +469,7 @@ var _last_goal_cell: Vector2i = Vector2i(99999, 99999)
 const REPATH_INTERVAL := 1.2
 const ARROW_SCRIPT := preload("res://arrow.gd")
 const _LootDropScript := preload("res://loot/loot_drop.gd")
+const _LootTablesScript := preload("res://loot/loot_tables.gd")
 
 # Find the nearest dead Warrior corpse (any Skeleton with kind=WARRIOR
 # and dead=true), revive to 50% HP and play Die in reverse-ish via the
@@ -621,29 +622,18 @@ func _die() -> void:
 			# the floating number with the default colour.
 			if main.has_method("_spawn_damage_number"):
 				main._spawn_damage_number(global_position + Vector2(0, -64), amount)
-	# Loot drop — every skeleton has a chance to drop gold + a coloured
-	# loot beam. Elites / boss roll richer rarities.
-	var roll: float = randf()
-	var drop_chance: float = 0.55 if kind in [Kind.WARRIOR, Kind.ARCHER, Kind.WIZARD] else 0.85
-	if kind == Kind.DEATHLORD:
-		drop_chance = 1.0
-	if roll < drop_chance:
-		var rarity: int = _LootDropScript.random_rarity()
-		# Bosses/elites bias toward rarer beams.
-		if kind == Kind.DEATHLORD:
-			rarity = _LootDropScript.Rarity.LEGENDARY if randf() < 0.5 else _LootDropScript.Rarity.UNIQUE
-		elif kind in [Kind.BRUTE, Kind.DARK_KNIGHT, Kind.BERSERKER,
-				Kind.DARK_ARCHER, Kind.NECROMANCER]:
-			if randf() < 0.5:
-				rarity = max(rarity, _LootDropScript.Rarity.RARE)
-		var parent_node: Node = get_parent()
-		print("[skeleton] dropping gold rarity=", rarity, " at ", global_position,
-				" parent=", parent_node, " coin_exists=",
-				ResourceLoader.exists("res://assets/drops/gold_drop/coins_drop.png"))
-		var d = _LootDropScript.spawn(parent_node, global_position, rarity)
-		print("[skeleton] drop spawned: ", d, " in_tree=", d.is_inside_tree() if d else false)
-	else:
-		print("[skeleton] no drop, roll=", roll, " chance=", drop_chance)
+	# Loot drop via loot_tables — picks rarity, slot, and a specific item
+	# weighted by drop_weight. Each entry in the returned array becomes
+	# its own LootDrop with the rolled item_id stored for future pickup.
+	var enemy_id: String = _EnemyDB.id_for_skeleton_kind(kind)
+	var rolls: Array = _LootTablesScript.roll_drops(enemy_id)
+	var parent_node: Node = get_parent()
+	for r in rolls:
+		var rarity: int = int(r.get("rarity", _LootDropScript.Rarity.COMMON))
+		var item_id: String = String(r.get("item_id", ""))
+		# Spread multiple drops slightly so they don't stack on one tile.
+		var jitter: Vector2 = Vector2(randf_range(-12, 12), randf_range(-8, 8))
+		_LootDropScript.spawn(parent_node, global_position + jitter, rarity, item_id)
 	# Deathlord Death Cry: revive the two nearest dead Warriors so the
 	# fight isn't over until the escorts go down too.
 	if kind == Kind.DEATHLORD:

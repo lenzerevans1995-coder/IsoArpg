@@ -34,6 +34,20 @@ const ENTRIES := {
 			{"min": 16, "max": 25},
 		],
 	},
+	"vicious": {
+		# Multiplicative damage bonus — slots into the (1 + pct/100) term
+		# of combat.compute_player_damage. Pairs with `sharp` (flat +damage).
+		"is_prefix": true,
+		"stat": "damage_pct",
+		"words": ["Vicious", "Brutal", "Ruinous", "Savage", "Murderous"],
+		"tiers": [
+			{"min": 5, "max": 10},
+			{"min": 10, "max": 20},
+			{"min": 20, "max": 35},
+			{"min": 35, "max": 55},
+			{"min": 55, "max": 80},
+		],
+	},
 	"sturdy": {
 		"is_prefix": true,
 		"stat": "armor",

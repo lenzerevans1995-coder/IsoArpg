@@ -32,12 +32,14 @@ var _beam_node: Node2D
 
 # ---- Spawn helpers ---------------------------------------------------
 
-# Drops gold at `world_pos` parented to `parent`. Random direction +
-# rarity tier. Returns the new LootDrop instance for further tweaks.
-static func spawn(parent: Node, world_pos: Vector2, rarity: int = Rarity.COMMON) -> Node2D:
+# Drops gold at `world_pos` parented to `parent`. `item_id` carries the
+# rolled loot's identity so future pickup logic can grant the right
+# inventory slot without re-rolling. Returns the new LootDrop.
+static func spawn(parent: Node, world_pos: Vector2, rarity: int = Rarity.COMMON, item_id: String = "") -> Node2D:
 	var script: Script = load("res://loot/loot_drop.gd")
 	var d: Node2D = script.new()
 	d.position = world_pos
+	d.set("item_id", item_id)
 	d.call("_build_for", rarity)
 	parent.add_child(d)
 	return d
@@ -55,6 +57,9 @@ static func random_rarity(rng: RandomNumberGenerator = null) -> int:
 
 var _hover_active: bool = false
 var _rarity: int = Rarity.COMMON
+# Rolled item this drop represents. Future pickup logic reads this to
+# grant the right inventory slot. Empty = generic gold-only drop.
+var item_id: String = ""
 var _hover_radius: float = 64.0
 
 func _build_for(rarity: int) -> void:

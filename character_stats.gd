@@ -18,10 +18,15 @@ var character_class: String = "warrior"
 var character_name: String = "Hero"
 
 # Primary attributes (allocated each level + bought via stat points).
-var strength: int = 30
-var dexterity: int = 20
-var vitality: int = 25
-var energy: int = 10
+# Slice baseline (warrior): Str/Vit drive damage and HP.
+# Dex / Energy are stubbed for the slice — allocation works in the
+# panel but they have no gameplay effect yet.
+# TODO: post-slice — Dex wires into attack speed, dodge chance, ranged damage.
+# TODO: post-slice — Energy wires into max MP scaling, magic damage.
+var strength: int = 10
+var dexterity: int = 5
+var vitality: int = 10
+var energy: int = 5
 
 # Level / XP.
 var level: int = 1
@@ -38,40 +43,39 @@ func _init(class_id: String = "warrior") -> void:
 	# Class kit defaults (subtle differences so each class isn't identical).
 	match class_id:
 		"warrior":
-			strength = 30; dexterity = 20; vitality = 25; energy = 10
+			strength = 10; dexterity = 5; vitality = 10; energy = 5
 		"rogue":
-			strength = 20; dexterity = 30; vitality = 20; energy = 15
+			strength = 7; dexterity = 12; vitality = 8; energy = 5
 		"sorcerer":
-			strength = 15; dexterity = 18; vitality = 18; energy = 35
+			strength = 5; dexterity = 5; vitality = 7; energy = 15
 		_:
-			strength = 25; dexterity = 25; vitality = 25; energy = 25
+			strength = 8; dexterity = 8; vitality = 8; energy = 8
 	hp = max_hp()
 	mp = max_mp()
 
 # ---- derived stats ---------------------------------------------------
 
 func max_hp() -> int:
-	# Pure stat-driven: vitality is the only growth knob. Tuned so a
-	# warrior starts at ~100 HP at level 1 (Vit 25, base 50) and each
-	# Vit point gives +2 HP. Level grants 5 stat points; spending them
-	# into Vit gives +10 HP per level — visible but not free.
+	# Slice formula: base + (vit * 5).
+	# Warrior baseline: 50 + 10*5 = 100 HP at level 1.
+	# Each Vit point spent: +5 HP. 5 stat points/level → +25 HP if
+	# fully invested in Vit, 0 HP if invested elsewhere.
 	var base: int = 40
 	match character_class:
 		"warrior":  base = 50
-		"rogue":    base = 35
-		"sorcerer": base = 25
-	return base + vitality * 2
+		"rogue":    base = 40
+		"sorcerer": base = 30
+	return base + vitality * 5
 
 func max_mp() -> int:
-	# Same shape as HP. Warrior starts ~50 MP (Energy 10, base 30).
-	# Sorcerer doubles per-point return so the class still feels
-	# mana-rich at high investment.
-	var base: int = 30
-	var energy_mult: int = 2
+	# Slice: Energy is stubbed but allocation should still grow MP a
+	# bit so the orb visibly responds. Warrior baseline 50 + 5*0 = 50.
+	# TODO: post-slice — replace with proper magic-damage / mana-cost
+	# formula once spell-class skills exist.
+	var base: int = 50
 	if character_class == "sorcerer":
-		base = 30
-		energy_mult = 4
-	return base + energy * energy_mult
+		base = 70
+	return base + energy * 2
 
 func attack_rating() -> int:
 	return 5 * dexterity + 5 * level
