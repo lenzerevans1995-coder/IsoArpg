@@ -153,10 +153,7 @@ func _load_frames(anim: String, dir_letter: String) -> Array[Texture2D]:
 		if frame > 0:
 			var cols: int = sheet_w / frame
 			var row: int = int(DIR_TO_ROW.get(dir_letter, 0))
-			# Skip every-other column to match the thinned frame count the
-			# per-frame folders shipped with (Attack1_0_001, _003, _005…).
-			# Keeps playback timing visually consistent with the player.
-			for c in range(0, cols, 2):
+			for c in range(cols):
 				var atlas := AtlasTexture.new()
 				atlas.atlas = sheet
 				atlas.region = Rect2(c * frame, row * frame, frame, frame)
