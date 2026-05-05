@@ -17,16 +17,11 @@ const BEAM_WIDTH := 3.5
 const BEAM_HEIGHT := 160.0
 const BEAM_OFFSET_Y := 83.0
 
-# Rarity tint table — beam asset is yellow, so we recolor via modulate.
-# These shift the yellow base toward the rarity colour.
+# Rarity colors come from rarity_visuals.gd (which reads
+# data/swatch_palette.json — the project's 81-swatch palette).
+# Local enum kept so callers can write LootDrop.Rarity.RARE etc.
 enum Rarity { COMMON, MAGIC, RARE, UNIQUE, LEGENDARY }
-const RARITY_COLORS := {
-	Rarity.COMMON:    Color(1.0, 1.0, 1.0, 1.0),     # white
-	Rarity.MAGIC:     Color(0.50, 0.70, 1.30, 1.0),  # blue
-	Rarity.RARE:      Color(1.30, 1.30, 0.50, 1.0),  # gold
-	Rarity.UNIQUE:    Color(1.40, 0.80, 0.30, 1.0),  # orange
-	Rarity.LEGENDARY: Color(1.30, 0.45, 0.45, 1.0),  # red
-}
+const _RarityVisuals := preload("res://rarity_visuals.gd")
 
 static var _coin_tex: Texture2D = null
 
@@ -91,7 +86,7 @@ func _build_for(rarity: int) -> void:
 	# coloured by rarity. _draw is owned by the beam_node so we can
 	# keep it z-behind the gold sprite without splitting transforms.
 	_beam_node = _BeamNode.new()
-	(_beam_node as _BeamNode).beam_color = RARITY_COLORS.get(rarity, Color(1, 1, 1, 1))
+	(_beam_node as _BeamNode).beam_color = _RarityVisuals.color_for(rarity)
 	# Position calibrated in loot_beam_editor.tscn — base of beam sits
 	# inside the coin pile so the pillar reads as rising out of it.
 	_beam_node.position = Vector2(0, BEAM_OFFSET_Y)
