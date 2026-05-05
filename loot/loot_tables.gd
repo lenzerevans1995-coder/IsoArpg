@@ -15,7 +15,7 @@ class_name LootTables
 #   "shield", "offhand", "mount" — direct slot mapping
 
 const ItemsDB := preload("res://items_db.gd")
-const ItemMetadataScript := preload("res://item_metadata.gd")
+const ItemMetadataScript := preload("res://loot/item_metadata.gd")
 const LootDropScript := preload("res://loot/loot_drop.gd")
 
 const RARITY_KEYS := ["common", "magic", "rare", "unique", "legendary"]
