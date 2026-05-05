@@ -3255,28 +3255,37 @@ func _spawn_damage_number(world_pos: Vector2, amount: int) -> void:
 
 class _DamageNumber extends Node2D:
 	var amount: int = 0
-	var _life: float = 0.7
+	var _life: float = 0.8
 	var _t: float = 0.0
 	var _font: Font
 	func _ready() -> void:
 		_font = ThemeDB.fallback_font
+		# Absolute z-index so we never render behind a tile or wall.
+		z_as_relative = false
+		z_index = 4096
+		# Don't y_sort with the world — pin to top.
+		y_sort_enabled = false
+		top_level = true        # ignore parent transform; world_pos is absolute
 		set_process(true)
+		queue_redraw()
 	func _process(delta: float) -> void:
 		_t += delta
-		position.y -= delta * 50.0
-		modulate.a = clampf(1.0 - max(0.0, (_t - 0.25)) / max(0.001, _life - 0.25), 0.0, 1.0)
-		queue_redraw()
+		position.y -= delta * 60.0
+		modulate.a = clampf(1.0 - max(0.0, (_t - 0.3)) / max(0.001, _life - 0.3), 0.0, 1.0)
 		if _t >= _life:
 			queue_free()
 	func _draw() -> void:
+		if _font == null:
+			_font = ThemeDB.fallback_font
 		if _font == null:
 			return
 		var s: String = str(amount)
 		var size: int = 22
 		var col: Color = Color(1, 0.85, 0.4)
-		# Black outline via 4 offset draws.
-		for ox in [-1, 1]:
-			for oy in [-1, 1]:
+		# Manual outline via 8 offset draws so the number reads on any background.
+		for ox in [-2, 0, 2]:
+			for oy in [-2, 0, 2]:
+				if ox == 0 and oy == 0: continue
 				draw_string(_font, Vector2(ox, oy), s, HORIZONTAL_ALIGNMENT_CENTER, -1, size, Color(0, 0, 0))
 		draw_string(_font, Vector2.ZERO, s, HORIZONTAL_ALIGNMENT_CENTER, -1, size, col)
 

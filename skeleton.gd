@@ -43,7 +43,10 @@ const CLASS_FOLDERS := {
 
 @export var kind: int = Kind.WARRIOR
 @export var max_hp: int = 30
-@export var damage: int = 8
+# Slice baseline: 5 dmg per swing on a 1.2s cooldown. With ~2 skeletons
+# in melee that's ~8 dps incoming, which gives the player time to react
+# without making fights trivial. Elites override this in their spawn config.
+@export var damage: int = 5
 @export var move_speed: float = 110.0
 @export var attack_range: float = 56.0
 @export var desired_range: float = 0.0    # archers/wizards keep gap

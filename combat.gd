@@ -19,9 +19,11 @@ class_name Combat
 const ItemsDB := preload("res://items_db.gd")
 const ItemMetadataScript := preload("res://loot/item_metadata.gd")
 
-# Fist-fight fallback when no weapon is equipped.
-const FIST_MIN := 2
-const FIST_MAX := 4
+# Fist-fight fallback when no weapon is equipped. Bumped so unarmed
+# combat is viable in the slice (skeletons have 30 HP); a sword still
+# beats fists once one is rolled.
+const FIST_MIN := 6
+const FIST_MAX := 12
 
 # Compute one player melee swing's damage value.
 # `stats`        : CharacterStats instance (or null — will skip Str bonus)

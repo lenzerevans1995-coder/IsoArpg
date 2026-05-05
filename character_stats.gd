@@ -60,11 +60,14 @@ func max_hp() -> int:
 	# Warrior baseline: 50 + 10*5 = 100 HP at level 1.
 	# Each Vit point spent: +5 HP. 5 stat points/level → +25 HP if
 	# fully invested in Vit, 0 HP if invested elsewhere.
-	var base: int = 40
+	# Bumped warrior baseline 50 → 80 so the slice's L1 player has more
+	# breathing room against multi-skeleton aggro. Still grows linearly
+	# with Vit so allocation stays meaningful.
+	var base: int = 60
 	match character_class:
-		"warrior":  base = 50
-		"rogue":    base = 40
-		"sorcerer": base = 30
+		"warrior":  base = 80
+		"rogue":    base = 60
+		"sorcerer": base = 50
 	return base + vitality * 5
 
 func max_mp() -> int:
