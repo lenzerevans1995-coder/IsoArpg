@@ -1794,8 +1794,6 @@ func exit_dungeon() -> void:
 	if not in_dungeon:
 		return
 	in_dungeon = false
-	if dungeon:
-		dungeon.visible = false
 	if world:
 		world.visible = true
 		# Re-enable world processing on exit.
@@ -1803,6 +1801,15 @@ func exit_dungeon() -> void:
 	if player and dungeon:
 		(player as Node2D).reparent(world)
 		(player as Node2D).position = _saved_player_pos
+	# Free the dungeon outright instead of just hiding it. Hiding left
+	# child nodes (loot drops, skeletons, walls) lingering in the tree
+	# at cells that overlap overworld coords; if any child overrode the
+	# inherited visibility (top_level, force-on visible) it bled
+	# through into the overworld view. queue_free guarantees nothing
+	# leaks. enter_dungeon rebuilds fresh.
+	if dungeon and is_instance_valid(dungeon):
+		dungeon.queue_free()
+	dungeon = null
 	# Restore the editor overlay to whatever its active-state dictates.
 	if editor and "overlay" in editor and editor.overlay:
 		editor.overlay.visible = bool(editor.get("_active"))
