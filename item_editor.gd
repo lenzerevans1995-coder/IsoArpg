@@ -47,6 +47,15 @@ var _preview_char: Node2D
 var _selected_item: Dictionary = {}     # current items_db catalog entry
 var _selected_meta: Resource = null     # ItemMetadata loaded/created on selection
 
+# In-scene field editors (so we don't depend on Godot's Inspector)
+var _f_base_name: LineEdit
+var _f_can_drop: CheckBox
+var _f_drop_weight: SpinBox
+var _f_min_zone: SpinBox
+var _f_max_zone: SpinBox
+var _f_is_unique: CheckBox
+var _f_unique_name: LineEdit
+
 func _ready() -> void:
 	if Engine.is_editor_hint() and not is_inside_tree():
 		return
@@ -102,6 +111,29 @@ func _build_ui() -> void:
 	_info_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_info_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	right.add_child(_info_label)
+
+	# In-scene field grid — no Inspector dependency.
+	var grid := GridContainer.new()
+	grid.columns = 2
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right.add_child(grid)
+
+	_f_base_name = _add_string_field(grid, "Base Name")
+	_f_can_drop = _add_check_field(grid, "Can Drop")
+	_f_drop_weight = _add_spin_field(grid, "Drop Weight", 0.0, 100.0, 0.1)
+	_f_min_zone = _add_spin_field(grid, "Min Zone Lvl", 1, 999, 1)
+	_f_max_zone = _add_spin_field(grid, "Max Zone Lvl", 1, 999, 1)
+	_f_is_unique = _add_check_field(grid, "Is Unique")
+	_f_unique_name = _add_string_field(grid, "Unique Name")
+
+	# Wire field changes back into the loaded resource so Save persists them.
+	_f_base_name.text_changed.connect(func(v): if _selected_meta: _selected_meta.base_name = v)
+	_f_can_drop.toggled.connect(func(v): if _selected_meta: _selected_meta.can_drop = v)
+	_f_drop_weight.value_changed.connect(func(v): if _selected_meta: _selected_meta.drop_weight = float(v))
+	_f_min_zone.value_changed.connect(func(v): if _selected_meta: _selected_meta.min_zone_level = int(v))
+	_f_max_zone.value_changed.connect(func(v): if _selected_meta: _selected_meta.max_zone_level = int(v))
+	_f_is_unique.toggled.connect(func(v): if _selected_meta: _selected_meta.is_unique = v)
+	_f_unique_name.text_changed.connect(func(v): if _selected_meta: _selected_meta.unique_name = v)
 
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -176,11 +208,7 @@ func _on_tree_item_selected() -> void:
 	_info_label.text = _info_text_for(entry, _selected_meta)
 	_save_btn.disabled = false
 	_refresh_preview(entry)
-	# In-editor: surface the resource in Godot's Inspector.
-	if Engine.is_editor_hint():
-		var ed := Engine.get_singleton("EditorInterface") if Engine.has_singleton("EditorInterface") else null
-		if ed and ed.has_method("inspect_object"):
-			ed.call("inspect_object", _selected_meta)
+	_load_fields_from_meta(_selected_meta)
 
 func _load_or_stub(entry: Dictionary) -> Resource:
 	var path: String = _meta_path_for(entry)
@@ -232,6 +260,53 @@ func _on_validate_pressed() -> void:
 	if not bad_drop_weight.is_empty():
 		lines.append("  " + ", ".join(bad_drop_weight))
 	_info_label.text = "\n".join(lines)
+
+func _add_string_field(grid: GridContainer, label: String) -> LineEdit:
+	var l := Label.new(); l.text = label; grid.add_child(l)
+	var le := LineEdit.new()
+	le.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.add_child(le)
+	return le
+
+func _add_check_field(grid: GridContainer, label: String) -> CheckBox:
+	var l := Label.new(); l.text = label; grid.add_child(l)
+	var cb := CheckBox.new()
+	grid.add_child(cb)
+	return cb
+
+func _add_spin_field(grid: GridContainer, label: String, lo: float, hi: float, step: float) -> SpinBox:
+	var l := Label.new(); l.text = label; grid.add_child(l)
+	var sb := SpinBox.new()
+	sb.min_value = lo
+	sb.max_value = hi
+	sb.step = step
+	grid.add_child(sb)
+	return sb
+
+func _load_fields_from_meta(meta: Resource) -> void:
+	# Suppress signals while loading so field setters don't echo back into
+	# the resource on every assignment.
+	_f_base_name.set_block_signals(true)
+	_f_can_drop.set_block_signals(true)
+	_f_drop_weight.set_block_signals(true)
+	_f_min_zone.set_block_signals(true)
+	_f_max_zone.set_block_signals(true)
+	_f_is_unique.set_block_signals(true)
+	_f_unique_name.set_block_signals(true)
+	_f_base_name.text = String(meta.base_name)
+	_f_can_drop.button_pressed = bool(meta.can_drop)
+	_f_drop_weight.value = float(meta.drop_weight)
+	_f_min_zone.value = int(meta.min_zone_level)
+	_f_max_zone.value = int(meta.max_zone_level)
+	_f_is_unique.button_pressed = bool(meta.is_unique)
+	_f_unique_name.text = String(meta.unique_name)
+	_f_base_name.set_block_signals(false)
+	_f_can_drop.set_block_signals(false)
+	_f_drop_weight.set_block_signals(false)
+	_f_min_zone.set_block_signals(false)
+	_f_max_zone.set_block_signals(false)
+	_f_is_unique.set_block_signals(false)
+	_f_unique_name.set_block_signals(false)
 
 func _refresh_preview(entry: Dictionary) -> void:
 	if _preview_char == null or not is_instance_valid(_preview_char):
