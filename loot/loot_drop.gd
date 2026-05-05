@@ -44,6 +44,14 @@ static func spawn(parent: Node, world_pos: Vector2, rarity: int = Rarity.COMMON,
 	parent.add_child(d)
 	return d
 
+# Pickup helper: returns the rolled identity of the drop and queues
+# the visual for free. Caller is responsible for granting the item +
+# applying it to the player's loadout.
+func pickup() -> Dictionary:
+	var data := {"item_id": item_id, "rarity": _rarity}
+	queue_free()
+	return data
+
 # Convenience: pick a random rarity weighted toward common drops.
 static func random_rarity(rng: RandomNumberGenerator = null) -> int:
 	var roll: float = rng.randf() if rng != null else randf()

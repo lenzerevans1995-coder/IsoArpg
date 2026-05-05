@@ -605,6 +605,9 @@ func _input(event: InputEvent) -> void:
 				# standing near one. Inside a dungeon Q is unused.
 				if not in_dungeon and _has_portal_in_range():
 					_show_portal_dialog()
+			KEY_E:
+				# Pick up the nearest LootDrop within PICKUP_RADIUS.
+				_try_pickup_nearest_drop()
 			KEY_ESCAPE:
 				# Inside a dungeon ESC offers to leave. Outside it falls
 				# through (engine default; nothing else listens here yet).
@@ -3180,6 +3183,58 @@ var _hovered_enemy: Node2D = null
 var _hover_throttle: float = 0.0
 const HOVER_PICK_RADIUS := 90.0
 const HOVER_UPDATE_INTERVAL := 0.08
+
+const PICKUP_RADIUS := 96.0
+
+# Nearest-LootDrop pickup: scan the active container for any node in
+# the "loot_drop" group within PICKUP_RADIUS, take its rolled item_id,
+# resolve to the items_db entry, and equip it onto the player. Slots
+# auto-equip — player has no inventory UI yet, so the choice is
+# "wear the dropped piece or skip."
+func _try_pickup_nearest_drop() -> void:
+	if player == null or not is_instance_valid(player):
+		return
+	var origin: Vector2 = player.global_position
+	var nearest: Node2D = null
+	var best_d2: float = PICKUP_RADIUS * PICKUP_RADIUS
+	for node in get_tree().get_nodes_in_group("loot_drop"):
+		if node == null or not is_instance_valid(node):
+			continue
+		var d2: float = (node.global_position - origin).length_squared()
+		if d2 < best_d2:
+			best_d2 = d2
+			nearest = node
+	if nearest == null:
+		return
+	var data: Dictionary = nearest.pickup()
+	var item_id: String = String(data.get("item_id", ""))
+	if item_id == "":
+		return
+	_equip_item_id(item_id)
+
+# Apply an item_id to the player's loadout: look up sheet folder + slot
+# in items_db, push into loadout dict, equip on the LayeredCharacter,
+# save profile so the change persists across sessions.
+func _equip_item_id(item_id: String) -> void:
+	var entry: Dictionary = {}
+	for e in ItemsDB.build_catalog():
+		if String(e["id"]) == item_id:
+			entry = e
+			break
+	if entry.is_empty():
+		return
+	var slot_id: int = int(entry["slot"])
+	var folder: String = String(entry["folder"])
+	var layer: String = String(ItemsDB.SLOT_LAYER.get(slot_id, ""))
+	if layer == "":
+		return
+	if player and "_loadout" in player:
+		player._loadout[layer] = folder
+		if slot_id == ItemsDB.Slot.MAINHAND:
+			player._loadout["mainhand_class"] = int(entry["weapon_class"])
+		Loadout.save(player._loadout)
+	if player and player.has_method("reload_loadout"):
+		player.reload_loadout()
 
 func _camera_shake(amp: float, dur: float) -> void:
 	_shake_amp = max(_shake_amp, amp)
