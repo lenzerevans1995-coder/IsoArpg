@@ -101,13 +101,16 @@ func _build_ui() -> void:
 	_tree.item_selected.connect(_on_tree_item_selected)
 	split.add_child(_tree)
 
-	# --- right: preview + info + actions, wrapped in a ScrollContainer
-	# so everything stays reachable even on a narrow window. ---
+	# --- right: scrollable content area + sticky action bar ---
+	var right_root := VBoxContainer.new()
+	right_root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right_root.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	split.add_child(right_root)
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	split.add_child(scroll)
+	right_root.add_child(scroll)
 	var right := VBoxContainer.new()
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	right.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -192,16 +195,17 @@ func _build_ui() -> void:
 	_f_is_unique.toggled.connect(func(v): if _selected_meta: _selected_meta.is_unique = v)
 	_f_unique_name.text_changed.connect(func(v): if _selected_meta: _selected_meta.unique_name = v)
 
-	var spacer := Control.new()
-	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	right.add_child(spacer)
-
+	# Sticky action bar lives in right_root (not the scroll container)
+	# so Save / Validate / Bake stay visible no matter how far the user
+	# scrolls.
 	var btns := HBoxContainer.new()
-	right.add_child(btns)
+	btns.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right_root.add_child(btns)
 
 	_save_btn = Button.new()
 	_save_btn.text = "Save"
 	_save_btn.disabled = true
+	_save_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_save_btn.pressed.connect(_on_save_pressed)
 	btns.add_child(_save_btn)
 
