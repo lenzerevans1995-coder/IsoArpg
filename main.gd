@@ -455,7 +455,7 @@ func take_player_damage(amount: int) -> void:
 		combat_hud.set_player_stats(player_hp, stats.max_hp(), player_mp, stats.max_mp())
 	if player_hp <= 0:
 		# Soft-reset for now: refill HP and clear current wave so testing keeps going.
-		player_hp = PLAYER_MAX_HP
+		player_hp = stats.max_hp() if stats != null else PLAYER_MAX_HP
 		for s in active_spiders:
 			if is_instance_valid(s):
 				s.queue_free()

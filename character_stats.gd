@@ -51,25 +51,26 @@ func _init(class_id: String = "warrior") -> void:
 # ---- derived stats ---------------------------------------------------
 
 func max_hp() -> int:
-	# Pure stat-driven: vitality is the only growth knob. Level grants
-	# stat points (5/level) — players choose to put them into vit for
-	# HP, str for damage, etc. No flat per-level HP, so a level-50
-	# wizard who never put a point into vit stays fragile, as intended.
-	var base: int = 60
+	# Pure stat-driven: vitality is the only growth knob. Tuned so a
+	# warrior starts at ~100 HP at level 1 (Vit 25, base 50) and each
+	# Vit point gives +2 HP. Level grants 5 stat points; spending them
+	# into Vit gives +10 HP per level — visible but not free.
+	var base: int = 40
 	match character_class:
-		"warrior":  base = 80
-		"rogue":    base = 55
-		"sorcerer": base = 45
-	return base + vitality * 8
+		"warrior":  base = 50
+		"rogue":    base = 35
+		"sorcerer": base = 25
+	return base + vitality * 2
 
 func max_mp() -> int:
-	# Pure stat-driven: energy is the only growth knob. Sorcerer
-	# doubles per-point return so the class still feels mana-rich.
-	var base: int = 20
-	var energy_mult: int = 4
+	# Same shape as HP. Warrior starts ~50 MP (Energy 10, base 30).
+	# Sorcerer doubles per-point return so the class still feels
+	# mana-rich at high investment.
+	var base: int = 30
+	var energy_mult: int = 2
 	if character_class == "sorcerer":
-		base = 40
-		energy_mult = 8
+		base = 30
+		energy_mult = 4
 	return base + energy * energy_mult
 
 func attack_rating() -> int:

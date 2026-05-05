@@ -230,6 +230,21 @@ func _allocate_stat_point(stat_name: String) -> void:
 		if attr_name != "":
 			s.set(attr_name, int(s.get(attr_name)) + 1)
 		s.unspent_stat_points = max(0, int(s.unspent_stat_points) - 1)
+		# Refill current pools to the new max so the player sees the bonus
+		# *immediately* on the HUD orbs. Without this the max grows but
+		# the orb fill stays at the pre-allocation value, so the UI reads
+		# as if nothing happened.
+		if attr_name == "vitality":
+			s.hp = s.max_hp()
+			s.emit_signal("hp_changed", s.hp, s.max_hp())
+		elif attr_name == "energy":
+			s.mp = s.max_mp()
+			s.emit_signal("mp_changed", s.mp, s.max_mp())
+		else:
+			# Strength / dex didn't change resources but did change derived
+			# numbers (damage / attack rating); poke the HP signal so the
+			# HUD re-renders any derived display tied to it.
+			s.emit_signal("hp_changed", s.hp, s.max_hp())
 	_stats[stat_name] = int(_stats[stat_name]) + 1
 	_available_points -= 1
 	if _stat_value_lbls.has(stat_name):
