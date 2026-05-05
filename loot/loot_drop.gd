@@ -73,38 +73,61 @@ var _hover_radius: float = 64.0
 func _build_for(rarity: int) -> void:
 	_rarity = rarity
 	add_to_group("loot_drop")
-	# STATIC coin pile — single image scaled down to fit on the floor.
-	if _coin_tex == null and ResourceLoader.exists(COIN_PATH):
-		_coin_tex = load(COIN_PATH)
+	# Item icon on the floor — uses the baked ground sprite if it exists,
+	# else falls back to the inventory icon. Coins are gone — drops now
+	# show the actual rolled item.
 	_gold_sprite = Sprite2D.new()
 	_gold_sprite.centered = true
-	# Anchor both the gold pile AND the beam at (0, 0) — the LootDrop's
-	# foot dot. Earlier offset (0, -16) was lifting the gold and made
-	# the beam read as floating above the pile.
 	_gold_sprite.offset = Vector2.ZERO
 	_gold_sprite.z_index = 30
 	_gold_sprite.scale = Vector2(COIN_SCALE, COIN_SCALE)
 	_gold_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	if _coin_tex != null:
-		_gold_sprite.texture = _coin_tex
-	# Same chunky pixelize the skill icons use, dialed lower (1.1) so
-	# the coin pile keeps its detail but reads as pixel-art on the floor.
-	var coin_mat := ShaderMaterial.new()
-	coin_mat.shader = preload("res://shaders/skill_icon_pixelize.gdshader")
-	coin_mat.set_shader_parameter("pixel_size", 1.1)
-	_gold_sprite.material = coin_mat
+	var icon_tex: Texture2D = _icon_for_item(item_id)
+	if icon_tex != null:
+		_gold_sprite.texture = icon_tex
 	add_child(_gold_sprite)
-	# Beam drawn in code at the same anchor as the gold (offset
-	# (0, -16)). A vertical rectangle from the pile's base going up,
-	# coloured by rarity. _draw is owned by the beam_node so we can
-	# keep it z-behind the gold sprite without splitting transforms.
+	# Beam — vertical rarity-coloured pillar above the icon.
 	_beam_node = _BeamNode.new()
 	(_beam_node as _BeamNode).beam_color = _RarityVisuals.color_for(rarity)
-	# Position calibrated in loot_beam_editor.tscn — base of beam sits
-	# inside the coin pile so the pillar reads as rising out of it.
 	_beam_node.position = Vector2(0, BEAM_OFFSET_Y)
-	_beam_node.z_index = 29              # behind the gold sprite
+	_beam_node.z_index = 29
 	add_child(_beam_node)
+	# Clickable area so the player can pick up by clicking the icon as
+	# well as pressing E. Area2D wraps the visual; the size is tuned to
+	# the 128x128 baked icon centered on the foot.
+	var area := Area2D.new()
+	area.input_pickable = true
+	var shape := CollisionShape2D.new()
+	var rect := RectangleShape2D.new()
+	rect.size = Vector2(64, 64)
+	shape.shape = rect
+	shape.position = Vector2(0, -32)
+	area.add_child(shape)
+	area.input_event.connect(_on_area_input_event)
+	add_child(area)
+
+# Resolve item_id -> baked icon texture. Tries the ground (death-pose)
+# sprite first since that's authored to read on the floor; falls back
+# to the inventory icon if ground bake doesn't exist for this item.
+static func _icon_for_item(iid: String) -> Texture2D:
+	if iid == "":
+		return null
+	for dir in ["ground", "icons"]:
+		var p: String = "res://assets/generated/%s/%s.png" % [dir, iid]
+		if ResourceLoader.exists(p):
+			var t: Texture2D = load(p)
+			if t != null and t.get_width() > 0:
+				return t
+	return null
+
+func _on_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	# Left-click on the icon picks it up. Mirrors the E-key path in main.gd.
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			var main := get_tree().root.get_node_or_null("Main")
+			if main and main.has_method("_pickup_drop"):
+				main._pickup_drop(self)
 
 # Inline class — small Node2D that just _draw()s a vertical rarity beam.
 # Lives as a sibling under the LootDrop so the offset/anchor matches

@@ -3204,9 +3204,16 @@ func _try_pickup_nearest_drop() -> void:
 		if d2 < best_d2:
 			best_d2 = d2
 			nearest = node
-	if nearest == null:
+	if nearest != null:
+		_pickup_drop(nearest)
+
+# Click-on-icon entry point (called by LootDrop's Area2D input_event).
+# Same logic as the E-key path: take the rolled identity, equip onto
+# the player, despawn the visual.
+func _pickup_drop(drop: Node) -> void:
+	if drop == null or not is_instance_valid(drop) or not drop.has_method("pickup"):
 		return
-	var data: Dictionary = nearest.pickup()
+	var data: Dictionary = drop.pickup()
 	var item_id: String = String(data.get("item_id", ""))
 	if item_id == "":
 		return
