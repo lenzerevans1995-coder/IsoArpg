@@ -3103,9 +3103,17 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 		hits.append(cell)
 	for cell in hits:
 		_destroy_flora(cell)
+	# Strength scales weapon damage: stats.damage_bonus_pct() returns a
+	# percent (1% per Strength point, capped at 200% — see character_stats.gd).
+	# 30 Str → ×1.3 damage. The same multiplier applies to every strike
+	# below so spiders, goblins, and skeletons all benefit.
+	var dmg_mult: float = 1.0
+	if stats != null:
+		dmg_mult = 1.0 + stats.damage_bonus_pct() / 100.0
+	var scaled_dmg: int = int(round(float(PLAYER_ATTACK_DAMAGE) * dmg_mult))
 	# Damage any skeletons caught in the cone (dungeon mode).
 	if in_dungeon and dungeon and "skeletons" in dungeon:
-		var skel_dmg: int = PLAYER_ATTACK_DAMAGE
+		var skel_dmg: int = scaled_dmg
 		for sk in dungeon.skeletons:
 			if sk == null or not is_instance_valid(sk) or sk.dead:
 				continue
@@ -3131,14 +3139,14 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 		var ang: float = acos(clamp(to_m.normalized().dot(facing), -1.0, 1.0))
 		if ang > ATTACK_HALF_ANGLE:
 			continue
-		m.take_damage(PLAYER_ATTACK_DAMAGE)
+		m.take_damage(scaled_dmg)
 		# Diablo-feel feedback: knockback, damage number, screen shake.
 		var push: Vector2 = (m.position - origin).normalized() * 28.0
 		if "knockback_pending" in m:
 			m.knockback_pending = push
 		else:
 			m.set_meta("knockback_pending", push)
-		_spawn_damage_number(m.position + Vector2(0, -32), PLAYER_ATTACK_DAMAGE)
+		_spawn_damage_number(m.position + Vector2(0, -32), scaled_dmg)
 		_camera_shake(4.0, 0.18)
 	# Single-target swing: only the NEAREST goblin in the cone takes the
 	# hit. Cleaver swings shouldn't damage every goblin in a 90° arc at
@@ -3159,8 +3167,8 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 			best_d = dg
 			best_goblin = g
 	if best_goblin:
-		best_goblin.take_damage(PLAYER_ATTACK_DAMAGE)
-		_spawn_damage_number(best_goblin.global_position + Vector2(0, -32), PLAYER_ATTACK_DAMAGE)
+		best_goblin.take_damage(scaled_dmg)
+		_spawn_damage_number(best_goblin.global_position + Vector2(0, -32), scaled_dmg)
 		_camera_shake(4.0, 0.18)
 
 var _shake_amp: float = 0.0
