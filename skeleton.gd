@@ -22,7 +22,7 @@ const DIR_VECS := [
 	Vector2(-1, 0), Vector2(-0.7,-0.5), Vector2( 0, -1), Vector2( 0.7,-0.5),
 ]
 const DEFAULT_FPS := 12.0
-const ATTACK_FPS := 22.0
+const ATTACK_FPS := 18.0
 const RUN_FPS := 16.0
 
 # Per-class kind ids — drives spawn config + ability selection.
@@ -153,7 +153,10 @@ func _load_frames(anim: String, dir_letter: String) -> Array[Texture2D]:
 		if frame > 0:
 			var cols: int = sheet_w / frame
 			var row: int = int(DIR_TO_ROW.get(dir_letter, 0))
-			for c in range(cols):
+			# Skip every-other column to match the thinned frame count the
+			# per-frame folders shipped with (Attack1_0_001, _003, _005…).
+			# Keeps playback timing visually consistent with the player.
+			for c in range(0, cols, 2):
 				var atlas := AtlasTexture.new()
 				atlas.atlas = sheet
 				atlas.region = Rect2(c * frame, row * frame, frame, frame)
