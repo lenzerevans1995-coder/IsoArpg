@@ -498,7 +498,6 @@ func _refresh_preview(entry: Dictionary) -> void:
 	# attack swing — easier to compare named items side by side when
 	# they're not mid-animation.
 	var anim: String = "Idle"
-	var slot_id: int = int(entry["slot"])
 	if slot_id == ItemsDB.Slot.MOUNT or _preview_mount:
 		anim = "RideIdle"
 	_preview_char.call("play_anim", anim, 12.0, true, Callable())
