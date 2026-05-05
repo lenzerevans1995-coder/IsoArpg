@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_kldh5"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_yt40o"]
+
+[resource]
+script = ExtResource("1_kldh5")
+item_id = "ranged_5"
+slot = 8
+weapon_class = 2
+base_name = "not sure_why this is ranged its like a gardening tool for dirt"

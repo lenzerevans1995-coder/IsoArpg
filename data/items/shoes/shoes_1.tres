@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_wx8mw"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_v0rm7"]
+
+[resource]
+script = ExtResource("1_wx8mw")
+item_id = "shoes_1"
+slot = 5
+base_name = "basic_shoes"

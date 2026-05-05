@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_43c66"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_4icls"]
+
+[resource]
+script = ExtResource("1_43c66")
+item_id = "ranged_6"
+slot = 8
+weapon_class = 2
+base_name = "fancy double bow_forms an X"
+is_unique = true
