@@ -29,11 +29,17 @@ const SLOT_TO_LAYER := {
 	ItemsDB.Slot.MOUNT: "mount",
 }
 # Slots that read better with a body underneath (armor reads as worn).
+# Every slot reads better with a body underneath. Weapons / shields /
+# offhands need a body so they look "held"; mounts render behind body
+# so the rig reads as "player on mount". Empty dict logic kept for
+# future "show alone" overrides.
 const SHOW_BODY := {
 	ItemsDB.Slot.HEAD: true, ItemsDB.Slot.HANDS: true,
 	ItemsDB.Slot.CHEST: true, ItemsDB.Slot.LEGS: true,
 	ItemsDB.Slot.SHOES: true, ItemsDB.Slot.BELT: true,
-	ItemsDB.Slot.BAG: true,
+	ItemsDB.Slot.BAG: true, ItemsDB.Slot.MOUNT: true,
+	ItemsDB.Slot.MAINHAND: true, ItemsDB.Slot.OFFHAND: true,
+	ItemsDB.Slot.SHIELD: true,
 }
 
 var _tree: Tree
@@ -60,9 +66,11 @@ var _f_unique_name: LineEdit
 const DIR_LETTERS := ["E", "SE", "S", "SW", "W", "NW", "N", "NE"]
 var _preview_dir: int = 1               # 0=E, 1=SE…
 var _preview_zoom: float = 2.0
+var _preview_pan: Vector2 = Vector2(140, 200)  # rig anchor inside the viewport
 var _preview_wield: bool = false        # show a sample sword for armor checks
 var _preview_mount: bool = false        # show character on mount_1 (when item isn't a mount)
 var _preview_tint: Color = Color.WHITE  # tint applied to the selected item's layer
+var _dragging: bool = false
 var _dir_btn: Button
 var _zoom_lbl: Label
 
@@ -80,15 +88,15 @@ func _build_ui() -> void:
 	split.anchor_right = 1.0
 	split.anchor_bottom = 1.0
 	# Narrow left pane — TreeView shows only IDs + names, doesn't need
-	# more than ~220px. Drag the splitter to widen if you need it.
-	split.split_offset = 220
+	# more than ~160px. Drag the splitter to widen if you need it.
+	split.split_offset = 160
 	add_child(split)
 
 	# --- left: TreeView grouped by slot ---
 	_tree = Tree.new()
 	_tree.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_tree.custom_minimum_size = Vector2(180, 0)
+	_tree.custom_minimum_size = Vector2(140, 0)
 	_tree.hide_root = true
 	_tree.item_selected.connect(_on_tree_item_selected)
 	split.add_child(_tree)
@@ -134,6 +142,8 @@ func _build_ui() -> void:
 	_preview_holder.stretch = true
 	_preview_holder.custom_minimum_size = Vector2(280, 280)
 	_preview_holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# Mouse on the preview: middle-button drag pans, wheel zooms.
+	_preview_holder.gui_input.connect(_on_preview_input)
 	right.add_child(_preview_holder)
 	_preview_vp = SubViewport.new()
 	_preview_vp.size = Vector2i(280, 280)
@@ -307,6 +317,21 @@ func _on_validate_pressed() -> void:
 	if not bad_drop_weight.is_empty():
 		lines.append("  " + ", ".join(bad_drop_weight))
 	_info_label.text = "\n".join(lines)
+
+func _on_preview_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		if mb.button_index == MOUSE_BUTTON_MIDDLE:
+			_dragging = mb.pressed
+		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
+			_set_zoom(_preview_zoom + 0.25)
+		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
+			_set_zoom(_preview_zoom - 0.25)
+	elif event is InputEventMouseMotion and _dragging:
+		var mm := event as InputEventMouseMotion
+		_preview_pan += mm.relative
+		if _preview_char and is_instance_valid(_preview_char):
+			(_preview_char as Node2D).position = _preview_pan
 
 func _on_dir_pressed() -> void:
 	_preview_dir = (_preview_dir + 1) % 8
