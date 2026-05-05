@@ -11,13 +11,39 @@ class_name ItemEditor
 
 const ItemsDB := preload("res://items_db.gd")
 const ItemMetadataScript := preload("res://item_metadata.gd")
+const LayeredCharacterScript := preload("res://layered_character.gd")
 const META_DIR := "res://data/items"
+# Slot id -> LayeredCharacter layer. Mirrors ItemsDB.SLOT_LAYER but with
+# explicit fallbacks for slots that don't have a 1:1 layer mapping.
+const SLOT_TO_LAYER := {
+	ItemsDB.Slot.HEAD: "head",
+	ItemsDB.Slot.HANDS: "hands",
+	ItemsDB.Slot.CHEST: "chest",
+	ItemsDB.Slot.LEGS: "legs",
+	ItemsDB.Slot.SHOES: "shoes",
+	ItemsDB.Slot.BELT: "belt",
+	ItemsDB.Slot.BAG: "bag",
+	ItemsDB.Slot.MAINHAND: "mainhand",
+	ItemsDB.Slot.OFFHAND: "offhand",
+	ItemsDB.Slot.SHIELD: "offhand",
+	ItemsDB.Slot.MOUNT: "mount",
+}
+# Slots that read better with a body underneath (armor reads as worn).
+const SHOW_BODY := {
+	ItemsDB.Slot.HEAD: true, ItemsDB.Slot.HANDS: true,
+	ItemsDB.Slot.CHEST: true, ItemsDB.Slot.LEGS: true,
+	ItemsDB.Slot.SHOES: true, ItemsDB.Slot.BELT: true,
+	ItemsDB.Slot.BAG: true,
+}
 
 var _tree: Tree
 var _info_label: Label
 var _save_btn: Button
 var _bake_btn: Button
 var _validate_btn: Button
+var _preview_holder: SubViewportContainer
+var _preview_vp: SubViewport
+var _preview_char: Node2D
 var _selected_item: Dictionary = {}     # current items_db catalog entry
 var _selected_meta: Resource = null     # ItemMetadata loaded/created on selection
 
@@ -45,11 +71,31 @@ func _build_ui() -> void:
 	_tree.item_selected.connect(_on_tree_item_selected)
 	split.add_child(_tree)
 
-	# --- right: info + actions ---
+	# --- right: preview + info + actions ---
 	var right := VBoxContainer.new()
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	right.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	split.add_child(right)
+
+	# Preview pane — a SubViewport hosting a LayeredCharacter so armor
+	# shows worn over a body and weapons render in isolation.
+	_preview_holder = SubViewportContainer.new()
+	_preview_holder.stretch = true
+	_preview_holder.custom_minimum_size = Vector2(384, 384)
+	_preview_holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right.add_child(_preview_holder)
+	_preview_vp = SubViewport.new()
+	_preview_vp.size = Vector2i(384, 384)
+	_preview_vp.transparent_bg = true
+	_preview_vp.disable_3d = true
+	_preview_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	_preview_holder.add_child(_preview_vp)
+	_preview_char = LayeredCharacterScript.new()
+	# Center the rig in the viewport — the sprite is 128×128 anchored top-left,
+	# so push it into view.
+	(_preview_char as Node2D).position = Vector2(192, 256)
+	(_preview_char as Node2D).scale = Vector2(2, 2)
+	_preview_vp.add_child(_preview_char)
 
 	_info_label = Label.new()
 	_info_label.text = "Select an item on the left."
@@ -129,6 +175,7 @@ func _on_tree_item_selected() -> void:
 	_selected_meta = _load_or_stub(entry)
 	_info_label.text = _info_text_for(entry, _selected_meta)
 	_save_btn.disabled = false
+	_refresh_preview(entry)
 	# In-editor: surface the resource in Godot's Inspector.
 	if Engine.is_editor_hint():
 		var ed := Engine.get_singleton("EditorInterface") if Engine.has_singleton("EditorInterface") else null
@@ -185,6 +232,25 @@ func _on_validate_pressed() -> void:
 	if not bad_drop_weight.is_empty():
 		lines.append("  " + ", ".join(bad_drop_weight))
 	_info_label.text = "\n".join(lines)
+
+func _refresh_preview(entry: Dictionary) -> void:
+	if _preview_char == null or not is_instance_valid(_preview_char):
+		return
+	# Clear every layer first so the previous selection doesn't bleed
+	# through (e.g. a sword shouldn't keep showing when we click a hat).
+	for layer in ["body", "head", "hands", "chest", "legs", "shoes", "belt",
+			"bag", "mainhand", "offhand", "mount"]:
+		_preview_char.call("clear_layer", layer)
+	var slot_id: int = int(entry["slot"])
+	# Show a body underneath for armor pieces so they read as worn.
+	if SHOW_BODY.get(slot_id, false):
+		_preview_char.call("equip", "body", "NakedBody")
+	var layer_name: String = String(SLOT_TO_LAYER.get(slot_id, ""))
+	if layer_name != "":
+		_preview_char.call("equip", layer_name, String(entry["folder"]))
+	# Idle anim, SE-ish facing (row 1) — reads more dynamically than E.
+	_preview_char.call("set_direction", 1)
+	_preview_char.call("play_anim", "Idle", 12.0, true, Callable())
 
 func _info_text_for(entry: Dictionary, meta: Resource) -> String:
 	var slot_name: String = ItemsDB.Slot.keys()[int(entry["slot"])]

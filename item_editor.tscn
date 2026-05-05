@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8itemeditor000"]
+[gd_scene format=3 uid="uid://cnbaq0axwaq52"]
 
 [ext_resource type="Script" path="res://item_editor.gd" id="1_editor"]
 
