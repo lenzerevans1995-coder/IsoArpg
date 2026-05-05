@@ -122,10 +122,14 @@ static func _src_for_tier(n: int) -> String:
 		return "craft"
 	return "loot"
 
-# Auto-pick the attack anim for a given weapon class.
+# Auto-pick the attack anim for a given weapon class. The body sheet's
+# Attack rows have weapon-specific poses authored in: Attack1 reads as
+# a melee swing, Attack3 is the canonical bow-draw + release on the
+# Fantasy tileset bodies. If a particular weapon set looks wrong here
+# tweak per-class instead of fighting the convention.
 static func attack_anim_for(weapon_class: int) -> String:
 	match weapon_class:
 		WeaponClass.MELEE: return "Attack1"
-		WeaponClass.RANGED: return "Attack2"
+		WeaponClass.RANGED: return "Attack3"
 		WeaponClass.MAGIC: return "Special1"
 		_: return "Attack1"
