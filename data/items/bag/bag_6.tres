@@ -7,5 +7,7 @@
 script = ExtResource("1_4wq3k")
 item_id = "bag_6"
 slot = 7
-base_name = "traveler_pack"
-is_unique = true
+base_name = "Traveler's Pack"
+is_unique = false
+unique_name = ""
+can_drop = true

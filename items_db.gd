@@ -51,6 +51,9 @@ const BODY_TONES := ["NakedBody", "NakedBody2", "NakedBody3"]
 
 # Items intended for character-creator pick (cosmetic starters).
 const STARTER_HEADS := 24       # all heads available in creator
+# IDs that exist as sheet folders but should NOT appear in the catalog.
+# head_2 was originally "necklace" — wrong slot, retired.
+const SKIP_IDS := {"head_2": true}
 const STARTER_CHESTS := [1, 2, 3]
 const STARTER_LEGS := [1, 2, 3]
 const STARTER_SHOES := [1, 2]
@@ -61,7 +64,9 @@ const STARTER_BODIES := BODY_TONES
 static func build_catalog() -> Array:
 	var out: Array = []
 	for n in range(1, STARTER_HEADS + 1):
-		out.append(_mk("head_%d" % n, Slot.HEAD, "Head%d" % n, "Head %d" % n, "starter"))
+		var hid: String = "head_%d" % n
+		if SKIP_IDS.has(hid): continue
+		out.append(_mk(hid, Slot.HEAD, "Head%d" % n, "Head %d" % n, "starter"))
 	for n in range(1, SLOT_COUNTS[Slot.CHEST] + 1):
 		var src := "starter" if n in STARTER_CHESTS else _src_for_tier(n)
 		out.append(_mk("chest_%d" % n, Slot.CHEST, "Chest%d" % n, "Chest %d" % n, src))

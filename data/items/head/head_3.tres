@@ -7,4 +7,7 @@
 script = ExtResource("1_hf3wp")
 item_id = "head_3"
 slot = 1
-base_name = "hood_basic"
+base_name = "Hood"
+is_unique = false
+unique_name = ""
+can_drop = true

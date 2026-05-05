@@ -7,4 +7,7 @@
 script = ExtResource("1_tsvun")
 item_id = "head_13"
 slot = 1
-base_name = "helmet_not_quite_basic"
+base_name = "Iron Helm"
+is_unique = false
+unique_name = ""
+can_drop = true

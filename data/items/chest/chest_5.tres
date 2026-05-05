@@ -7,4 +7,7 @@
 script = ExtResource("1_al14b")
 item_id = "chest_5"
 slot = 3
-base_name = "ragged_armour"
+base_name = "Tattered Mail"
+is_unique = false
+unique_name = ""
+can_drop = true

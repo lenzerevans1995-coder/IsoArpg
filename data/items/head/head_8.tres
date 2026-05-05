@@ -7,4 +7,7 @@
 script = ExtResource("1_p6m4h")
 item_id = "head_8"
 slot = 1
-base_name = "Lich_crown"
+base_name = ""
+is_unique = true
+unique_name = "Crown of the Lich"
+can_drop = true

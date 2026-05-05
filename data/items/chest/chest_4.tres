@@ -7,4 +7,7 @@
 script = ExtResource("1_uyikd")
 item_id = "chest_4"
 slot = 3
-base_name = "bulky_plate"
+base_name = "Heavy Plate"
+is_unique = false
+unique_name = ""
+can_drop = true

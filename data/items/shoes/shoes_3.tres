@@ -7,4 +7,7 @@
 script = ExtResource("1_chg4h")
 item_id = "shoes_3"
 slot = 5
-base_name = "loafer_looking_boots"
+base_name = "Soft Boots"
+is_unique = false
+unique_name = ""
+can_drop = true

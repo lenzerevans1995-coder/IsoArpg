@@ -7,4 +7,7 @@
 script = ExtResource("1_hdbi3")
 item_id = "head_21"
 slot = 1
-base_name = "Another Dope_spiked_helmet"
+base_name = ""
+is_unique = true
+unique_name = "Bonespire"
+can_drop = true

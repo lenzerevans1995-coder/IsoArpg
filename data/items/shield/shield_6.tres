@@ -7,4 +7,7 @@
 script = ExtResource("1_lkto2")
 item_id = "shield_6"
 slot = 10
-base_name = "another_shield type not unique not basic "
+base_name = "Kite Shield"
+is_unique = false
+unique_name = ""
+can_drop = true

@@ -7,4 +7,7 @@
 script = ExtResource("1_fcgmm")
 item_id = "head_14"
 slot = 1
-base_name = "horned_helmet_dope"
+base_name = ""
+is_unique = true
+unique_name = "Wargaze"
+can_drop = true

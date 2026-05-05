@@ -7,4 +7,7 @@
 script = ExtResource("1_hcup4")
 item_id = "mount_2"
 slot = 11
-base_name = "ram_face feet horns have disinct colors"
+base_name = "Mountain Ram"
+is_unique = false
+unique_name = ""
+can_drop = true

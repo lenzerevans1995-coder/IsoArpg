@@ -7,4 +7,7 @@
 script = ExtResource("1_3nq6i")
 item_id = "mount_4"
 slot = 11
-base_name = "wolf"
+base_name = "Dire Wolf"
+is_unique = false
+unique_name = ""
+can_drop = true

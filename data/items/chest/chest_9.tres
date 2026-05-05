@@ -7,4 +7,7 @@
 script = ExtResource("1_1pvxr")
 item_id = "chest_9"
 slot = 3
-base_name = "stealth_shirt_basic"
+base_name = "Rogue's Garb"
+is_unique = false
+unique_name = ""
+can_drop = true

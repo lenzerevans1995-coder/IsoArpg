@@ -7,4 +7,7 @@
 script = ExtResource("1_wpbwo")
 item_id = "shield_3"
 slot = 10
-base_name = "Triangle shield"
+base_name = "Heater Shield"
+is_unique = false
+unique_name = ""
+can_drop = true

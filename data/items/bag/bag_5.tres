@@ -7,5 +7,7 @@
 script = ExtResource("1_uvdji")
 item_id = "bag_5"
 slot = 7
-base_name = "demon_wings"
+base_name = ""
 is_unique = true
+unique_name = "Pact of the Abyss"
+can_drop = true

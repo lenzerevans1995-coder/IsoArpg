@@ -7,4 +7,7 @@
 script = ExtResource("1_gbv5c")
 item_id = "chest_1"
 slot = 3
-base_name = "basic_shirt"
+base_name = "Tunic"
+is_unique = false
+unique_name = ""
+can_drop = true

@@ -7,4 +7,7 @@
 script = ExtResource("1_7i8cb")
 item_id = "head_4"
 slot = 1
-base_name = "cult_hood"
+base_name = "Cultist's Hood"
+is_unique = false
+unique_name = ""
+can_drop = true

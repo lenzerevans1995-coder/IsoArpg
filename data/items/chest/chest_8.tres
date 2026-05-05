@@ -7,4 +7,7 @@
 script = ExtResource("1_ctx06")
 item_id = "chest_8"
 slot = 3
-base_name = "two_tone_bulk_plate"
+base_name = "Champion's Plate"
+is_unique = false
+unique_name = ""
+can_drop = true

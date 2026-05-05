@@ -7,4 +7,7 @@
 script = ExtResource("1_73dxn")
 item_id = "mount_5"
 slot = 11
-base_name = "mommy the spider scared me"
+base_name = ""
+is_unique = true
+unique_name = "Brood Mother"
+can_drop = true

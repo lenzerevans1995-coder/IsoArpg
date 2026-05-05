@@ -7,4 +7,7 @@
 script = ExtResource("1_mm1y1")
 item_id = "offhand_1"
 slot = 9
-base_name = "offhand_sword"
+base_name = "Parrying Sword"
+is_unique = false
+unique_name = ""
+can_drop = true

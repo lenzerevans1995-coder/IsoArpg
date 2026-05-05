@@ -7,4 +7,7 @@
 script = ExtResource("1_kk4me")
 item_id = "head_10"
 slot = 1
-base_name = "hair_2"
+base_name = "Hair 2"
+is_unique = false
+unique_name = ""
+can_drop = false

@@ -7,4 +7,7 @@
 script = ExtResource("1_hsi06")
 item_id = "shield_5"
 slot = 10
-base_name = "advanced_shield"
+base_name = "Tower Shield"
+is_unique = false
+unique_name = ""
+can_drop = true

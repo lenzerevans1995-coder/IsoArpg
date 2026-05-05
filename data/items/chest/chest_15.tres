@@ -7,4 +7,7 @@
 script = ExtResource("1_iwbtl")
 item_id = "chest_15"
 slot = 3
-base_name = "torn_stealth_shirt_looks_dope"
+base_name = ""
+is_unique = true
+unique_name = "Shadowmender"
+can_drop = true

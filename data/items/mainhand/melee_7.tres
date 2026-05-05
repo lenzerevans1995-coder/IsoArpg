@@ -9,3 +9,6 @@ item_id = "melee_7"
 slot = 8
 weapon_class = 1
 base_name = "Scimitar"
+is_unique = false
+unique_name = ""
+can_drop = true

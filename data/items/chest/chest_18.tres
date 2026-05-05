@@ -7,4 +7,7 @@
 script = ExtResource("1_lgtaa")
 item_id = "chest_18"
 slot = 3
-base_name = "wolf_fur_sholder_cover_empty_chest"
+base_name = "Wolfpelt Mantle"
+is_unique = false
+unique_name = ""
+can_drop = true

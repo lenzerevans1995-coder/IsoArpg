@@ -7,5 +7,7 @@
 script = ExtResource("1_1og12")
 item_id = "hands_2"
 slot = 2
-base_name = "tendril_gloves"
+base_name = ""
 is_unique = true
+unique_name = "Grasping Coil"
+can_drop = true

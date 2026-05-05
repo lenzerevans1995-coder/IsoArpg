@@ -7,4 +7,7 @@
 script = ExtResource("1_0h5rq")
 item_id = "hands_4"
 slot = 2
-base_name = "Gloves_not_basic__Idk_Rare_maybe"
+base_name = "Duelist's Gloves"
+is_unique = false
+unique_name = ""
+can_drop = true

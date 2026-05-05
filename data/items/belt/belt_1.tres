@@ -7,4 +7,7 @@
 script = ExtResource("1_eq0ru")
 item_id = "belt_1"
 slot = 6
-base_name = "basic_belt"
+base_name = "Leather Belt"
+is_unique = false
+unique_name = ""
+can_drop = true

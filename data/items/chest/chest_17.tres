@@ -7,4 +7,7 @@
 script = ExtResource("1_pduj2")
 item_id = "chest_17"
 slot = 3
-base_name = "bucaneer_shirt_open_front_with_strap"
+base_name = "Buccaneer's Coat"
+is_unique = false
+unique_name = ""
+can_drop = true

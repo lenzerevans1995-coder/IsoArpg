@@ -7,4 +7,7 @@
 script = ExtResource("1_0kykh")
 item_id = "chest_16"
 slot = 3
-base_name = "more_plate_armour"
+base_name = "Knight's Plate"
+is_unique = false
+unique_name = ""
+can_drop = true

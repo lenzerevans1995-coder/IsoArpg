@@ -7,5 +7,7 @@
 script = ExtResource("1_8tmvs")
 item_id = "chest_19"
 slot = 3
-base_name = "animated_cloak_epic"
+base_name = ""
 is_unique = true
+unique_name = "Whisperveil"
+can_drop = true

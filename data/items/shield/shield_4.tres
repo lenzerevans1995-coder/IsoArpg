@@ -7,4 +7,7 @@
 script = ExtResource("1_6qbr2")
 item_id = "shield_4"
 slot = 10
-base_name = "knight templar shield "
+base_name = "Templar Shield"
+is_unique = false
+unique_name = ""
+can_drop = true

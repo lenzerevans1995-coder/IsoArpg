@@ -7,4 +7,7 @@
 script = ExtResource("1_qhn6o")
 item_id = "shield_2"
 slot = 10
-base_name = "big_fancy_shield for paladins"
+base_name = ""
+is_unique = true
+unique_name = "Aegis of the Sun"
+can_drop = true

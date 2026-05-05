@@ -7,4 +7,7 @@
 script = ExtResource("1_mi3nx")
 item_id = "chest_14"
 slot = 3
-base_name = "mage_robes_bulky"
+base_name = "Archmage's Robes"
+is_unique = false
+unique_name = ""
+can_drop = true

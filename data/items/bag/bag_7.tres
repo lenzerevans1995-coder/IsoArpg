@@ -7,4 +7,7 @@
 script = ExtResource("1_4b634")
 item_id = "bag_7"
 slot = 7
-base_name = "empty"
+base_name = "(empty)"
+is_unique = false
+unique_name = ""
+can_drop = false

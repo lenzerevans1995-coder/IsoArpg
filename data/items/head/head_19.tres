@@ -7,4 +7,7 @@
 script = ExtResource("1_vd7cn")
 item_id = "head_19"
 slot = 1
-base_name = "spiky_two horned _helmet_not as dope"
+base_name = "Spiked Helm"
+is_unique = false
+unique_name = ""
+can_drop = true

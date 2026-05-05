@@ -7,4 +7,7 @@
 script = ExtResource("1_srci4")
 item_id = "mount_1"
 slot = 11
-base_name = "horse_Hair_and saddle have distinct colors"
+base_name = "Steed"
+is_unique = false
+unique_name = ""
+can_drop = true

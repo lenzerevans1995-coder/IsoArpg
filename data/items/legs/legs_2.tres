@@ -7,4 +7,7 @@
 script = ExtResource("1_ceih2")
 item_id = "legs_2"
 slot = 4
-base_name = "baggy_pants"
+base_name = "Loose Breeches"
+is_unique = false
+unique_name = ""
+can_drop = true

@@ -7,4 +7,7 @@
 script = ExtResource("1_mbk6g")
 item_id = "legs_5"
 slot = 4
-base_name = "plate_armor"
+base_name = "Plate Greaves"
+is_unique = false
+unique_name = ""
+can_drop = true

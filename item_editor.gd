@@ -12,6 +12,7 @@ class_name ItemEditor
 const ItemsDB := preload("res://items_db.gd")
 const ItemMetadataScript := preload("res://item_metadata.gd")
 const LayeredCharacterScript := preload("res://layered_character.gd")
+const IconBakerScript := preload("res://icon_baker.gd")
 const META_DIR := "res://data/items"
 # Slot id -> LayeredCharacter layer. Mirrors ItemsDB.SLOT_LAYER but with
 # explicit fallbacks for slots that don't have a 1:1 layer mapping.
@@ -232,8 +233,8 @@ func _build_ui() -> void:
 
 	_bake_btn = Button.new()
 	_bake_btn.text = "Bake all icons"
-	_bake_btn.disabled = true              # icon_baker.gd not built yet
-	_bake_btn.tooltip_text = "Implemented in icon_baker.gd (next pass)"
+	_bake_btn.tooltip_text = "Renders inventory icon (S-facing) + ground sprite (death pose) for every droppable item"
+	_bake_btn.pressed.connect(_on_bake_pressed)
 	btns.add_child(_bake_btn)
 
 func _populate_tree() -> void:
@@ -319,6 +320,17 @@ func _on_save_pressed() -> void:
 	var ti: TreeItem = _tree.get_selected()
 	if ti != null:
 		ti.set_text(0, _label_for(_selected_item))
+
+func _on_bake_pressed() -> void:
+	_info_label.text = "Baking… (this scene blocks until done — wait)"
+	_bake_btn.disabled = true
+	var summary: Dictionary = await IconBakerScript.bake_all(self, false)
+	_bake_btn.disabled = false
+	_info_label.text = "Baked: %d icons + %d ground sprites    skipped: %d (can_drop=false)" % [
+		int(summary.get("icons", 0)),
+		int(summary.get("ground", 0)),
+		int(summary.get("skipped", 0)),
+	]
 
 func _on_validate_pressed() -> void:
 	var unnamed: Array[String] = []

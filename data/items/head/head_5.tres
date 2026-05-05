@@ -7,4 +7,7 @@
 script = ExtResource("1_ikbjs")
 item_id = "head_5"
 slot = 1
-base_name = "crown"
+base_name = "Circlet"
+is_unique = false
+unique_name = ""
+can_drop = true

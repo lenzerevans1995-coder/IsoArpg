@@ -7,4 +7,7 @@
 script = ExtResource("1_hlv51")
 item_id = "shield_1"
 slot = 10
-base_name = "round shield"
+base_name = "Round Shield"
+is_unique = false
+unique_name = ""
+can_drop = true
