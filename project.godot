@@ -29,17 +29,6 @@ window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/effekseer/plugin.cfg")
-
-[effekseer]
-
-instance_max_count=4000
-square_max_count=16000
-draw_max_count=256
-sound_script="res://addons/effekseer/src/EffekseerSound.gd"
-
 [input]
 
 move_up={

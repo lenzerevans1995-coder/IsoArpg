@@ -81,4 +81,3 @@ text = "WASD/LMB - walk    RMB - attack    1 - editor    F1-F4 lighting    5 rai
 offset_right = 481.0
 offset_bottom = 254.0
 
-[node name="EffekseerEmitter2D" type="EffekseerEmitter2D" parent="." unique_id=1940599020]

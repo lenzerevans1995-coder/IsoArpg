@@ -368,94 +368,6 @@ func _toggle_world_shader_panel() -> void:
 		add_child(world_shader_panel)
 	world_shader_panel.toggle()
 
-var _preview_idx: int = -1
-const _ICE_DIR := "res://assets/effects/tests/MGC_IceSpikes_MZ_V1.2/MZ"
-const _PREVIEW_FX := [
-	{"name": "Thunder Strike",            "kind": "thunder"},
-	{"name": "Hit Pop (POW!)",            "kind": "hitfx"},
-	# All 5 ice spike variants the asset pack ships with — cycled via
-	# Effekseer when the plugin is loaded, sprite-sheet fallback otherwise.
-	{"name": "Ice Spike Impact",          "kind": "efk", "path": _ICE_DIR + "/MGC_IceSpike_Impact.efkefc"},
-	{"name": "Ice Spike Projectile",      "kind": "efk", "path": _ICE_DIR + "/MGC_IceSpike_Projectile.efkefc"},
-	{"name": "Ice Spike Complete",        "kind": "efk", "path": _ICE_DIR + "/MGC_IceSpike_Complete.efkefc"},
-	{"name": "3D Ice Spike Projectile",   "kind": "efk", "path": _ICE_DIR + "/MGC_3D_IceSpike_Projectile.efkefc"},
-	{"name": "3D Ice Spike Complete",     "kind": "efk", "path": _ICE_DIR + "/MGC_3D_IceSpike_Complete.efkefc"},
-]
-
-func _preview_next_effect(step: int) -> void:
-	_preview_idx = (_preview_idx + step + _PREVIEW_FX.size()) % _PREVIEW_FX.size()
-	var entry: Dictionary = _PREVIEW_FX[_preview_idx]
-	var pos: Vector2 = player.global_position if player else Vector2.ZERO
-	var parent: Node = world if world else self
-	match entry.kind:
-		"thunder":
-			var ThunderFX := preload("res://thunder_fx.gd")
-			ThunderFX.spawn(parent, pos)
-		"hitfx":
-			var Hit := preload("res://hit_fx.gd")
-			Hit.spawn(parent, pos + Vector2(0, -48), "POW!")
-		"efk":
-			# Generic .efkefc previewer. Loads the requested file and
-			# plays it via EffekseerEmitter2D if the plugin is loaded;
-			# falls back to the manual ice-spike-fx for the Impact/
-			# Projectile pair.
-			_spawn_efkefc(parent, pos, String(entry.path))
-	if hud_label:
-		hud_label.text = "%s\n[FX preview] %s" % [hud_mode_text, entry.name]
-
-func _spawn_efkefc(parent: Node, world_pos: Vector2, path: String) -> void:
-	if not ClassDB.class_exists("EffekseerEmitter2D"):
-		# No plugin: fall back to the closest manual FX.
-		var IceFX := preload("res://ice_spike_fx.gd")
-		if "Projectile" in path:
-			var fx: Node2D = IceFX.spawn_missile(parent, world_pos)
-			if fx:
-				var t := create_tween()
-				t.tween_property(fx, "global_position", world_pos + Vector2(220, -80), 1.5)
-				t.tween_callback(fx.queue_free)
-		else:
-			IceFX.spawn(parent, world_pos)
-		return
-	print("[FX preview] _spawn_efkefc path=", path,
-			" exists=", ResourceLoader.exists(path),
-			" parent=", parent, " pos=", world_pos)
-	if not ResourceLoader.exists(path):
-		push_warning("efkefc not found: %s" % path)
-		return
-	var efk: Resource = load(path)
-	if efk == null:
-		print("[FX preview] LOAD RETURNED NULL — .efkefc isn't imported. Run 'Reimport' on it in the FileSystem dock.")
-		return
-	var em = ClassDB.instantiate("EffekseerEmitter2D")
-	if em == null:
-		print("[FX preview] could not instantiate EffekseerEmitter2D")
-		return
-	# Dump every property the emitter exposes so we can spot the right
-	# size knob (scale vs effect_scale vs target_scale, etc.).
-	print("[FX preview] EffekseerEmitter2D properties:")
-	for p in em.get_property_list():
-		if int(p.get("usage", 0)) & PROPERTY_USAGE_EDITOR != 0:
-			print("    ", p.name, " : ", p.type)
-	em.set("effect", efk)
-	em.set("autoplay", true)
-	em.set("autofree", true)
-	# The plugin's preview uses zoom=10 + scale=100 to show a small effect
-	# big — meaning the .efkefc art is authored in tiny units. At our
-	# game's zoom (~1.5), we need to scale UP, not down.
-	em.set("scale", Vector2(8.0, 8.0))
-	em.set("z_index", 1000)
-	em.set("z_as_relative", false)
-	em.set("y_sort_enabled", false)
-	parent.add_child(em)
-	(em as Node2D).global_position = world_pos
-	# Plugin requires an explicit play() — there is no autoplay flag.
-	if em.has_method("play"):
-		em.call("play")
-	# autofree=true (set above) takes care of cleanup when the effect
-	# finishes — no need for a manual timer-based fallback (the lambda
-	# would capture `em` after autofree had already disposed of it,
-	# triggering a "Lambda capture freed" error).
-
 func _toggle_asset_placer() -> void:
 	if asset_placer == null:
 		asset_placer = load("res://asset_placer.gd").new()
@@ -676,11 +588,6 @@ func _input(event: InputEvent) -> void:
 				pass
 			KEY_F12:
 				_toggle_monster_debug_panel()
-			KEY_BACKSLASH:
-				# FX preview cycle (was KEY_3). Shift+\ reverses.
-				_preview_next_effect(-1 if event.shift_pressed else 1)
-				print("[FX preview] backslash pressed; idx=", _preview_idx,
-						" entry=", _PREVIEW_FX[_preview_idx] if _preview_idx >= 0 else "(none)")
 			KEY_N:
 				# Start next wave (was KEY_4). N for "next wave".
 				_start_next_wave()
