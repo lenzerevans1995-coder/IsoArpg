@@ -90,6 +90,7 @@ static func _pose_for_icon(rig: Node2D, entry: Dictionary) -> void:
 	var layer: String = String(SLOT_TO_LAYER.get(slot_id, ""))
 	if layer != "":
 		rig.call("equip", layer, String(entry["folder"]))
+		rig.call("set_tint", layer, _tint_for_item(layer, String(entry["id"])))
 	# Direction 2 = S (front-facing). Frame 0 of Idle is the canonical
 	# icon pose; for mounts we need RideIdle so the mount actually
 	# renders.
@@ -107,6 +108,7 @@ static func _pose_for_ground(rig: Node2D, entry: Dictionary) -> void:
 	var layer: String = String(SLOT_TO_LAYER.get(slot_id, ""))
 	if layer != "":
 		rig.call("equip", layer, String(entry["folder"]))
+		rig.call("set_tint", layer, _tint_for_item(layer, String(entry["id"])))
 	rig.call("set_direction", 2)
 	# Die anim, last frame — looks like the item dropped on the ground.
 	# Looping false so play_anim parks on the final frame; fps very low
@@ -117,13 +119,17 @@ static func _clear(rig: Node2D) -> void:
 	for layer in ["body", "head", "hands", "chest", "legs", "shoes",
 			"belt", "bag", "mainhand", "offhand", "mount"]:
 		rig.call("clear_layer", layer)
-	# Apply the loadout's default tints so baked items render in the
-	# same color the player will see them when equipped. Without this,
-	# baked icons came out in the source-sheet's neutral grey while
-	# equipped versions showed the tinted color — a visible mismatch.
-	var tints: Dictionary = LoadoutScript._default_tints()
-	for layer in tints.keys():
-		rig.call("set_tint", String(layer), Color(String(tints[layer])))
+
+# Per-item layer tint chosen by hashing item_id against the per-slot
+# palette in loadout.gd. Two chest items (chest_3, chest_7) end up in
+# different palette swatches so the loot pile reads as varied colors
+# instead of all-grey. Stable: chest_3 always picks the same swatch.
+static func _tint_for_item(layer: String, item_id: String) -> Color:
+	var palette: Array = LoadoutScript.palette_for(layer)
+	if palette.is_empty():
+		return Color.WHITE
+	var idx: int = abs(item_id.hash()) % palette.size()
+	return palette[idx]
 
 # Wait until the SubViewport has rendered the new pose. Two frames is
 # enough: one for _process to update sheet/region, one for the renderer

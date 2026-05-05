@@ -88,22 +88,18 @@ func _build_for(rarity: int) -> void:
 	var icon_tex: Texture2D = _icon_for_item(item_id)
 	if icon_tex != null:
 		_gold_sprite.texture = icon_tex
-		# Rarity-coloured outline so loot reads against the floor at a
-		# glance. Width scales with rarity (1.5px common -> 3px legendary).
+		# Rarity-coloured outline. Idle width is half of hover width, so
+		# the outline reads as 'this is loot' from a distance and pops
+		# more when the cursor / player approaches. Unique items use the
+		# item-specific glow color (from ItemMetadata.unique_glow_color)
+		# so each unique can have its own signature outline.
 		var mat := ShaderMaterial.new()
 		mat.shader = preload("res://shaders/outline.gdshader")
-		mat.set_shader_parameter("outline_color", _RarityVisuals.color_for(rarity))
-		var w: float = 1.5 + 0.4 * float(rarity)   # 1.5..3.1 across 5 tiers
-		mat.set_shader_parameter("outline_width", w)
+		mat.set_shader_parameter("outline_color", _outline_color_for(item_id, rarity))
+		mat.set_shader_parameter("outline_width", _outline_width_idle(rarity))
 		mat.set_shader_parameter("texture_size", Vector2(icon_tex.get_width(), icon_tex.get_height()))
 		_gold_sprite.material = mat
 	add_child(_gold_sprite)
-	# Beam — vertical rarity-coloured pillar above the icon.
-	_beam_node = _BeamNode.new()
-	(_beam_node as _BeamNode).beam_color = _RarityVisuals.color_for(rarity)
-	_beam_node.position = Vector2(0, BEAM_OFFSET_Y)
-	_beam_node.z_index = 29
-	add_child(_beam_node)
 	# Clickable area so the player can pick up by clicking the icon as
 	# well as pressing E. Area2D wraps the visual; the size is tuned to
 	# the 128x128 baked icon centered on the foot.
@@ -117,6 +113,30 @@ func _build_for(rarity: int) -> void:
 	area.add_child(shape)
 	area.input_event.connect(_on_area_input_event)
 	add_child(area)
+
+# Outline width tiers: thin at idle, doubled on hover.
+static func _outline_width_idle(rarity: int) -> float:
+	# 0.75 .. 1.55 across 5 tiers. Half of hover.
+	return 0.75 + 0.2 * float(rarity)
+
+static func _outline_width_hover(rarity: int) -> float:
+	return _outline_width_idle(rarity) * 2.0
+
+# Picks the outline color: uniques get their per-item glow_color so
+# different uniques distinguish at a glance; everything else takes the
+# rarity-tier color.
+const _ItemMetaScript := preload("res://loot/item_metadata.gd")
+static func _outline_color_for(iid: String, rarity: int) -> Color:
+	if iid != "":
+		var slot_seg: String = iid.split("_")[0]
+		if slot_seg in ["melee", "ranged"]:
+			slot_seg = "mainhand"
+		var path: String = "res://data/items/%s/%s.tres" % [slot_seg, iid]
+		if FileAccess.file_exists(path):
+			var r: Resource = load(path)
+			if r is _ItemMetaScript and bool(r.is_unique):
+				return r.unique_glow_color
+	return _RarityVisuals.color_for(rarity)
 
 # Resolve item_id -> baked icon texture. Tries the ground (death-pose)
 # sprite first since that's authored to read on the floor; falls back
@@ -179,8 +199,9 @@ func _process(delta: float) -> void:
 		_apply_hover_visuals(hover)
 
 func _apply_hover_visuals(hover: bool) -> void:
-	# Gold pile stays static. The beam brightens slightly on hover.
-	if _beam_node and is_instance_valid(_beam_node):
-		(_beam_node as _BeamNode).beam_color = _RarityVisuals.color_for(_rarity)
-		(_beam_node as _BeamNode).modulate = Color(1.4, 1.4, 1.4) if hover else Color(1, 1, 1, 1)
-		_beam_node.queue_redraw()
+	# Outline thickens on hover so the cursor's drop is unambiguous.
+	if _gold_sprite and is_instance_valid(_gold_sprite):
+		var mat := _gold_sprite.material as ShaderMaterial
+		if mat != null:
+			var w: float = _outline_width_hover(_rarity) if hover else _outline_width_idle(_rarity)
+			mat.set_shader_parameter("outline_width", w)
