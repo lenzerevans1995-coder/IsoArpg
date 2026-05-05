@@ -3247,10 +3247,11 @@ func _spawn_damage_number(world_pos: Vector2, amount: int) -> void:
 	# Label silently positions in screen space when parented to a
 	# Node2D, which is why these numbers never appeared. _DamageNumber
 	# (defined below) honours world transform + z_index correctly.
+	print("[dmg] %d at %s" % [amount, str(world_pos)])
 	var dn: Node2D = _DamageNumber.new()
 	dn.set("amount", amount)
 	dn.position = world_pos + Vector2(randf_range(-12, 12), 0)
-	dn.z_index = 1000
+	dn.z_index = 4096
 	world.add_child(dn)
 
 class _DamageNumber extends Node2D:

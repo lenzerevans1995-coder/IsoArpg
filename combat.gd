@@ -19,11 +19,11 @@ class_name Combat
 const ItemsDB := preload("res://items_db.gd")
 const ItemMetadataScript := preload("res://loot/item_metadata.gd")
 
-# Fist-fight fallback when no weapon is equipped. Bumped so unarmed
-# combat is viable in the slice (skeletons have 30 HP); a sword still
-# beats fists once one is rolled.
-const FIST_MIN := 6
-const FIST_MAX := 12
+# Fist-fight fallback when no weapon is equipped (or the equipped
+# weapon has unset base_damage in its .tres). Bumped to 10-18 so
+# unarmed slice combat actually kills 30-HP skeletons in 2-3 swings.
+const FIST_MIN := 10
+const FIST_MAX := 18
 
 # Compute one player melee swing's damage value.
 # `stats`        : CharacterStats instance (or null — will skip Str bonus)
@@ -37,8 +37,14 @@ static func compute_player_damage(stats, loadout: Dictionary, rng: RandomNumberG
 	var flat_bonus: int = 0
 	var pct_bonus: float = 0.0
 	if meta != null:
-		base_min = max(1, int(meta.base_damage_min))
-		base_max = max(base_min, int(meta.base_damage_max))
+		var meta_max: int = int(meta.base_damage_max)
+		# Items with unset / zero damage in their .tres fall back to
+		# fist range — saves us hand-tuning all 32 weapon files just to
+		# get a usable slice. Once weapon balance is real, set
+		# base_damage_min/max in the editor and this branch picks them up.
+		if meta_max > 0:
+			base_min = max(1, int(meta.base_damage_min))
+			base_max = max(base_min, meta_max)
 		# Locked affixes on uniques.
 		for aff in meta.unique_fixed_affixes:
 			if aff == null:
