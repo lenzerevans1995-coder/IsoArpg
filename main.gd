@@ -3246,7 +3246,6 @@ func _spawn_damage_number(world_pos: Vector2, amount: int) -> void:
 	# Parent into whichever container is active right now: dungeon when
 	# we're in one (world is PROCESS_MODE_DISABLED in dungeon mode and
 	# was hiding the numbers), otherwise the overworld root.
-	print("[dmg] %d at %s" % [amount, str(world_pos)])
 	var dn: Node2D = _DamageNumber.new()
 	dn.set("amount", amount)
 	dn.z_index = 4096
@@ -3280,9 +3279,6 @@ class _DamageNumber extends Node2D:
 		if _t >= _life:
 			queue_free()
 	func _draw() -> void:
-		# Highly visible debug marker so we can confirm position even if
-		# the font path fails. Remove once the text path is verified.
-		draw_rect(Rect2(-10, -10, 20, 20), Color(1, 0, 1, 0.8), true)
 		if _font == null:
 			_font = ThemeDB.fallback_font
 		if _font == null:
