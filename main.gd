@@ -3243,16 +3243,21 @@ func nearest_enemy_target(from: Vector2, max_dist: float) -> Node2D:
 	return best
 
 func _spawn_damage_number(world_pos: Vector2, amount: int) -> void:
-	# Use a Node2D wrapper that draws text in _draw — Control-based
-	# Label silently positions in screen space when parented to a
-	# Node2D, which is why these numbers never appeared. _DamageNumber
-	# (defined below) honours world transform + z_index correctly.
+	# Parent into whichever container is active right now: dungeon when
+	# we're in one (world is PROCESS_MODE_DISABLED in dungeon mode and
+	# was hiding the numbers), otherwise the overworld root.
 	print("[dmg] %d at %s" % [amount, str(world_pos)])
 	var dn: Node2D = _DamageNumber.new()
 	dn.set("amount", amount)
-	dn.position = world_pos + Vector2(randf_range(-12, 12), 0)
 	dn.z_index = 4096
-	world.add_child(dn)
+	var parent_node: Node = self
+	if in_dungeon and dungeon:
+		parent_node = dungeon
+	elif world:
+		parent_node = world
+	parent_node.add_child(dn)
+	# Absolute world coords — independent of parent transform.
+	dn.global_position = world_pos + Vector2(randf_range(-12, 12), 0)
 
 class _DamageNumber extends Node2D:
 	var amount: int = 0
@@ -3266,7 +3271,6 @@ class _DamageNumber extends Node2D:
 		z_index = 4096
 		# Don't y_sort with the world — pin to top.
 		y_sort_enabled = false
-		top_level = true        # ignore parent transform; world_pos is absolute
 		set_process(true)
 		queue_redraw()
 	func _process(delta: float) -> void:
@@ -3276,6 +3280,9 @@ class _DamageNumber extends Node2D:
 		if _t >= _life:
 			queue_free()
 	func _draw() -> void:
+		# Highly visible debug marker so we can confirm position even if
+		# the font path fails. Remove once the text path is verified.
+		draw_rect(Rect2(-10, -10, 20, 20), Color(1, 0, 1, 0.8), true)
 		if _font == null:
 			_font = ThemeDB.fallback_font
 		if _font == null:

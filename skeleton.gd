@@ -42,7 +42,10 @@ const CLASS_FOLDERS := {
 }
 
 @export var kind: int = Kind.WARRIOR
-@export var max_hp: int = 30
+# Slice baseline 30 -> 70: with fist averaging 14 dmg + Str% bonus,
+# 30 HP was a 1-2 hit kill. 70 HP gives 4-5 swings per regular skeleton,
+# which reads as a real fight. Elites scale up via their spawn config.
+@export var max_hp: int = 70
 # Slice baseline: 5 dmg per swing on a 1.2s cooldown. With ~2 skeletons
 # in melee that's ~8 dps incoming, which gives the player time to react
 # without making fights trivial. Elites override this in their spawn config.
