@@ -7,22 +7,25 @@ class_name EnemyDB
 # Tune values here; combat code never hard-codes XP or level.
 
 const ENTRIES := {
+	# Tuning: this is the slice's L1→L5 dungeon. Total XP to hit L5 is
+	# ~870 (XP curve in character_stats). A full clear of ~25 regulars
+	# + 6 elites + boss should land the player around L5, not L8.
 	# Skeleton commons — backbone of dungeon encounters.
-	"skel_warrior":   {"name": "Skeleton Warrior",   "level": 4,  "xp": 28},
-	"skel_archer":    {"name": "Skeleton Archer",    "level": 4,  "xp": 32},
-	"skel_wizard":    {"name": "Skeleton Wizard",    "level": 5,  "xp": 38},
+	"skel_warrior":   {"name": "Skeleton Warrior",   "level": 4,  "xp": 6},
+	"skel_archer":    {"name": "Skeleton Archer",    "level": 4,  "xp": 7},
+	"skel_wizard":    {"name": "Skeleton Wizard",    "level": 5,  "xp": 9},
 	# Skeleton elites — rarer, fatter rewards.
-	"skel_brute":     {"name": "Brute",              "level": 8,  "xp": 220},
-	"skel_dark_knight":{"name":"Dark Knight",        "level": 9,  "xp": 260},
-	"skel_berserker": {"name": "Berserker",          "level": 9,  "xp": 240},
-	"skel_dark_archer":{"name":"Dark Archer",        "level": 9,  "xp": 250},
-	"skel_necromancer":{"name":"Necromancer",        "level": 10, "xp": 320},
+	"skel_brute":     {"name": "Brute",              "level": 8,  "xp": 50},
+	"skel_dark_knight":{"name":"Dark Knight",        "level": 9,  "xp": 60},
+	"skel_berserker": {"name": "Berserker",          "level": 9,  "xp": 55},
+	"skel_dark_archer":{"name":"Dark Archer",        "level": 9,  "xp": 58},
+	"skel_necromancer":{"name":"Necromancer",        "level": 10, "xp": 75},
 	# Boss.
-	"skel_deathlord": {"name": "Deathlord",          "level": 14, "xp": 1800},
+	"skel_deathlord": {"name": "Deathlord",          "level": 14, "xp": 200},
 	# Forest goblins (open-world fights).
-	"goblin":         {"name": "Goblin",             "level": 2,  "xp": 14},
-	"goblin_archer":  {"name": "Goblin Archer",      "level": 3,  "xp": 18},
-	"goblin_boss":    {"name": "Goblin Chieftain",   "level": 6,  "xp": 220},
+	"goblin":         {"name": "Goblin",             "level": 2,  "xp": 4},
+	"goblin_archer":  {"name": "Goblin Archer",      "level": 3,  "xp": 5},
+	"goblin_boss":    {"name": "Goblin Chieftain",   "level": 6,  "xp": 50},
 }
 
 static func get_entry(id: String) -> Dictionary:
@@ -44,8 +47,10 @@ static func xp_for_kill(id: String, player_level: int) -> int:
 		# Dwindle to zero by 10 levels above.
 		mult = clampf(1.0 - float(diff - 5) * 0.2, 0.0, 1.0)
 	elif diff < -5:
-		# Bonus for killing 5+ levels above you.
-		mult = clampf(1.0 + float(-diff - 5) * 0.15, 1.0, 2.5)
+		# Bonus for killing 5+ levels above you. Capped tighter than
+		# before (1.5x instead of 2.5x) so the L1 player one-shotting
+		# a L14 boss doesn't get a full level's worth of XP.
+		mult = clampf(1.0 + float(-diff - 5) * 0.08, 1.0, 1.5)
 	return int(round(float(base) * mult))
 
 # Resolve a Skeleton.Kind enum value or a goblin/boss flag into the

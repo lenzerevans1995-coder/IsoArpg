@@ -213,6 +213,7 @@ const SPIDER_DAMAGE := 8
 # PLAYER_ATTACK_DAMAGE removed — damage now flows through
 # combat.gd::compute_player_damage(stats, loadout). Fist fallback
 # (2-4 dmg) when no weapon equipped lives in combat.gd.
+const _CombatScript := preload("res://combat.gd")
 const WAVE_BASE_COUNT := 3
 const WAVE_RING_RADIUS := 320.0
 
@@ -3111,7 +3112,7 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	var loadout: Dictionary = {}
 	if player and "_loadout" in player:
 		loadout = player._loadout
-	var scaled_dmg: int = Combat.compute_player_damage(stats, loadout)
+	var scaled_dmg: int = _CombatScript.compute_player_damage(stats, loadout)
 	# Damage any skeletons caught in the cone (dungeon mode).
 	if in_dungeon and dungeon and "skeletons" in dungeon:
 		var skel_dmg: int = scaled_dmg
@@ -3242,20 +3243,42 @@ func nearest_enemy_target(from: Vector2, max_dist: float) -> Node2D:
 	return best
 
 func _spawn_damage_number(world_pos: Vector2, amount: int) -> void:
-	var lbl := Label.new()
-	lbl.text = str(amount)
-	lbl.add_theme_font_size_override("font_size", 22)
-	lbl.add_theme_color_override("font_color", Color(1, 0.85, 0.4))
-	lbl.add_theme_color_override("font_outline_color", Color(0, 0, 0))
-	lbl.add_theme_constant_override("outline_size", 4)
-	lbl.position = world_pos + Vector2(randf_range(-12, 12), 0)
-	lbl.z_index = 100
-	world.add_child(lbl)
-	var t := lbl.create_tween()
-	t.set_parallel(true)
-	t.tween_property(lbl, "position:y", lbl.position.y - 36.0, 0.7).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	t.tween_property(lbl, "modulate:a", 0.0, 0.7).set_delay(0.25)
-	t.chain().tween_callback(lbl.queue_free)
+	# Use a Node2D wrapper that draws text in _draw — Control-based
+	# Label silently positions in screen space when parented to a
+	# Node2D, which is why these numbers never appeared. _DamageNumber
+	# (defined below) honours world transform + z_index correctly.
+	var dn: Node2D = _DamageNumber.new()
+	dn.set("amount", amount)
+	dn.position = world_pos + Vector2(randf_range(-12, 12), 0)
+	dn.z_index = 1000
+	world.add_child(dn)
+
+class _DamageNumber extends Node2D:
+	var amount: int = 0
+	var _life: float = 0.7
+	var _t: float = 0.0
+	var _font: Font
+	func _ready() -> void:
+		_font = ThemeDB.fallback_font
+		set_process(true)
+	func _process(delta: float) -> void:
+		_t += delta
+		position.y -= delta * 50.0
+		modulate.a = clampf(1.0 - max(0.0, (_t - 0.25)) / max(0.001, _life - 0.25), 0.0, 1.0)
+		queue_redraw()
+		if _t >= _life:
+			queue_free()
+	func _draw() -> void:
+		if _font == null:
+			return
+		var s: String = str(amount)
+		var size: int = 22
+		var col: Color = Color(1, 0.85, 0.4)
+		# Black outline via 4 offset draws.
+		for ox in [-1, 1]:
+			for oy in [-1, 1]:
+				draw_string(_font, Vector2(ox, oy), s, HORIZONTAL_ALIGNMENT_CENTER, -1, size, Color(0, 0, 0))
+		draw_string(_font, Vector2.ZERO, s, HORIZONTAL_ALIGNMENT_CENTER, -1, size, col)
 
 func _destroy_flora(cell: Vector2i) -> void:
 	var sprite: Sprite2D = flora_at.get(cell, null)
