@@ -483,12 +483,18 @@ func _refresh_preview(entry: Dictionary) -> void:
 	if _preview_mount and slot_id != ItemsDB.Slot.MOUNT:
 		_preview_char.call("equip", "mount", "Mount1")
 	_preview_char.call("set_direction", _preview_dir)
-	# Magic weapons are often invisible / pointing-down on Idle frame 0
-	# but read clearly during Special1 (the cast pose), so play the
-	# weapon-class-appropriate anim instead of bare Idle.
+	# Pick a preview anim that actually shows the selected layer:
+	#   MOUNT (or wearing one): RideIdle — mount sheets are only painted
+	#       during ride poses; Idle leaves the mount layer empty.
+	#   MAGIC weapon: Special1 — wand is held forward.
+	#   RANGED weapon: Attack2 — bow/gun pulled up.
+	#   everything else: Idle.
 	var anim: String = "Idle"
+	var slot_id: int = int(entry["slot"])
 	var wclass: int = int(entry.get("weapon_class", 0))
-	if wclass == ItemsDB.WeaponClass.MAGIC:
+	if slot_id == ItemsDB.Slot.MOUNT or _preview_mount:
+		anim = "RideIdle"
+	elif wclass == ItemsDB.WeaponClass.MAGIC:
 		anim = "Special1"
 	elif wclass == ItemsDB.WeaponClass.RANGED:
 		anim = "Attack2"
