@@ -32,16 +32,11 @@ const SLOT_TO_LAYER := {
 	ItemsDB.Slot.OFFHAND: "offhand", ItemsDB.Slot.SHIELD: "offhand",
 	ItemsDB.Slot.MOUNT: "mount",
 }
-# Slots whose icon needs a body underneath to read as worn.
-# Weapons / shields / offhands bake ALONE — the inventory icon should
-# show just the sword, not a body holding the sword. Mounts keep the
-# body so it reads as 'mounted' rather than just a horse silhouette.
-const NEEDS_BODY := {
-	ItemsDB.Slot.HEAD: true, ItemsDB.Slot.HANDS: true,
-	ItemsDB.Slot.CHEST: true, ItemsDB.Slot.LEGS: true,
-	ItemsDB.Slot.SHOES: true, ItemsDB.Slot.BELT: true,
-	ItemsDB.Slot.BAG: true, ItemsDB.Slot.MOUNT: true,
-}
+# Empty by design: every item bakes alone, no body underneath. Armor
+# sheets are authored over a body silhouette but the cloth covers the
+# torso enough to read as the item. If a particular slot bakes badly
+# without context, add it back here.
+const NEEDS_BODY := {}
 
 # Bake every catalog entry. host_node is any Node already in the scene
 # tree — the SubViewport must be a child of a tree-attached node so it
