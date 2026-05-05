@@ -9,11 +9,12 @@ class_name Skeleton
 
 const PACK := "res://assets/charachters/Sprites/2D HD Undead pack 1/2D HD Undead pack 1"
 const SHEETS_BASE := PACK + "/Spritesheets/With shadow"
-# Direction letter → row in the spritesheet. PVGames packs are laid out
-# clockwise starting from N; verified against per-frame folder content.
+# Direction letter → row in the spritesheet. Sheet rows go clockwise
+# starting from E (E, SE, S, SW, W, NW, N, NE) — matches DIR_LETTERS
+# index order, so row index == direction index.
 const DIR_TO_ROW := {
-	"N": 0, "NE": 1, "E": 2, "SE": 3,
-	"S": 4, "SW": 5, "W": 6, "NW": 7,
+	"E": 0, "SE": 1, "S": 2, "SW": 3,
+	"W": 4, "NW": 5, "N": 6, "NE": 7,
 }
 const DIR_LETTERS := ["E", "SE", "S", "SW", "W", "NW", "N", "NE"]
 const DIR_VECS := [
