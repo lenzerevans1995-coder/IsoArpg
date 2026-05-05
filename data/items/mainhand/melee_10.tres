@@ -12,3 +12,5 @@ base_name = "Warhammer"
 is_unique = false
 unique_name = ""
 can_drop = true
+base_damage_min = 10
+base_damage_max = 18

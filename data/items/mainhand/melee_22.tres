@@ -12,3 +12,6 @@ base_name = ""
 is_unique = true
 unique_name = "Wand of the Lich"
 can_drop = true
+base_damage_min = 12
+base_damage_max = 22
+unique_glow_color = Color(0.65, 0.30, 0.95, 1)

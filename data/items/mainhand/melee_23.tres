@@ -12,3 +12,6 @@ base_name = ""
 is_unique = true
 unique_name = "Skyrender"
 can_drop = true
+base_damage_min = 18
+base_damage_max = 30
+unique_glow_color = Color(0.40, 0.80, 1.0, 1)

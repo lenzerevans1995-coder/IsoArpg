@@ -12,3 +12,5 @@ base_name = "Broadsword"
 is_unique = false
 unique_name = ""
 can_drop = true
+base_damage_min = 11
+base_damage_max = 17

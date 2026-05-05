@@ -11,3 +11,4 @@ base_name = "Tunic"
 is_unique = false
 unique_name = ""
 can_drop = true
+base_armor = 2

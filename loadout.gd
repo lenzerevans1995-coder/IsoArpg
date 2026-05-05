@@ -7,13 +7,16 @@ class_name Loadout
 const SAVE_PATH := "user://profile.json"
 
 static func default_loadout() -> Dictionary:
+	# Slice starting fit: shirtless, barefoot, basic shorts (Legs9) + hair
+	# (Head9 = "hair_1" in our renamed catalog). Everything else loots up.
+	# Player picks gear off skeletons; nothing is pre-equipped.
 	return {
 		"body": "NakedBody",
-		"head": "Head1",
-		"hands": "Hands1",
-		"chest": "Chest1",
-		"legs": "Legs1",
-		"shoes": "Shoes1",
+		"head": "Head9",
+		"hands": "",
+		"chest": "",
+		"legs": "Legs9",
+		"shoes": "",
 		"belt": "",
 		"bag": "",
 		"offhand": "",

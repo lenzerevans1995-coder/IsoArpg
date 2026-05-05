@@ -12,3 +12,5 @@ base_name = "Longsword"
 is_unique = false
 unique_name = ""
 can_drop = true
+base_damage_min = 8
+base_damage_max = 14
