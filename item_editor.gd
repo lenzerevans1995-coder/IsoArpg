@@ -56,6 +56,16 @@ var _f_max_zone: SpinBox
 var _f_is_unique: CheckBox
 var _f_unique_name: LineEdit
 
+# Preview state
+const DIR_LETTERS := ["E", "SE", "S", "SW", "W", "NW", "N", "NE"]
+var _preview_dir: int = 1               # 0=E, 1=SE…
+var _preview_zoom: float = 2.0
+var _preview_wield: bool = false        # show a sample sword for armor checks
+var _preview_mount: bool = false        # show character on mount_1 (when item isn't a mount)
+var _preview_tint: Color = Color.WHITE  # tint applied to the selected item's layer
+var _dir_btn: Button
+var _zoom_lbl: Label
+
 func _ready() -> void:
 	if Engine.is_editor_hint() and not is_inside_tree():
 		return
@@ -86,6 +96,29 @@ func _build_ui() -> void:
 	right.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	split.add_child(right)
 
+	# Preview controls row.
+	var ctrl := HBoxContainer.new()
+	right.add_child(ctrl)
+	_dir_btn = Button.new()
+	_dir_btn.text = "Dir: SE"
+	_dir_btn.tooltip_text = "Click to rotate (8 dirs)"
+	_dir_btn.pressed.connect(_on_dir_pressed)
+	ctrl.add_child(_dir_btn)
+	var zout := Button.new(); zout.text = "−"
+	zout.pressed.connect(func(): _set_zoom(_preview_zoom - 0.5))
+	ctrl.add_child(zout)
+	_zoom_lbl = Label.new(); _zoom_lbl.text = "2.0x"
+	ctrl.add_child(_zoom_lbl)
+	var zin := Button.new(); zin.text = "+"
+	zin.pressed.connect(func(): _set_zoom(_preview_zoom + 0.5))
+	ctrl.add_child(zin)
+	var wield := CheckBox.new(); wield.text = "Wield"
+	wield.toggled.connect(func(v): _preview_wield = v; _refresh_preview(_selected_item))
+	ctrl.add_child(wield)
+	var mount := CheckBox.new(); mount.text = "Mount"
+	mount.toggled.connect(func(v): _preview_mount = v; _refresh_preview(_selected_item))
+	ctrl.add_child(mount)
+
 	# Preview pane — a SubViewport hosting a LayeredCharacter so armor
 	# shows worn over a body and weapons render in isolation.
 	_preview_holder = SubViewportContainer.new()
@@ -103,8 +136,13 @@ func _build_ui() -> void:
 	# Center the rig in the viewport — the sprite is 128×128 anchored top-left,
 	# so push it into view.
 	(_preview_char as Node2D).position = Vector2(192, 256)
-	(_preview_char as Node2D).scale = Vector2(2, 2)
+	(_preview_char as Node2D).scale = Vector2(_preview_zoom, _preview_zoom)
 	_preview_vp.add_child(_preview_char)
+
+	# Swatch strip — clickable colors from data/swatch_palette.json. Click
+	# to apply as modulate tint on the selected item's layer.
+	var swatch_row := _build_swatch_row()
+	right.add_child(swatch_row)
 
 	_info_label = Label.new()
 	_info_label.text = "Select an item on the left."
@@ -261,6 +299,61 @@ func _on_validate_pressed() -> void:
 		lines.append("  " + ", ".join(bad_drop_weight))
 	_info_label.text = "\n".join(lines)
 
+func _on_dir_pressed() -> void:
+	_preview_dir = (_preview_dir + 1) % 8
+	_dir_btn.text = "Dir: %s" % DIR_LETTERS[_preview_dir]
+	if _preview_char:
+		_preview_char.call("set_direction", _preview_dir)
+
+func _set_zoom(z: float) -> void:
+	_preview_zoom = clampf(z, 1.0, 5.0)
+	_zoom_lbl.text = "%.1fx" % _preview_zoom
+	if _preview_char:
+		(_preview_char as Node2D).scale = Vector2(_preview_zoom, _preview_zoom)
+
+func _build_swatch_row() -> Control:
+	# Pull the 81-swatch palette so tint testing matches what artists
+	# can roll on items in-game (no off-palette colors).
+	var palette: Array = []
+	const PAL := "res://data/swatch_palette.json"
+	if FileAccess.file_exists(PAL):
+		var f := FileAccess.open(PAL, FileAccess.READ)
+		var parsed = JSON.parse_string(f.get_as_text())
+		if parsed is Array:
+			palette = parsed
+	var grid := GridContainer.new()
+	grid.columns = 27        # 81 = 27 × 3 — keeps swatch row compact
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	for hex in palette:
+		var b := Button.new()
+		b.custom_minimum_size = Vector2(14, 14)
+		b.flat = false
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(String(hex))
+		b.add_theme_stylebox_override("normal", sb)
+		b.add_theme_stylebox_override("hover", sb)
+		b.add_theme_stylebox_override("pressed", sb)
+		var col := Color(String(hex))
+		b.tooltip_text = String(hex)
+		b.pressed.connect(func(): _apply_tint(col))
+		grid.add_child(b)
+	# A "reset" cell so it's easy to clear the tint back to neutral.
+	var reset := Button.new()
+	reset.text = "✕"
+	reset.tooltip_text = "Reset tint to white"
+	reset.pressed.connect(func(): _apply_tint(Color.WHITE))
+	grid.add_child(reset)
+	return grid
+
+func _apply_tint(c: Color) -> void:
+	_preview_tint = c
+	if _selected_item.is_empty() or _preview_char == null:
+		return
+	var slot_id: int = int(_selected_item["slot"])
+	var layer_name: String = String(SLOT_TO_LAYER.get(slot_id, ""))
+	if layer_name != "":
+		_preview_char.call("set_tint", layer_name, c)
+
 func _add_string_field(grid: GridContainer, label: String) -> LineEdit:
 	var l := Label.new(); l.text = label; grid.add_child(l)
 	var le := LineEdit.new()
@@ -311,20 +404,33 @@ func _load_fields_from_meta(meta: Resource) -> void:
 func _refresh_preview(entry: Dictionary) -> void:
 	if _preview_char == null or not is_instance_valid(_preview_char):
 		return
+	if entry.is_empty():
+		return
 	# Clear every layer first so the previous selection doesn't bleed
 	# through (e.g. a sword shouldn't keep showing when we click a hat).
 	for layer in ["body", "head", "hands", "chest", "legs", "shoes", "belt",
 			"bag", "mainhand", "offhand", "mount"]:
 		_preview_char.call("clear_layer", layer)
+		_preview_char.call("set_tint", layer, Color.WHITE)
 	var slot_id: int = int(entry["slot"])
-	# Show a body underneath for armor pieces so they read as worn.
-	if SHOW_BODY.get(slot_id, false):
+	# Body underneath for armor (so armor reads as worn) AND whenever
+	# the user toggled Wield or Mount (so we have something to attach
+	# the weapon / mount preview to).
+	var needs_body: bool = SHOW_BODY.get(slot_id, false) or _preview_wield or _preview_mount
+	if needs_body:
 		_preview_char.call("equip", "body", "NakedBody")
 	var layer_name: String = String(SLOT_TO_LAYER.get(slot_id, ""))
 	if layer_name != "":
 		_preview_char.call("equip", layer_name, String(entry["folder"]))
-	# Idle anim, SE-ish facing (row 1) — reads more dynamically than E.
-	_preview_char.call("set_direction", 1)
+		_preview_char.call("set_tint", layer_name, _preview_tint)
+	# Wield-test: stick a sample sword on for armor previews so we can
+	# check how a chest reads while the player is mid-attack.
+	if _preview_wield and slot_id != ItemsDB.Slot.MAINHAND:
+		_preview_char.call("equip", "mainhand", "Melee1")
+	# Mount-test: same idea — show what a piece looks like while mounted.
+	if _preview_mount and slot_id != ItemsDB.Slot.MOUNT:
+		_preview_char.call("equip", "mount", "Mount1")
+	_preview_char.call("set_direction", _preview_dir)
 	_preview_char.call("play_anim", "Idle", 12.0, true, Callable())
 
 func _info_text_for(entry: Dictionary, meta: Resource) -> String:
