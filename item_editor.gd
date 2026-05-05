@@ -199,6 +199,11 @@ func _build_ui() -> void:
 	_f_is_unique.toggled.connect(func(v): if _selected_meta: _selected_meta.is_unique = v)
 	_f_unique_name.text_changed.connect(func(v): if _selected_meta: _selected_meta.unique_name = v)
 
+	# Enter on either name field saves immediately. Shortcut for the
+	# 'type → enter → next item' workflow.
+	_f_base_name.text_submitted.connect(func(_v): _on_save_pressed())
+	_f_unique_name.text_submitted.connect(func(_v): _on_save_pressed())
+
 	# Sticky action bar lives in right_root (not the scroll container)
 	# so Save / Validate / Bake stay visible no matter how far the user
 	# scrolls.
@@ -302,8 +307,11 @@ func _on_save_pressed() -> void:
 		_info_label.text = "Save FAILED (err=%d) → %s" % [err, path]
 		return
 	_info_label.text = "Saved → %s" % path
-	# Refresh the tree label so renamed items show their new base_name.
-	_populate_tree()
+	# Update only the selected leaf's label — full _populate_tree() would
+	# wipe the user's expansion state.
+	var ti: TreeItem = _tree.get_selected()
+	if ti != null:
+		ti.set_text(0, _label_for(_selected_item))
 
 func _on_validate_pressed() -> void:
 	var unnamed: Array[String] = []
