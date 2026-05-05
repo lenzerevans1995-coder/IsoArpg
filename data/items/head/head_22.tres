@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_4760r"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_vjs0i"]
+
+[resource]
+script = ExtResource("1_4760r")
+item_id = "head_22"
+slot = 1
+base_name = "hair_5"

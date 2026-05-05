@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_8tmvs"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_c17wt"]
+
+[resource]
+script = ExtResource("1_8tmvs")
+item_id = "chest_19"
+slot = 3
+base_name = "animated_cloak_epic"
+is_unique = true

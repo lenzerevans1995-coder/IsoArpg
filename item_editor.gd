@@ -483,7 +483,16 @@ func _refresh_preview(entry: Dictionary) -> void:
 	if _preview_mount and slot_id != ItemsDB.Slot.MOUNT:
 		_preview_char.call("equip", "mount", "Mount1")
 	_preview_char.call("set_direction", _preview_dir)
-	_preview_char.call("play_anim", "Idle", 12.0, true, Callable())
+	# Magic weapons are often invisible / pointing-down on Idle frame 0
+	# but read clearly during Special1 (the cast pose), so play the
+	# weapon-class-appropriate anim instead of bare Idle.
+	var anim: String = "Idle"
+	var wclass: int = int(entry.get("weapon_class", 0))
+	if wclass == ItemsDB.WeaponClass.MAGIC:
+		anim = "Special1"
+	elif wclass == ItemsDB.WeaponClass.RANGED:
+		anim = "Attack2"
+	_preview_char.call("play_anim", anim, 12.0, true, Callable())
 
 func _info_text_for(entry: Dictionary, meta: Resource) -> String:
 	var slot_name: String = ItemsDB.Slot.keys()[int(entry["slot"])]

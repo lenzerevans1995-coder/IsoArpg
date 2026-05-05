@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_pduj2"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_d01p8"]
+
+[resource]
+script = ExtResource("1_pduj2")
+item_id = "chest_17"
+slot = 3
+base_name = "bucaneer_shirt_open_front_with_strap"

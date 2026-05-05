@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_jb1e5"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_aa64u"]
+
+[resource]
+script = ExtResource("1_jb1e5")
+item_id = "head_20"
+slot = 1
+base_name = "cool helmet_beetle helmet"

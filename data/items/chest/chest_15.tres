@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_iwbtl"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_540k0"]
+
+[resource]
+script = ExtResource("1_iwbtl")
+item_id = "chest_15"
+slot = 3
+base_name = "torn_stealth_shirt_looks_dope"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_gr42o"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_f673g"]
+
+[resource]
+script = ExtResource("1_gr42o")
+item_id = "chest_6"
+slot = 3
+base_name = "fancy_barbarian_shoulder"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_nt3fq"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_bwl51"]
+
+[resource]
+script = ExtResource("1_nt3fq")
+item_id = "head_24"
+slot = 1
+base_name = "animated_hair_tendrils "
+is_unique = true
