@@ -1,13 +1,20 @@
 extends Node2D
 class_name Skeleton
 
-# Undead pack 1 driver. Drives per-frame PNG animations
-# (assets/charachters/Sprites/2D HD Undead pack 1/<class>/<anim>/<dir>/...)
-# with class-specific behaviour (warrior melee, archer kite, wizard zoner,
-# elites with extra abilities). Mirrors goblin.gd's chase / attack loop
-# so the player input + arrow hit code carries over without changes.
+# Undead pack 1 driver. Drives 8-direction animations sliced from the
+# pack's "Spritesheets/With shadow/<class>/<anim>.png" sheets — each
+# sheet is laid out as 8 rows (one per direction) × N columns (frames).
+# Mirrors goblin.gd's chase / attack loop so the player input + arrow
+# hit code carries over without changes.
 
 const PACK := "res://assets/charachters/Sprites/2D HD Undead pack 1/2D HD Undead pack 1"
+const SHEETS_BASE := PACK + "/Spritesheets/With shadow"
+# Direction letter → row in the spritesheet. PVGames packs are laid out
+# clockwise starting from N; verified against per-frame folder content.
+const DIR_TO_ROW := {
+	"N": 0, "NE": 1, "E": 2, "SE": 3,
+	"S": 4, "SW": 5, "W": 6, "NW": 7,
+}
 const DIR_LETTERS := ["E", "SE", "S", "SW", "W", "NW", "N", "NE"]
 const DIR_VECS := [
 	Vector2( 1,  0), Vector2( 0.7,  0.5), Vector2( 0,  1), Vector2(-0.7, 0.5),
@@ -73,6 +80,7 @@ var _phase: int = 1
 var _revive_history: Dictionary = {}
 
 static var _frames_cache: Dictionary = {}   # "class/anim/dir" -> Array[Texture2D]
+static var _sheet_cache: Dictionary = {}    # sheet path -> Texture2D (or null on miss)
 
 signal died(skel)
 
@@ -119,27 +127,36 @@ func _clear_highlight() -> void:
 func _class_folder() -> String:
 	return CLASS_FOLDERS.get(kind, "6Warrior")
 
+func _load_sheet(class_folder: String, anim: String) -> Texture2D:
+	var path := "%s/%s/%s.png" % [SHEETS_BASE, class_folder, anim]
+	if _sheet_cache.has(path):
+		return _sheet_cache[path]
+	var tex: Texture2D = null
+	if ResourceLoader.exists(path):
+		tex = load(path)
+	_sheet_cache[path] = tex
+	return tex
+
 func _load_frames(anim: String, dir_letter: String) -> Array[Texture2D]:
 	var key := "%s/%s/%s" % [_class_folder(), anim, dir_letter]
 	if _frames_cache.has(key):
 		return _frames_cache[key]
 	var out: Array[Texture2D] = []
-	var folder := "%s/%s/%s/%s" % [PACK, _class_folder(), anim, dir_letter]
-	var d := DirAccess.open(folder)
-	if d != null:
-		var names: Array = []
-		d.list_dir_begin()
-		var fn := d.get_next()
-		while fn != "":
-			if fn.ends_with(".png"):
-				names.append(fn)
-			fn = d.get_next()
-		d.list_dir_end()
-		names.sort()
-		for n in names:
-			var t: Texture2D = load("%s/%s" % [folder, n])
-			if t != null:
-				out.append(t)
+	var sheet: Texture2D = _load_sheet(_class_folder(), anim)
+	if sheet != null:
+		var sheet_w: int = sheet.get_width()
+		var sheet_h: int = sheet.get_height()
+		# 8 rows (one per cardinal/diagonal direction). Frames are square,
+		# so frame_w == frame_h == sheet_h / 8.
+		var frame: int = sheet_h / 8
+		if frame > 0:
+			var cols: int = sheet_w / frame
+			var row: int = int(DIR_TO_ROW.get(dir_letter, 0))
+			for c in range(cols):
+				var atlas := AtlasTexture.new()
+				atlas.atlas = sheet
+				atlas.region = Rect2(c * frame, row * frame, frame, frame)
+				out.append(atlas)
 	_frames_cache[key] = out
 	return out
 
