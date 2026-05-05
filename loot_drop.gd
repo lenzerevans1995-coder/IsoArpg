@@ -133,6 +133,6 @@ func _process(delta: float) -> void:
 func _apply_hover_visuals(hover: bool) -> void:
 	# Gold pile stays static. The beam brightens slightly on hover.
 	if _beam_node and is_instance_valid(_beam_node):
-		(_beam_node as _BeamNode).beam_color = RARITY_COLORS.get(_rarity, Color(1, 1, 1, 1))
+		(_beam_node as _BeamNode).beam_color = _RarityVisuals.color_for(_rarity)
 		(_beam_node as _BeamNode).modulate = Color(1.4, 1.4, 1.4) if hover else Color(1, 1, 1, 1)
 		_beam_node.queue_redraw()

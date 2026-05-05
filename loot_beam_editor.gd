@@ -37,13 +37,7 @@ const TILE_PATH := "res://assets/forest/environment/Ground A1_S.png"
 			print("  offset = Vector2(", beam_offset_x, ", ", beam_offset_y, ")")
 			print("  size   = Vector2(", beam_width, ", ", beam_height, ")")
 
-const RARITY_COLORS := [
-	Color(1.0, 1.0, 1.0, 1.0),    # 0 common
-	Color(0.50, 0.70, 1.30, 1.0), # 1 magic
-	Color(1.30, 1.30, 0.50, 1.0), # 2 rare
-	Color(1.40, 0.80, 0.30, 1.0), # 3 unique
-	Color(1.30, 0.45, 0.45, 1.0), # 4 legendary
-]
+const _RarityVisuals := preload("res://rarity_visuals.gd")
 
 var _tile: Sprite2D
 var _gold: Sprite2D
@@ -74,7 +68,7 @@ func _ready() -> void:
 func _refresh() -> void:
 	if _beam == null:
 		return
-	(_beam as _BeamDrawer).beam_color = RARITY_COLORS[clampi(rarity, 0, RARITY_COLORS.size() - 1)]
+	(_beam as _BeamDrawer).beam_color = _RarityVisuals.color_for(clampi(rarity, 0, 4))
 	(_beam as _BeamDrawer).beam_width = beam_width
 	(_beam as _BeamDrawer).beam_height = beam_height
 	_beam.position = Vector2(beam_offset_x, beam_offset_y)
