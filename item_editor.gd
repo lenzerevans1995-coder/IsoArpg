@@ -79,22 +79,31 @@ func _build_ui() -> void:
 	var split := HSplitContainer.new()
 	split.anchor_right = 1.0
 	split.anchor_bottom = 1.0
-	split.split_offset = 280
+	# Narrow left pane — TreeView shows only IDs + names, doesn't need
+	# more than ~220px. Drag the splitter to widen if you need it.
+	split.split_offset = 220
 	add_child(split)
 
 	# --- left: TreeView grouped by slot ---
 	_tree = Tree.new()
 	_tree.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_tree.custom_minimum_size = Vector2(180, 0)
 	_tree.hide_root = true
 	_tree.item_selected.connect(_on_tree_item_selected)
 	split.add_child(_tree)
 
-	# --- right: preview + info + actions ---
+	# --- right: preview + info + actions, wrapped in a ScrollContainer
+	# so everything stays reachable even on a narrow window. ---
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	split.add_child(scroll)
 	var right := VBoxContainer.new()
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	right.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	split.add_child(right)
+	scroll.add_child(right)
 
 	# Preview controls row.
 	var ctrl := HBoxContainer.new()
@@ -123,11 +132,11 @@ func _build_ui() -> void:
 	# shows worn over a body and weapons render in isolation.
 	_preview_holder = SubViewportContainer.new()
 	_preview_holder.stretch = true
-	_preview_holder.custom_minimum_size = Vector2(384, 384)
+	_preview_holder.custom_minimum_size = Vector2(280, 280)
 	_preview_holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	right.add_child(_preview_holder)
 	_preview_vp = SubViewport.new()
-	_preview_vp.size = Vector2i(384, 384)
+	_preview_vp.size = Vector2i(280, 280)
 	_preview_vp.transparent_bg = true
 	_preview_vp.disable_3d = true
 	_preview_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
@@ -135,7 +144,7 @@ func _build_ui() -> void:
 	_preview_char = LayeredCharacterScript.new()
 	# Center the rig in the viewport — the sprite is 128×128 anchored top-left,
 	# so push it into view.
-	(_preview_char as Node2D).position = Vector2(192, 256)
+	(_preview_char as Node2D).position = Vector2(140, 200)
 	(_preview_char as Node2D).scale = Vector2(_preview_zoom, _preview_zoom)
 	_preview_vp.add_child(_preview_char)
 
