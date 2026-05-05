@@ -98,6 +98,10 @@ func _build_ui() -> void:
 	_tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_tree.custom_minimum_size = Vector2(140, 0)
 	_tree.hide_root = true
+	# Tighten the row spacing — default Tree leaves a ton of vertical air.
+	_tree.add_theme_constant_override("v_separation", 0)
+	_tree.add_theme_constant_override("h_separation", 4)
+	_tree.add_theme_font_size_override("font_size", 11)
 	_tree.item_selected.connect(_on_tree_item_selected)
 	split.add_child(_tree)
 
@@ -239,6 +243,8 @@ func _populate_tree() -> void:
 		var slot_node: TreeItem = _tree.create_item(root)
 		slot_node.set_text(0, "%s (%d)" % [k, by_slot[k].size()])
 		slot_node.set_selectable(0, false)
+		# Start collapsed — 13 slot headers fit on screen; click to drill in.
+		slot_node.collapsed = true
 		for entry in by_slot[k]:
 			var leaf: TreeItem = _tree.create_item(slot_node)
 			leaf.set_text(0, _label_for(entry))
