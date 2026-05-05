@@ -17,6 +17,7 @@ class_name IconBaker
 const ItemsDB := preload("res://items_db.gd")
 const ItemMetadataScript := preload("res://loot/item_metadata.gd")
 const LayeredCharacterScript := preload("res://layered_character.gd")
+const LoadoutScript := preload("res://loadout.gd")
 
 const ICON_DIR := "res://assets/generated/icons"
 const GROUND_DIR := "res://assets/generated/ground"
@@ -31,15 +32,15 @@ const SLOT_TO_LAYER := {
 	ItemsDB.Slot.OFFHAND: "offhand", ItemsDB.Slot.SHIELD: "offhand",
 	ItemsDB.Slot.MOUNT: "mount",
 }
-# Slots whose preview reads better with a body underneath. Mounts get
-# a body too (rendering on top, so it reads as ridden).
+# Slots whose icon needs a body underneath to read as worn.
+# Weapons / shields / offhands bake ALONE — the inventory icon should
+# show just the sword, not a body holding the sword. Mounts keep the
+# body so it reads as 'mounted' rather than just a horse silhouette.
 const NEEDS_BODY := {
 	ItemsDB.Slot.HEAD: true, ItemsDB.Slot.HANDS: true,
 	ItemsDB.Slot.CHEST: true, ItemsDB.Slot.LEGS: true,
 	ItemsDB.Slot.SHOES: true, ItemsDB.Slot.BELT: true,
 	ItemsDB.Slot.BAG: true, ItemsDB.Slot.MOUNT: true,
-	ItemsDB.Slot.MAINHAND: true, ItemsDB.Slot.OFFHAND: true,
-	ItemsDB.Slot.SHIELD: true,
 }
 
 # Bake every catalog entry. host_node is any Node already in the scene
@@ -121,7 +122,13 @@ static func _clear(rig: Node2D) -> void:
 	for layer in ["body", "head", "hands", "chest", "legs", "shoes",
 			"belt", "bag", "mainhand", "offhand", "mount"]:
 		rig.call("clear_layer", layer)
-		rig.call("set_tint", layer, Color.WHITE)
+	# Apply the loadout's default tints so baked items render in the
+	# same color the player will see them when equipped. Without this,
+	# baked icons came out in the source-sheet's neutral grey while
+	# equipped versions showed the tinted color — a visible mismatch.
+	var tints: Dictionary = LoadoutScript._default_tints()
+	for layer in tints.keys():
+		rig.call("set_tint", String(layer), Color(String(tints[layer])))
 
 # Wait until the SubViewport has rendered the new pose. Two frames is
 # enough: one for _process to update sheet/region, one for the renderer
