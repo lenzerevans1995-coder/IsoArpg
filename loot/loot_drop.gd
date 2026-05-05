@@ -15,7 +15,10 @@ const COIN_SCALE := 1.0
 # Code-drawn rarity beam — values dialed in via loot_beam_editor.tscn.
 const BEAM_WIDTH := 3.5
 const BEAM_HEIGHT := 160.0
-const BEAM_OFFSET_Y := 83.0
+# Beam base sits at the icon's anchor (0, 0) so the pillar visually
+# rises straight out of the dropped item. Was 83 when coins were the
+# floor sprite; the icon sprite is centered so the offset is now 0.
+const BEAM_OFFSET_Y := 0.0
 
 # Rarity colors come from rarity_visuals.gd (which reads
 # data/swatch_palette.json — the project's 81-swatch palette).
@@ -85,6 +88,15 @@ func _build_for(rarity: int) -> void:
 	var icon_tex: Texture2D = _icon_for_item(item_id)
 	if icon_tex != null:
 		_gold_sprite.texture = icon_tex
+		# Rarity-coloured outline so loot reads against the floor at a
+		# glance. Width scales with rarity (1.5px common -> 3px legendary).
+		var mat := ShaderMaterial.new()
+		mat.shader = preload("res://shaders/outline.gdshader")
+		mat.set_shader_parameter("outline_color", _RarityVisuals.color_for(rarity))
+		var w: float = 1.5 + 0.4 * float(rarity)   # 1.5..3.1 across 5 tiers
+		mat.set_shader_parameter("outline_width", w)
+		mat.set_shader_parameter("texture_size", Vector2(icon_tex.get_width(), icon_tex.get_height()))
+		_gold_sprite.material = mat
 	add_child(_gold_sprite)
 	# Beam — vertical rarity-coloured pillar above the icon.
 	_beam_node = _BeamNode.new()
