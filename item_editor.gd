@@ -149,6 +149,10 @@ func _build_ui() -> void:
 	_preview_holder.stretch = true
 	_preview_holder.custom_minimum_size = Vector2(280, 280)
 	_preview_holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# NEAREST filtering on the container so the SubViewport's output
+	# isn't bilinear-stretched when the container scales it. Without
+	# this, pixel-art sprites look fuzzy / drop pixels on zoom.
+	_preview_holder.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	# Mouse on the preview: middle-button drag pans, wheel zooms.
 	_preview_holder.gui_input.connect(_on_preview_input)
 	right.add_child(_preview_holder)
@@ -157,6 +161,9 @@ func _build_ui() -> void:
 	_preview_vp.transparent_bg = true
 	_preview_vp.disable_3d = true
 	_preview_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	# Nearest filter on the viewport's canvas too, so internal scaling
+	# (the 2x scale on _preview_char) doesn't soften the sprite.
+	_preview_vp.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
 	_preview_holder.add_child(_preview_vp)
 	_preview_char = LayeredCharacterScript.new()
 	# Center the rig in the viewport — the sprite is 128×128 anchored top-left,
@@ -486,18 +493,14 @@ func _refresh_preview(entry: Dictionary) -> void:
 	# Pick a preview anim that actually shows the selected layer:
 	#   MOUNT (or wearing one): RideIdle — mount sheets are only painted
 	#       during ride poses; Idle leaves the mount layer empty.
-	#   MAGIC weapon: Special1 — wand is held forward.
-	#   RANGED weapon: Attack2 — bow/gun pulled up.
 	#   everything else: Idle.
+	# Bows / staves / etc. all read fine on Idle without the noisy
+	# attack swing — easier to compare named items side by side when
+	# they're not mid-animation.
 	var anim: String = "Idle"
 	var slot_id: int = int(entry["slot"])
-	var wclass: int = int(entry.get("weapon_class", 0))
 	if slot_id == ItemsDB.Slot.MOUNT or _preview_mount:
 		anim = "RideIdle"
-	elif wclass == ItemsDB.WeaponClass.MAGIC:
-		anim = "Special1"
-	elif wclass == ItemsDB.WeaponClass.RANGED:
-		anim = "Attack2"
 	_preview_char.call("play_anim", anim, 12.0, true, Callable())
 
 func _info_text_for(entry: Dictionary, meta: Resource) -> String:

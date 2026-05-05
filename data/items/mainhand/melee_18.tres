@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_bjfs3"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_rhiff"]
+
+[resource]
+script = ExtResource("1_bjfs3")
+item_id = "melee_18"
+slot = 8
+weapon_class = 1
+base_name = "pick_axe_MINING HAS A THING"

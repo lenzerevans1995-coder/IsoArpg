@@ -93,10 +93,10 @@ static func build_catalog() -> Array:
 		var e := _mk("ranged_%d" % n, Slot.MAINHAND, "Ranged%d" % n, "Ranged %d" % n, "loot")
 		e["weapon_class"] = WeaponClass.RANGED
 		out.append(e)
-	for n in range(1, MAGIC_COUNT + 1):
-		var e := _mk("magic_%d" % n, Slot.MAINHAND, "Magic%d" % n, "Magic %d" % n, "loot")
-		e["weapon_class"] = WeaponClass.MAGIC
-		out.append(e)
+	# Magic1/2/3 sheets are spell-cast hand animations, not equippable
+	# items — intentionally not in the catalog. The WeaponClass.MAGIC
+	# enum stays for future spell-class items that don't bind to those
+	# specific sheets.
 	return out
 
 static func _mk(id: String, slot: int, folder: String, display: String, source: String) -> Dictionary:

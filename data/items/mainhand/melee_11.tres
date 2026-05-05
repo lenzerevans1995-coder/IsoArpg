@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_tr3dp"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_s5420"]
+
+[resource]
+script = ExtResource("1_tr3dp")
+item_id = "melee_11"
+slot = 8
+weapon_class = 1
+base_name = "longhandle_hammer_stone"

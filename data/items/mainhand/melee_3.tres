@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemMetadata" format=3]
+
+[ext_resource type="Script" path="res://item_metadata.gd" id="1_5i03r"]
+[ext_resource type="Script" path="res://item_affix.gd" id="2_msimv"]
+
+[resource]
+script = ExtResource("1_5i03r")
+item_id = "melee_3"
+slot = 8
+weapon_class = 1
+base_name = "saber"
