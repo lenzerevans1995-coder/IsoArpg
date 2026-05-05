@@ -518,7 +518,7 @@ func take_damage(amount: int, flash_color: Color = Color(1.5, 0.6, 0.6)) -> void
 	else:
 		_play("TakeDamage", DEFAULT_FPS, false, 0.25)
 
-const _LootDropScript := preload("res://loot_drop.gd")
+const _LootDropScript := preload("res://loot/loot_drop.gd")
 const _EnemyDB := preload("res://enemy_db.gd")
 
 func _die() -> void:

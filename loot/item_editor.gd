@@ -10,9 +10,9 @@ class_name ItemEditor
 # instancing this Control inside a tool scene.
 
 const ItemsDB := preload("res://items_db.gd")
-const ItemMetadataScript := preload("res://item_metadata.gd")
+const ItemMetadataScript := preload("res://loot/item_metadata.gd")
 const LayeredCharacterScript := preload("res://layered_character.gd")
-const IconBakerScript := preload("res://icon_baker.gd")
+const IconBakerScript := preload("res://loot/icon_baker.gd")
 const META_DIR := "res://data/items"
 # Slot id -> LayeredCharacter layer. Mirrors ItemsDB.SLOT_LAYER but with
 # explicit fallbacks for slots that don't have a 1:1 layer mapping.

@@ -37,7 +37,7 @@ const TILE_PATH := "res://assets/forest/environment/Ground A1_S.png"
 			print("  offset = Vector2(", beam_offset_x, ", ", beam_offset_y, ")")
 			print("  size   = Vector2(", beam_width, ", ", beam_height, ")")
 
-const _RarityVisuals := preload("res://rarity_visuals.gd")
+const _RarityVisuals := preload("res://loot/rarity_visuals.gd")
 
 var _tile: Sprite2D
 var _gold: Sprite2D

@@ -9,7 +9,7 @@ class_name AffixDB
 #   var inst := AffixDB.roll("sharp", tier, rng)
 # Returns an ItemAffix instance with rolled_value populated.
 
-const ItemAffix := preload("res://item_affix.gd")
+const ItemAffix := preload("res://loot/item_affix.gd")
 
 # Affix definitions. Each entry:
 #   "is_prefix":   bool — true=prefix, false=suffix

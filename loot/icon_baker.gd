@@ -15,7 +15,7 @@ class_name IconBaker
 # drop code so a single bake covers every rolled instance.
 
 const ItemsDB := preload("res://items_db.gd")
-const ItemMetadataScript := preload("res://item_metadata.gd")
+const ItemMetadataScript := preload("res://loot/item_metadata.gd")
 const LayeredCharacterScript := preload("res://layered_character.gd")
 
 const ICON_DIR := "res://assets/generated/icons"

@@ -21,7 +21,7 @@ const BEAM_OFFSET_Y := 83.0
 # data/swatch_palette.json — the project's 81-swatch palette).
 # Local enum kept so callers can write LootDrop.Rarity.RARE etc.
 enum Rarity { COMMON, MAGIC, RARE, UNIQUE, LEGENDARY }
-const _RarityVisuals := preload("res://rarity_visuals.gd")
+const _RarityVisuals := preload("res://loot/rarity_visuals.gd")
 
 static var _coin_tex: Texture2D = null
 
@@ -35,7 +35,7 @@ var _beam_node: Node2D
 # Drops gold at `world_pos` parented to `parent`. Random direction +
 # rarity tier. Returns the new LootDrop instance for further tweaks.
 static func spawn(parent: Node, world_pos: Vector2, rarity: int = Rarity.COMMON) -> Node2D:
-	var script: Script = load("res://loot_drop.gd")
+	var script: Script = load("res://loot/loot_drop.gd")
 	var d: Node2D = script.new()
 	d.position = world_pos
 	d.call("_build_for", rarity)

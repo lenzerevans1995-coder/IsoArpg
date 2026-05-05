@@ -1,6 +1,6 @@
-# Game State Snapshot — 2026-05-03
+# Game State Snapshot — 2026-05-04
 
-A single-file map of where the project actually is, so future ideas can be slotted against it without re-reading the whole codebase. Pairs with `CHARACTER.md`, `WORLD.md`, `NOTES.md` (older topical docs).
+A single-file map of where the project actually is. Pairs with `CHARACTER.md`, `WORLD.md`, `NOTES.md` (older topical docs) and `CLEANUP_PLAN.md` (reorg checklist).
 
 ---
 
@@ -8,185 +8,211 @@ A single-file map of where the project actually is, so future ideas can be slott
 
 - Godot 4.6.2 stable, GDScript, Windows.
 - Entry scene: `main.tscn` (script `main.gd`).
-- Pixel-art project, integer offsets, snap-to-pixel pipeline; custom `pixelize` / `world_pixelate` shaders for global feel.
-- `NO_GEN := true` kill-switch in main: procedural overworld generator does **not** populate on startup. Only manually painted tiles + Layer 2 path preset (A1 dirt, grass edges, I1–I10 mud) appear.
+- Pixel-art project, integer offsets, NEAREST texture filter pipeline; `pixelize` / `world_pixelate` shaders.
+- `NO_GEN := true` kill-switch in main: procedural overworld generator does **not** populate on startup.
 - Player start hard-coded to cell `(1, -36)`.
+- **Accessibility disabled** in `project.godot` (`accessibility/general/accessibility_support = 2`) — works around a Godot 4.6.2 Windows render-thread bug that exhausted the RID pool with editor sub-windows.
+- Repo: https://github.com/lenzerevans1995-coder/IsoArpg (main branch).
+- Git ignores all images / audio / Effekseer / Stand-alone Character creator zip — repo is code + small data only.
+
+---
+
+## Folder layout
+
+```
+/                       — main.gd, main.tscn, player + enemy scripts, HUD, etc.
+data/                   — small JSON + .tres item metadata
+data/items/<slot>/      — per-item .tres files (one per catalog entry)
+docs/                   — this file, CHARACTER.md, WORLD.md, NOTES.md, CLEANUP_PLAN.md
+shaders/                — all .gdshader
+loot/                   — full loot system (see "Loot system" section)
+dev_scenes/             — bounds_editor / fx_test_scene / loot_beam_editor (standalone tools)
+tools/                  — Python helpers (apply_item_names.py, etc.)
+_archive/               — orphaned scripts kept for reference
+assets/                 — gitignored, lives on disk only
+```
 
 ---
 
 ## Overworld
 
-- Iso tilemap with two layers (ground + decoration). Path tool retired; current path is a saved preset placed by the editor.
-- Long grass / Flora B is the only destructible foliage (short grass left static).
-- Clouds, fog, water, ripple_froth shaders running. Cloud drift + chunk updates **suspended** while in dungeon (perf).
+- Iso tilemap with ground + decoration layers. Path tool retired; current path is a saved preset.
+- Long grass / Flora B is the only destructible foliage.
+- Clouds, fog, water, ripple_froth shaders running. Cloud drift + chunk updates suspended while in dungeon.
 - Portal interaction: **Q** opens "Enter dungeon?" (`portal_dialog.gd`). Inside dungeon, **ESC** opens "Leave?".
 
 ## Dungeon (`dungeon.gd`)
 
 - Procedural, fixed `FIXED_SEED = 1337` for repeatability.
-- 7–11 rooms + 1 boss room, BSP-ish, connected by corridors.
-- Persistence: full round-trip to `draft_Dungeon.json` (floor cells, walls, transparent walls, spawn, props).
-- Walls:
-  - **Wall A1** straight pieces with `_N / _E / _S / _W` suffix variants.
-  - **Wall A2** corner pieces, only at outer corners (cells with two cardinal voids).
-  - Opaque (`_N / _W`) at `z = 110`; transparent south/east (`_S / _E`) at `z = 100` so player + enemies render in front.
-- Skeletons get a darker tint when behind transparent walls (footprint check 6 cells south of foot).
-- World tree set to `PROCESS_MODE_DISABLED` while dungeon is active.
+- 7–11 rooms + 1 boss room, BSP-ish.
+- `draft_Dungeon.json` round-trip persistence (floor cells, walls, transparent walls, spawn, props).
+- Walls: A1 straight (`_N/_E/_S/_W`), A2 corners only at outer corners. Opaque (`_N/_W`) z=110, transparent (`_S/_E`) z=100.
+- Skeletons get a darker tint when behind transparent walls.
+- World tree set to `PROCESS_MODE_DISABLED` while dungeon active.
 
 ---
 
 ## Player
 
-- `main.gd` owns the player directly (not a separate scene). 8-direction iso animation.
-- Constants still in main: `PLAYER_MAX_HP = 100`, `PLAYER_MAX_MP = 50`, `PLAYER_ATTACK_DAMAGE = 14`.
-- HP/MP **max** now read live from `stats.max_hp() / stats.max_mp()` via `combat_hud.set_player_stats(...)`.
-- **Damage scaling NOT yet wired** — `PLAYER_ATTACK_DAMAGE` is still a flat constant; `stats.damage_bonus_pct()` is computed but unused at the strike sites (~main.gd:3164 spider, ~3282 skeleton).
+- `main.gd` owns the player directly (`player_layered.gd` instantiated at `main.gd:171`).
+- LayeredCharacter (`layered_character.gd`) — 13-layer stack reading from `assets/charachters/Stand-alone Character creator - 2D Fantasy V1-0-3/.../StreamingAssets/spritesheets/`.
+- Frame layout: 128×128, 15 cols × 8 rows.
+- Sheet path: `<root>/<folder>/<anim>.png` where `<anim>` ∈ Idle, Run, Attack1-5, RideIdle, …
 
 ### CharacterStats (`character_stats.gd`)
-
-- RefCounted. Per-class baseline init (`_init("warrior")`).
-- Primary: Str / Dex / Vit / Energy. Meta: level, xp, unspent_stat_points, unspent_skill_points.
-- Derived methods: `max_hp()`, `max_mp()`, `attack_rating()`, `defense()`, `damage_bonus_pct()`.
-- XP curve: `XP_BASE * 1.18^(L-1) * (1 + 0.4L)` (polynomial, snowballs late).
-- `add_xp()` cascades level-ups: +5 stat points, +1 skill point per level. Emits `xp_changed`, `hp_changed`, `mp_changed`, `level_changed`.
+- RefCounted. Per-class baseline. Str / Dex / Vit / Energy + level + xp.
+- Polynomial XP curve. `add_xp()` cascades level-ups (+5 stat / +1 skill point each).
+- `damage_bonus_pct()` defined but **not yet wired into damage** at the strike sites in main.gd (~3164 spider, ~3282 skeleton).
 
 ### Skill DB (`skill_db.gd`)
+| Slot | Skill | Icon | CD |
+|------|-------|------|----|
+| RMB | warrior_basic | 03 | 0.4 |
+| 1 | warrior_cleave | 21 | 3.0 |
+| 2 | warrior_whirlwind | 06 | 6.0 |
+| 3 | warrior_slam | 08 | 2.5 |
+| 4 | warrior_berserk | 30 | 14.0 |
+| 5 | warrior_execute | 28 | 8.0 |
 
-Warrior loadout currently bound to combat_hud slots:
-
-| Slot | Skill            | Icon | CD   |
-|------|------------------|------|------|
-| RMB  | warrior_basic    | 03   | 0.4  |
-| 1    | warrior_cleave   | 21   | 3.0  |
-| 2    | warrior_whirlwind| 06   | 6.0  |
-| 3    | warrior_slam     | 08   | 2.5  |
-| 4    | warrior_berserk  | 30   | 14.0 |
-| 5    | warrior_execute  | 28   | 8.0  |
-
-- Hotkeys 1–5 + RMB route through `_activate_skill_slot` → `slot.trigger_cooldown(cd)`.
-- Cooldown overlay (dark sweep + yellow flash) implemented in `hud_skill_square.gd`.
-- **Skill *effects* not implemented** — only basic attack does damage; the others just animate cooldown.
+Cooldown overlay implemented, **skill effects still stubbed** (only basic attack does damage).
 
 ---
 
 ## Enemies
 
 ### Skeletons (`skeleton.gd`)
+- 9 kinds (Warrior, Archer, Wizard, Brute, Deathlord, Dark Knight, Berserker, Dark Archer, Necromancer).
+- **Spritesheet-driven** (rewritten this session): reads `Spritesheets/With shadow/<class>/<anim>.png` and slices via `AtlasTexture`. 8 rows × N cols (clockwise from E).
+- Per-frame folders deleted (~33k PNGs gone).
+- BFS pathfinding, sleep at >1100 px from player.
+- FPS matches player: 12 / 18 / 16 (idle / attack / run).
 
-9 kinds from "2D HD Undead pack 1", spawned via factory `Skeleton.make(kind_id, target)`.
+### Goblins (`goblin.gd`)
+- Already spritesheet-driven (FRAME 128×128, 15×8).
+- Active in BATTLE_WORLD spawns (currently commented out in main.gd).
 
-- Sleep at distance (>1100px) for perf.
-- BFS pathfinding against `floor_cells`, repath gated on player cell change or 1.2s timeout.
-- Strict wall collision (no clipping into wall cells).
-- `_main_ref` cached once (avoids `get_tree().root.get_node_or_null("Main")` every tick).
-- Drops loot via `LootDrop.spawn(parent, world_pos, rarity)`.
-- On death: grants XP via `EnemyDB.id_for_skeleton_kind(kind)` → `main.stats.add_xp(amount)`.
-
-Class abilities:
-- **Brute** — slam.
-- **Dark Knight** — riposte.
-- **Berserker** — rage state.
-- **Dark Archer** — shadow-step.
-- **Necromancer** — revives downed skeletons.
-- **Deathlord** (boss) — 3 phases + Death Cry AoE.
-- **Wizard** — zoner (ranged AoE).
-- **Archer** — kite + arrows via `arrow.gd`.
-
-### Goblins / Spiders / Boss
-
-- `goblin.gd`, `monster.gd`, `boss_monster.gd` exist; goblins/spiders are the older overworld threats.
-- `EnemyDB`: skel_warrior 28xp, skel_archer 32, skel_wizard 38; elites 220–320; Deathlord 1800; goblin 14, goblin_archer 18, boss 220. Level-gap multiplier dwindles XP past +5 levels.
+### Other
+- `enemy_db.gd` — XP rewards + level-gap multiplier.
+- `arrow.gd` — arrow projectile.
+- `monster.gd` — generic spider/wave-system renderer (used by `_spawn_spider`).
 
 ---
 
-## Loot (`loot_drop.gd`)
+## Loot system (`loot/`)
 
-- Static coin pile sprite (`coins_drop.png`), scale 1.0, pixelize shader at `pixel_size = 1.1`.
-- Code-drawn rarity beam (`_BeamNode`): three stacked rects (glow/mid/core), width 3.5, height 160, offset Y 83.
-- Rarity tints (modulates a yellow base): COMMON white, MAGIC blue, RARE gold, UNIQUE orange, LEGENDARY red.
-- Random rarity weighted: 65% common, 20% magic, 10% rare, 4% unique, 1% legendary.
-- Hover detection throttled to 10 Hz; beam alpha bumps on hover, gold stays static.
-- **No pickup yet** — drops linger forever until a future loot system collects them.
+All loot-related code lives in `loot/`. Full pipeline now:
+
+| File | Purpose |
+|------|---------|
+| `loot/rarity_visuals.gd` | Maps each rarity → palette index in `data/swatch_palette.json` (81-swatch). `color_for(rarity)` is the only API. |
+| `loot/loot_drop.gd` | Visual coin drop + rarity beam. Reads colors via `RarityVisuals`. Beam drawn in code (`_BeamNode` inner class). |
+| `loot/item_metadata.gd` | Resource class — per-item `.tres` schema (item_id / slot / base_name / drop config / unique override). |
+| `loot/item_affix.gd` | Resource class — rolled-affix instance (id / tier / value / prefix flag). |
+| `loot/affix_db.gd` | 6 baseline affixes (3 prefix, 3 suffix), 5 tiers each, 5 word variants. `roll(id, tier, rng)` returns ItemAffix. |
+| `loot/item_editor.gd` + `.tscn` | Naming / metadata editor with live LayeredCharacter preview, swatch grid, rotation, zoom, mount/wield toggles. |
+| `loot/icon_baker.gd` | Bakes per-item PNGs into `assets/generated/icons/<id>.png` (S-facing inventory icon) and `assets/generated/ground/<id>.png` (death pose). |
+| `loot/item_catalog_dump.gd` | `@tool` EditorScript — dumps the catalog grouped by slot for verification. |
+| `loot/loot_beam_editor.gd` + dev_scenes/...tscn | Beam calibration tool. |
+
+**Rarity colors** (indices into `data/swatch_palette.json`):
+| Rarity | Idx | Hex | |
+|--------|-----|-----|-|
+| COMMON | 0 | `#f5f5f5` | white |
+| MAGIC | 33 | `#1854a1` | blue |
+| RARE | 55 | `#efd834` | yellow-gold |
+| UNIQUE | 58 | `#dc740b` | orange |
+| LEGENDARY | 49 | `#c60024` | red |
+
+**Item naming pass complete:**
+- 117 catalog entries across 13 slots (24 head, 19 chest, 9 legs, 5 shoes, 4 hands, 2 belt, 8 bag, 25 melee, 7 ranged, 5 mount, 2 offhand, 7 shield).
+- 21 marked `is_unique = true` (Whisperveil, Wargaze, Skyrender, Brood Mother, etc.).
+- 3 stubbed `can_drop = false` with TODO notes:
+  - `melee_18` Pickaxe — pending mining system
+  - `ranged_5` "Garden Tool" — pending; not actually a bow
+  - 5 cosmetic-only hair/bald/skin entries
+- `head_2` ("necklace") removed entirely (skipped in `items_db.SKIP_IDS`, `.tres` deleted).
+
+**Magic mainhands removed** (`magic_1/2/3` were spell-cast hand animations, not items). `WeaponClass.MAGIC` enum kept for future spell-class items.
+
+**Outstanding loot work**
+- Inventory pickup not implemented — drops linger forever.
+- `icon_baker.gd` button works; whether you've actually run a bake yet determines if `assets/generated/` exists.
+- Inventory UI / panels_ui need to consume baked icons + apply material tint + rarity glow.
 
 ---
 
 ## UI / HUD
 
 ### Bottom HUD (live)
+Granite + warm-grey "stage", brushed-bronze rim, gold pinstripe, dark cavity, white-spec corner rivets.
 
-- Granite + warm-grey "stage" with brushed-bronze rim, gold pinstripe, dark cavity, white-spec corner rivets — the visual recipe other panels must match.
-- Reusable parts:
-  - `hud_center_bar.gd` — panel chrome.
-  - `hud_skill_square.gd` — 44px slot, axis-aligned or rotated to diamond. Inspector knobs for icon col/row, linear_index, fill, greyed, pixel_size (defaults to 9.0). Cooldown overlay built in.
-  - `hud_stone_button.gd` — small inset stone button, sinks 1px on press, accepts atlas icons.
-  - `hud_orb.gd` — HP/MP globes.
-  - `hud_belt.gd`, `hud_stamina_bar.gd` — XP/stamina bar.
-- Slot labels: RMB / 1 / 2 / 3 / 4 / 5.
-- XP bar bound to `Root/Stamina` node, value = `xp / xp_for_next_level`.
+| File | Purpose |
+|------|---------|
+| `combat_hud.gd` + `.tscn` | Bottom chrome, orbs, slots, XP bar |
+| `hud_center_bar.gd` | Reusable panel chrome |
+| `hud_skill_square.gd` | 44px slot, cooldown overlay, atlas icon |
+| `hud_orb.gd` | HP/MP globes |
+| `hud_stamina_bar.gd` | XP bar (bound to `Root/Stamina`) |
+| `hud_stone_button.gd` | Inset stone button |
+| `hud_ui_buttons.gd` | C/I/K/M/Q/P/?/≡ button grid |
+| `icon_atlas.gd` | CPU-side 64×64 icon slicer (sheet exceeds GPU max) |
+| `panels_ui.gd` | I/C/K pop-up panels — known crash on character `_rebuild_character` |
+| `inventory_ui.gd` | Modal grid (overlap with panels_ui — needs consolidation) |
+| `stat_stepper_btn.gd` | +/- Lucide-style buttons |
 
-### Pop-up panels (`panels_ui.gd`)
-
-- Toggles: **I** inventory, **C** character, **K** skill tree.
-- Character panel reads live from `main.stats`; allocate-stat `+` buttons write back via `_allocate_stat_point`.
-- `StatStepperBtn` (`stat_stepper_btn.gd`) — Lucide-style +/- drawn in code, pixelized at 2.0. Rounded line caps removed (caused white-dot artifacts under the pixelize shader).
-- **Known recurring error**: `panels_ui.gd:540 _rebuild_character` → "Can't add child, already has a parent". Root cause not yet identified. Trace points into `_make_panel`'s `_root.add_child(panel)`.
-
-### Icon system (`icon_atlas.gd`)
-
-- Sheet `assets/ui/Icons/64X64 DARK.png` is 1024×22464 — exceeds the 16384 GPU texture limit on many cards.
-- Workaround: `FileAccess.get_file_as_bytes` + `Image.load_png_from_buffer` keeps the sheet on the CPU; each 64×64 cell sliced into its own `ImageTexture` on demand and cached.
-- `_load_failed` latch + smoke-test (probe region + ImageTexture creation) prevents per-frame retries that previously froze Godot.
-
-### Shaders
-
-`pixelize`, `pixelize_ui`, `skill_icon_pixelize`, `world_pixelate`, `iso_ground`, `flora_wind`, `fog`, `water`, `ripple_froth`, `beams`, `breathe`, `outline`, `monster_painterly`.
+`@tool` was stripped from `icon_atlas` / `hud_skill_square` / `hud_stone_button` / `stat_stepper_btn` — they were leaking GPU resources in the editor.
 
 ---
 
-## Editor / Tools
+## Dev tools
 
-- `editor.tscn` / `editor.gd` — main tile editor (F1).
-- `loot_beam_editor.tscn` — calibration scene for the rarity beam (used to lock width 3.5 / height 160 / offset 83).
-- `bounds_editor.tscn`, `fx_test_scene.tscn`, `monster_debug_panel.gd` — auxiliary tooling.
-- Asset placer (`asset_placer.gd`), composite baker (`composite_baker.gd`) for character generation.
-
----
-
-## Performance Mitigations Applied
-
-- World tree disabled while in dungeon.
-- Cloud drift / chunk updates skipped in dungeon mode.
-- Skeleton sleep at distance + cell-gated repathing.
-- Loot hover throttled to 10 Hz.
-- Icon atlas load failure latched.
-- Skeleton `_main_ref` cached.
-
-Open: user has reported lag again as recently as this session; not yet definitively root-caused.
+| File | Toggle |
+|------|--------|
+| `editor.gd` + `editor.tscn` | F1 — tile painter |
+| `bounds_editor.gd` (dev_scenes/) | standalone — collision tuning |
+| `loot/loot_beam_editor.gd` (dev_scenes/) | standalone — beam calibration |
+| `dev_scenes/fx_test_scene.tscn` | standalone — Effekseer test (mostly defunct now Effekseer is gone) |
+| `monster_debug_panel.gd` | F9 — runtime monster inspector |
+| `world_shader_panel.gd` | F6 — shader tweaker |
+| `asset_placer.gd` | key-toggle — asset preview |
+| `tools/apply_item_names.py` | one-shot rename script |
+| `tools/bake_otherworlds_pieces.py` | legacy (otherworlds gone) |
 
 ---
 
-## Outstanding / Next-Up
+## Performance state
 
-1. **Stats → damage**: hook `stats.damage_bonus_pct()` into the player attack damage at the strike sites.
-2. **Reparent crash** in `_rebuild_character` — investigate `_make_panel` / `HUDCenterBarScript.new()` parenting.
-3. **Skill effects** — Cleave / Whirlwind / Slam / Berserk / Execute currently only animate cooldowns; need real combat logic.
-4. **Loot pickup** — drops accumulate forever; need an inventory grab path.
-5. **Other classes** — only warrior is wired through SkillDB and CharacterStats baselines.
-6. **Panel system pass** — inventory / character / skill-tree pop-ups planned (see latest design doc); only character is partially live.
+- Asset count crashed from 85,824 → 14,768 PNGs (83% reduction): deleted `2D HD Character pack 1 V1.2/`, deleted Undead per-frame folders (replaced by sheet slicing), deleted Effekseer assets + addon, `.gdignore` on Stand-alone creator runtime files.
+- `.godot/imported/` cache wiped; rebuilds fresh on next launch.
+- Skeleton spritesheet refactor saves both disk PNG count and texture allocs.
+- Accessibility subsystem disabled — was the actual cause of the editor crash spam.
 
 ---
 
-## File Map (the ones that matter)
+## Outstanding (carry-over)
+
+1. **Stats → damage scaling** — `stats.damage_bonus_pct()` still unused at strike sites (`main.gd:3164, 3282, etc.`).
+2. **`_rebuild_character` crash** in `panels_ui.gd:540` — reparent error, not yet root-caused.
+3. **Skill effects** — Cleave / Whirlwind / Slam / Berserk / Execute only animate cooldowns.
+4. **Loot pickup** — drops accumulate forever; no inventory grant.
+5. **Inventory UI consolidation** — `inventory_ui.gd` vs `panels_ui.gd` overlap.
+6. **Spritesheet refactor for HD Character pack** — not started; `2D HD Character pack 1 V1.2/` was deleted instead since unused.
+7. **Other classes** — only warrior is wired through SkillDB / CharacterStats baselines.
+
+---
+
+## File map (the ones that matter)
 
 | Area | Files |
 |------|-------|
-| Core | `main.gd`, `main.tscn` |
-| Player | `player.gd`, `player_layered.gd`, `composite_character.gd`, `character_stats.gd` |
-| Enemies | `skeleton.gd`, `goblin.gd`, `monster.gd`, `boss_monster.gd`, `enemy_db.gd` |
-| Combat FX | `arrow.gd`, `attack_effect.gd`, `chain_lightning_fx.gd`, `ice_spike_fx.gd`, `thunder_fx.gd`, `explosion_anim.gd`, `hit_fx.gd` |
+| Core | `main.gd`, `main.tscn`, `terrain_lift.gd`, `tile_rules.gd` |
+| Player | `player.gd`, `player_layered.gd`, `composite_character.gd` (wait — archived), `character_stats.gd`, `loadout.gd` |
+| Enemies | `skeleton.gd`, `goblin.gd`, `monster.gd`, `enemy_db.gd`, `enemy_hp_bar.gd`, `boss_hp_bar.gd` |
+| Combat FX | `arrow.gd`, `attack_effect.gd`, `hit_fx.gd`, `thunder_fx.gd`, `explosion_anim.gd` (chain_lightning_fx, ice_spike_fx, archer_shot_fx archived with Effekseer) |
 | Dungeon | `dungeon.gd`, `portal_dialog.gd` |
-| Loot / items | `loot_drop.gd`, `loot_beam_editor.gd`, `inventory.gd`, `items_db.gd`, `loadout.gd` |
+| Loot | `loot/*.gd` (see Loot section) |
 | Skills | `skill_db.gd` |
-| HUD | `hud_center_bar.gd`, `hud_skill_square.gd`, `hud_stone_button.gd`, `hud_orb.gd`, `hud_belt.gd`, `hud_stamina_bar.gd`, `combat_hud.gd`, `combat_hud.tscn` |
-| Panels | `panels_ui.gd`, `stat_stepper_btn.gd`, `icon_atlas.gd` |
-| Editors | `editor.gd`, `bounds_editor.gd`, `loot_beam_editor.gd`, `fx_test_scene.gd` |
+| HUD | `combat_hud.gd/.tscn`, `hud_center_bar.gd`, `hud_skill_square.gd`, `hud_orb.gd`, `hud_stamina_bar.gd`, `hud_stone_button.gd`, `hud_ui_buttons.gd`, `icon_atlas.gd` |
+| Panels | `panels_ui.gd`, `inventory_ui.gd`, `stat_stepper_btn.gd`, `inventory.gd`, `items_db.gd` |
+| Editor | `editor.gd/.tscn`, `editor_overlay.gd`, `building_generator.gd` |
+| Dev | `bounds_editor.gd`, `fx_test_scene.gd`, `monster_debug_panel.gd`, `world_shader_panel.gd`, `asset_placer.gd` |

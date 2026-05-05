@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbxdvh8lxnt6g"]
 
-[ext_resource type="Script" uid="uid://do387atnhpvtx" path="res://loot_beam_editor.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://do387atnhpvtx" path="res://loot/loot_beam_editor.gd" id="1_main"]
 
 [node name="LootBeamEditor" type="Node2D" unique_id=1100]
 script = ExtResource("1_main")

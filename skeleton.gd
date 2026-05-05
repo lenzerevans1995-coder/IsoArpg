@@ -468,7 +468,7 @@ var _repath_t: float = 0.0
 var _last_goal_cell: Vector2i = Vector2i(99999, 99999)
 const REPATH_INTERVAL := 1.2
 const ARROW_SCRIPT := preload("res://arrow.gd")
-const _LootDropScript := preload("res://loot_drop.gd")
+const _LootDropScript := preload("res://loot/loot_drop.gd")
 
 # Find the nearest dead Warrior corpse (any Skeleton with kind=WARRIOR
 # and dead=true), revive to 50% HP and play Die in reverse-ish via the
