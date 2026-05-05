@@ -1,4 +1,4 @@
-# Game State Snapshot — 2026-05-04
+# Game State Snapshot — 2026-05-05
 
 A single-file map of where the project actually is. Pairs with `CHARACTER.md`, `WORLD.md`, `NOTES.md` (older topical docs) and `CLEANUP_PLAN.md` (reorg checklist).
 
@@ -61,8 +61,12 @@ assets/                 — gitignored, lives on disk only
 
 ### CharacterStats (`character_stats.gd`)
 - RefCounted. Per-class baseline. Str / Dex / Vit / Energy + level + xp.
-- Polynomial XP curve. `add_xp()` cascades level-ups (+5 stat / +1 skill point each).
-- `damage_bonus_pct()` defined but **not yet wired into damage** at the strike sites in main.gd (~3164 spider, ~3282 skeleton).
+- **Slice scope (warrior baseline):** Str 10, Dex 5, Vit 10, Energy 5.
+  - Str: `damage_bonus_pct = strength * 1.0` % (no cap for slice).
+  - Vit: `max_hp = base 50 + vit * 5` → 100 HP at L1, +5 HP per Vit point.
+  - Dex / Energy stubbed with `# TODO post-slice` comments — allocation works but no gameplay effect yet.
+- Polynomial XP curve, total to L5 ≈ 870. `add_xp()` cascades level-ups (+5 stat / +1 skill point each).
+- `_allocate_stat_point` in `panels_ui.gd` now refills hp/mp to new max on Vit/Energy spend so the orb visibly responds; emits `hp_changed` / `mp_changed` to refresh HUD.
 
 ### Skill DB (`skill_db.gd`)
 | Slot | Skill | Icon | CD |
@@ -98,21 +102,20 @@ Cooldown overlay implemented, **skill effects still stubbed** (only basic attack
 
 ---
 
-## Loot system (`loot/`)
-
-All loot-related code lives in `loot/`. Full pipeline now:
+## Loot system
 
 | File | Purpose |
 |------|---------|
-| `loot/rarity_visuals.gd` | Maps each rarity → palette index in `data/swatch_palette.json` (81-swatch). `color_for(rarity)` is the only API. |
-| `loot/loot_drop.gd` | Visual coin drop + rarity beam. Reads colors via `RarityVisuals`. Beam drawn in code (`_BeamNode` inner class). |
-| `loot/item_metadata.gd` | Resource class — per-item `.tres` schema (item_id / slot / base_name / drop config / unique override). |
-| `loot/item_affix.gd` | Resource class — rolled-affix instance (id / tier / value / prefix flag). |
-| `loot/affix_db.gd` | 6 baseline affixes (3 prefix, 3 suffix), 5 tiers each, 5 word variants. `roll(id, tier, rng)` returns ItemAffix. |
-| `loot/item_editor.gd` + `.tscn` | Naming / metadata editor with live LayeredCharacter preview, swatch grid, rotation, zoom, mount/wield toggles. |
-| `loot/icon_baker.gd` | Bakes per-item PNGs into `assets/generated/icons/<id>.png` (S-facing inventory icon) and `assets/generated/ground/<id>.png` (death pose). |
-| `loot/item_catalog_dump.gd` | `@tool` EditorScript — dumps the catalog grouped by slot for verification. |
-| `loot/loot_beam_editor.gd` + dev_scenes/...tscn | Beam calibration tool. |
+| `loot/rarity_visuals.gd` | Rarity → palette index in `data/swatch_palette.json`. `color_for(rarity)` is the only API. |
+| `loot/loot_drop.gd` | Visual coin drop + rarity beam. `spawn(parent, pos, rarity, item_id)` — `item_id` carries the rolled identity for future pickup. |
+| `loot/loot_tables.gd` | Per-enemy drop tables. `roll_drops(enemy_id, rng) -> Array[{item_id, rarity}]`. Wired into `skeleton.gd._die()`. |
+| `loot/item_metadata.gd` | Resource class — per-item `.tres` schema. |
+| `loot/item_affix.gd` | Resource class — rolled-affix instance. |
+| `loot/affix_db.gd` | 7 baseline affixes (4 prefix incl. new `vicious` damage_pct, 3 suffix). |
+| `loot/item_editor.gd` + `.tscn` | Naming / metadata editor with live preview, swatch grid, rotation, zoom, mount/wield toggles. |
+| `loot/icon_baker.gd` | Bakes per-item PNGs to `assets/generated/icons/<id>.png` (S-facing) + `assets/generated/ground/<id>.png` (death pose). |
+| `loot/item_catalog_dump.gd` | `@tool` EditorScript dumper. |
+| `combat.gd` | `Combat.compute_player_damage(stats, loadout, rng)` — central damage calc used at every strike site. |
 
 **Rarity colors** (indices into `data/swatch_palette.json`):
 | Rarity | Idx | Hex | |
@@ -123,21 +126,55 @@ All loot-related code lives in `loot/`. Full pipeline now:
 | UNIQUE | 58 | `#dc740b` | orange |
 | LEGENDARY | 49 | `#c60024` | red |
 
-**Item naming pass complete:**
-- 117 catalog entries across 13 slots (24 head, 19 chest, 9 legs, 5 shoes, 4 hands, 2 belt, 8 bag, 25 melee, 7 ranged, 5 mount, 2 offhand, 7 shield).
-- 21 marked `is_unique = true` (Whisperveil, Wargaze, Skyrender, Brood Mother, etc.).
-- 3 stubbed `can_drop = false` with TODO notes:
-  - `melee_18` Pickaxe — pending mining system
-  - `ranged_5` "Garden Tool" — pending; not actually a bow
-  - 5 cosmetic-only hair/bald/skin entries
-- `head_2` ("necklace") removed entirely (skipped in `items_db.SKIP_IDS`, `.tres` deleted).
+### Damage formula (`combat.gd`)
 
-**Magic mainhands removed** (`magic_1/2/3` were spell-cast hand animations, not items). `WeaponClass.MAGIC` enum kept for future spell-class items.
+```
+final = (weapon_base + flat_dmg_aff) × (1 + pct_dmg_aff/100) × (1 + Str%/100)
+```
 
-**Outstanding loot work**
-- Inventory pickup not implemented — drops linger forever.
-- `icon_baker.gd` button works; whether you've actually run a bake yet determines if `assets/generated/` exists.
+- Equipped mainhand folder (`Melee3`) → item_id (`melee_3`) → `data/items/mainhand/<id>.tres`.
+- Rolls within `base_damage_min..base_damage_max`.
+- Sums `unique_fixed_affixes` per stat: `damage` (sharp) → flat, `damage_pct` (vicious) → multiplicative.
+- Fist fallback **2-4 dmg** when no weapon equipped.
+- Strike sites in `main.gd` (~line 3114) compute one `scaled_dmg` per swing, applied to skeleton/spider/goblin hits + the floating damage number.
+
+### Drop tables
+
+| Tier | Drop chance | Rarity skew |
+|------|-------------|-------------|
+| Regular skel (warrior/archer/wizard) | 45% | common-heavy |
+| Elite (brute/dark_knight/berserker/dark_archer/necromancer) | 85% | magic-heavy |
+| Boss (deathlord) | 100%, **3 drops** | rare/unique-heavy |
+
+Slot weights per kind (warrior favors mainhand+shield, wizard favors robes+hoods, deathlord any-slot). Unique tier filters items_db for `is_unique=true`; falls back to rare-tier pool if no uniques exist for the slot. Drops jitter ±12 px so a 3-drop boss kill doesn't stack on one tile.
+
+### Item naming pass
+
+- **117 / 117 catalog entries named.** All metadata in `data/items/<slot>/<item_id>.tres`.
+- **21 marked unique** (Whisperveil, Wargaze, Skyrender, Brood Mother, Stormcaller, Crown of the Lich, etc.).
+- **6 stubbed** `can_drop = false`: melee_18 Pickaxe (pending mining), ranged_5 Garden Tool (pending), 5 cosmetic head entries (hair_1..5, bald).
+- `head_2` ("necklace") deleted entirely; skipped via `items_db.SKIP_IDS`.
+- Magic mainhands (`magic_1/2/3`) removed — they're spell-cast animations, not items. `WeaponClass.MAGIC` enum kept for future spell items.
+
+### XP balance (slice: L1→L5 across ~3 dungeon runs)
+
+| Enemy | XP | Level |
+|-------|-----|------|
+| Skel warrior / archer / wizard | 2 / 3 / 3 | 4-5 |
+| Brute / Dark Knight / Berserker / Dark Archer | 18-22 | 8-9 |
+| Necromancer | 28 | 10 |
+| Deathlord (boss) | 80 | 14 |
+| Goblin / Goblin Archer | 2 / 2 | 2-3 |
+| Goblin Boss | 18 | 6 |
+
+Level-gap bonus: `1 + (deficit-5) × 0.08`, capped at **1.5×** (was 2.5×).
+
+### Outstanding loot work
+
+- **Pickup not implemented** — drops linger forever. Next obvious step.
 - Inventory UI / panels_ui need to consume baked icons + apply material tint + rarity glow.
+- Magic / rare drops have no in-flight rolled-affix data yet; affix paths in `compute_player_damage` only honor unique fixed-affixes (no items to attach rolled affixes to until pickup lands).
+- Damage numbers display now works (was a Control-vs-Node2D bug — see fix below).
 
 ---
 
@@ -189,15 +226,26 @@ Granite + warm-grey "stage", brushed-bronze rim, gold pinstripe, dark cavity, wh
 
 ---
 
-## Outstanding (carry-over)
+## Outstanding
 
-1. **Stats → damage scaling** — `stats.damage_bonus_pct()` still unused at strike sites (`main.gd:3164, 3282, etc.`).
-2. **`_rebuild_character` crash** in `panels_ui.gd:540` — reparent error, not yet root-caused.
-3. **Skill effects** — Cleave / Whirlwind / Slam / Berserk / Execute only animate cooldowns.
-4. **Loot pickup** — drops accumulate forever; no inventory grant.
-5. **Inventory UI consolidation** — `inventory_ui.gd` vs `panels_ui.gd` overlap.
-6. **Spritesheet refactor for HD Character pack** — not started; `2D HD Character pack 1 V1.2/` was deleted instead since unused.
-7. **Other classes** — only warrior is wired through SkillDB / CharacterStats baselines.
+1. **Loot pickup** — drops accumulate forever; no inventory grant. Highest leverage next step.
+2. **Skill effects** — Cleave / Whirlwind / Slam / Berserk / Execute only animate cooldowns.
+3. **`_rebuild_character` crash** in `panels_ui.gd:540` — reparent error, not yet root-caused.
+4. **Inventory UI consolidation** — `inventory_ui.gd` vs `panels_ui.gd` overlap. Task #22 (Rework Inventory panel — paper-doll + grid + gold).
+5. **Magic / rare rolled affixes on drops** — paths exist in `combat.gd`, no flow yet (depends on pickup).
+6. **Other classes** — only warrior wired through SkillDB / CharacterStats baselines.
+7. **Dex / Energy stat effects** — currently stubbed, allocation works but no gameplay.
+
+## Recently fixed (this session)
+
+- Stats → HP/MP/damage all wired and visible on the HUD.
+- BloodEye test enemy + spider system trimmed back.
+- 85k → 15k PNGs scanned (deleted Effekseer, HD Character pack V1.2, per-frame Undead folders, Stand-alone creator runtime files).
+- Skeleton refactored to spritesheet slicing (`Spritesheets/With shadow/<class>/<anim>.png`).
+- Editor RID-leak crash root-caused: Godot 4.6.2 Windows accessibility bug. Disabled in `project.godot`.
+- Damage numbers root-caused: was a Control parented to a Node2D rendering in screen space. Fixed via inline `_DamageNumber extends Node2D`.
+- Item naming pass: 117/117 named, 21 uniques.
+- Loot system structurally complete (drop tables, rarity, item metadata, naming editor, baker, beam visuals).
 
 ---
 
