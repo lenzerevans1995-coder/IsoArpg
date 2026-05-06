@@ -102,6 +102,16 @@ static func build_catalog() -> Array:
 	# items — intentionally not in the catalog. The WeaponClass.MAGIC
 	# enum stays for future spell-class items that don't bind to those
 	# specific sheets.
+	# VFX layer — special abilities / auras the character creator
+	# exposes. Effect1..5 are general-purpose visual overlays; Special1/2
+	# are class-tied cast effects. All play on the LayeredCharacter's
+	# 'vfx' layer (top of the layer stack). Browse + name them in the
+	# item editor like any other item; pick one to equip via a future
+	# ability-binding UI.
+	for n in range(1, 6):
+		out.append(_mk("effect_%d" % n, Slot.VFX, "Effect%d" % n, "Effect %d" % n, "ability"))
+	for n in range(1, 3):
+		out.append(_mk("special_%d" % n, Slot.VFX, "Special%d" % n, "Special %d" % n, "ability"))
 	return out
 
 static func _mk(id: String, slot: int, folder: String, display: String, source: String) -> Dictionary:

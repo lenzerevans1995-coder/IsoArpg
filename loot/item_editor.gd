@@ -28,6 +28,7 @@ const SLOT_TO_LAYER := {
 	ItemsDB.Slot.OFFHAND: "offhand",
 	ItemsDB.Slot.SHIELD: "offhand",
 	ItemsDB.Slot.MOUNT: "mount",
+	ItemsDB.Slot.VFX: "vfx",
 }
 # Slots that read better with a body underneath (armor reads as worn).
 # Every slot reads better with a body underneath. Weapons / shields /
@@ -41,6 +42,8 @@ const SHOW_BODY := {
 	ItemsDB.Slot.BAG: true, ItemsDB.Slot.MOUNT: true,
 	ItemsDB.Slot.MAINHAND: true, ItemsDB.Slot.OFFHAND: true,
 	ItemsDB.Slot.SHIELD: true,
+	# VFX overlays read on the body, not in isolation.
+	ItemsDB.Slot.VFX: true,
 }
 
 var _tree: Tree
@@ -512,6 +515,12 @@ func _refresh_preview(entry: Dictionary) -> void:
 	var anim: String = "Idle"
 	if slot_id == ItemsDB.Slot.MOUNT or _preview_mount:
 		anim = "RideIdle"
+	elif slot_id == ItemsDB.Slot.VFX:
+		# VFX sheets are blank on Idle — they only paint during the
+		# triggering attack anim. Special1 is the canonical cast pose
+		# used by spell-cast on the body, so it lights up most VFX
+		# layers (Effect#/Special#) for visual review.
+		anim = "Special1"
 	_preview_char.call("play_anim", anim, 12.0, true, Callable())
 
 func _info_text_for(entry: Dictionary, meta: Resource) -> String:
