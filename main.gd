@@ -173,20 +173,22 @@ func _ready() -> void:
 	# scenes/player_body.tscn comes along — that shape is editable in
 	# Godot's 2D viewport (drag handles, change radius without code).
 	player = PLAYER_BODY_SCENE.instantiate()
-	world.add_child(player)
-	player.set("main", self)
-
+	# Parent the player into whichever world is active. y-sort only
+	# compares siblings under a y_sort_enabled parent, so the player
+	# must live at the SAME depth as the TileMapLayers it should
+	# occlude/be-occluded-by.
 	if USE_PAINTED_WORLD:
-		# Painted world path: drop scenes/world_painted.tscn under World,
-		# spawn the player at its 'player_start' Marker2D (or origin if
-		# missing), skip the chunk streamer + custom paint editor entirely.
 		painted_world = PAINTED_WORLD_SCENE.instantiate()
 		world.add_child(painted_world)
+		painted_world.add_child(player)   # sibling of TileMapLayers
 		var spawn := painted_world.get_node_or_null("spawns/player_start")
 		if spawn:
-			player.position = (spawn as Marker2D).global_position
+			player.position = (spawn as Marker2D).position
 		else:
 			player.position = Vector2.ZERO
+	else:
+		world.add_child(player)
+	player.set("main", self)
 	else:
 		# Legacy chunk-streamed world. Hardcoded battle-arena spawn at
 		# iso cell (1, -36); arena.json overwrites once persistent.
