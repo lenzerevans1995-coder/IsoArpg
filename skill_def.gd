@@ -26,10 +26,12 @@ class_name SkillDef
 # slash layer so it can be tinted independently of the body weapon.
 @export var slash_folder: String = ""
 
-# Per-layer color tints. Pulled from data/swatch_palette.json (the
-# 81-swatch palette) via the skill editor — uniform color sourcing
-# across loot rarity, character creator, and skill effects.
-@export var effect_color: Color = Color.WHITE
+# Per-layer color tints. Each effect gets its own color so two
+# overlays in a single skill can read distinctly (e.g. Magic1 aura in
+# blue + Effect3 burst in white). Pulled from the 81-swatch palette
+# via the skill editor.
+@export var effect_a_color: Color = Color.WHITE
+@export var effect_b_color: Color = Color.WHITE
 @export var slash_color: Color = Color.WHITE
 
 # Reserved for combat wiring (post-slice). Damage multiplier applied

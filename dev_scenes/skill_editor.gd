@@ -56,7 +56,9 @@ var _preview_weapon: String = ""
 
 # Color state.
 var _palette: Array = []
-var _editing_color: String = "effect_color"  # which color the swatch click writes to
+# Per-effect color buttons — index 0 effect_a, 1 effect_b, 2 slash.
+# Each button's StyleBox bg_color reflects the current color.
+var _color_btns: Array = []
 
 func _ready() -> void:
 	_def = SkillDefScript.new()
@@ -134,15 +136,23 @@ func _build_ui() -> void:
 		_refresh_preview())
 	_f_dmg     = _add_spin_row(grid, "Damage Mult", 0.1, 10.0, 0.1, func(v): _def.damage_mult = float(v))
 
-	# Color editor — radio for which color to set, plus 81-swatch grid.
+	# Per-effect color pickers. Each row: a label + a swatch button. The
+	# button's fill color is the currently-assigned color for that
+	# effect; clicking opens a popup with the 81-swatch palette.
 	_add_label(left, "\nColors", 14)
-	var color_target := HBoxContainer.new(); left.add_child(color_target)
-	var radio_a := CheckBox.new(); radio_a.text = "Effect"; radio_a.button_pressed = true
-	var radio_b := CheckBox.new(); radio_b.text = "Slash"
-	radio_a.toggled.connect(func(v): if v: _editing_color = "effect_color"; radio_b.button_pressed = false)
-	radio_b.toggled.connect(func(v): if v: _editing_color = "slash_color"; radio_a.button_pressed = false)
-	color_target.add_child(radio_a); color_target.add_child(radio_b)
-	left.add_child(_build_swatch_grid())
+	var color_grid := GridContainer.new(); color_grid.columns = 2
+	left.add_child(color_grid)
+	_color_btns = [
+		_add_color_row(color_grid, "Effect A",
+			func(): return _def.effect_a_color,
+			func(c): _def.effect_a_color = c),
+		_add_color_row(color_grid, "Effect B",
+			func(): return _def.effect_b_color,
+			func(c): _def.effect_b_color = c),
+		_add_color_row(color_grid, "Slash",
+			func(): return _def.slash_color,
+			func(c): _def.slash_color = c),
+	]
 
 	# Sticky save bar at the bottom of the form.
 	_info_label = Label.new()
@@ -225,37 +235,66 @@ func _add_spin_row(grid: GridContainer, label: String, lo: float, hi: float, ste
 	grid.add_child(sb)
 	return sb
 
-func _build_swatch_grid() -> Control:
-	var grid := GridContainer.new(); grid.columns = 27
-	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+# One label + one swatch button bound to a getter/setter pair on the
+# SkillDef. Clicking the button pops up the 81-swatch palette; picking
+# a swatch calls the setter, refreshes the preview, and recolors the
+# button so you can see at a glance which effect has which color.
+func _add_color_row(grid: GridContainer, label: String, getter: Callable, setter: Callable) -> Button:
+	var l := Label.new(); l.text = label; grid.add_child(l)
+	var btn := Button.new()
+	btn.custom_minimum_size = Vector2(28, 22)
+	btn.text = ""
+	_paint_color_button(btn, getter.call())
+	btn.pressed.connect(func(): _open_palette_popup(btn, getter, setter))
+	grid.add_child(btn)
+	return btn
+
+func _paint_color_button(btn: Button, color: Color) -> void:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = color
+	sb.border_width_left = 1
+	sb.border_width_right = 1
+	sb.border_width_top = 1
+	sb.border_width_bottom = 1
+	sb.border_color = Color(0, 0, 0, 0.5)
+	btn.add_theme_stylebox_override("normal", sb)
+	btn.add_theme_stylebox_override("hover", sb)
+	btn.add_theme_stylebox_override("pressed", sb)
+
+func _open_palette_popup(anchor_btn: Button, getter: Callable, setter: Callable) -> void:
+	var popup := PopupPanel.new()
+	add_child(popup)
+	var grid := GridContainer.new(); grid.columns = 9
+	popup.add_child(grid)
 	for hex in _palette:
-		var b := Button.new()
-		b.custom_minimum_size = Vector2(12, 12)
-		b.flat = false
-		var sb := StyleBoxFlat.new()
-		sb.bg_color = Color(String(hex))
-		b.add_theme_stylebox_override("normal", sb)
-		b.add_theme_stylebox_override("hover", sb)
-		b.add_theme_stylebox_override("pressed", sb)
+		var sw := Button.new()
+		sw.custom_minimum_size = Vector2(20, 20)
 		var col := Color(String(hex))
-		b.tooltip_text = String(hex)
-		b.pressed.connect(func(): _apply_color(col))
-		grid.add_child(b)
-	# White-reset cell.
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = col
+		sw.add_theme_stylebox_override("normal", sb)
+		sw.add_theme_stylebox_override("hover", sb)
+		sw.add_theme_stylebox_override("pressed", sb)
+		sw.tooltip_text = String(hex)
+		sw.pressed.connect(func():
+			setter.call(col)
+			_paint_color_button(anchor_btn, col)
+			_refresh_preview()
+			popup.queue_free())
+		grid.add_child(sw)
+	# Reset cell — clears to white.
 	var reset := Button.new()
 	reset.text = "✕"
-	reset.tooltip_text = "Reset to white"
-	reset.pressed.connect(func(): _apply_color(Color.WHITE))
+	reset.tooltip_text = "Reset (white)"
+	reset.pressed.connect(func():
+		setter.call(Color.WHITE)
+		_paint_color_button(anchor_btn, Color.WHITE)
+		_refresh_preview()
+		popup.queue_free())
 	grid.add_child(reset)
-	return grid
-
-func _apply_color(c: Color) -> void:
-	if _def == null: return
-	if _editing_color == "slash_color":
-		_def.slash_color = c
-	else:
-		_def.effect_color = c
-	_refresh_preview()
+	# Show next to the anchor button.
+	var origin: Vector2 = anchor_btn.global_position + Vector2(0, anchor_btn.size.y + 4)
+	popup.popup(Rect2i(int(origin.x), int(origin.y), 0, 0))
 
 # --- preview ------------------------------------------------------
 
@@ -277,10 +316,10 @@ func _refresh_preview() -> void:
 	if _def == null: return
 	if String(_def.effect_a_folder) != "":
 		_preview_char.call("equip", "vfx", String(_def.effect_a_folder))
-		_preview_char.call("set_tint", "vfx", _def.effect_color)
+		_preview_char.call("set_tint", "vfx", _def.effect_a_color)
 	if String(_def.effect_b_folder) != "":
 		_preview_char.call("equip", "vfx2", String(_def.effect_b_folder))
-		_preview_char.call("set_tint", "vfx2", _def.effect_color)
+		_preview_char.call("set_tint", "vfx2", _def.effect_b_color)
 	if String(_def.slash_folder) != "":
 		_preview_char.call("equip", "slash", String(_def.slash_folder))
 		_preview_char.call("set_tint", "slash", _def.slash_color)
@@ -317,6 +356,12 @@ func _load_fields_from_def() -> void:
 	_set_option_to_value(_f_effect_a, EFFECT_OPTIONS, String(_def.effect_a_folder))
 	_set_option_to_value(_f_effect_b, EFFECT_OPTIONS, String(_def.effect_b_folder))
 	_set_option_to_value(_f_slash,    SLASH_OPTIONS,  String(_def.slash_folder))
+	# Repaint color buttons so the swatches show current colors when a
+	# saved SkillDef is loaded.
+	if _color_btns.size() == 3:
+		_paint_color_button(_color_btns[0], _def.effect_a_color)
+		_paint_color_button(_color_btns[1], _def.effect_b_color)
+		_paint_color_button(_color_btns[2], _def.slash_color)
 
 func _set_option_to_value(ob: OptionButton, options: Array, value: String) -> void:
 	var idx := options.find(value)
