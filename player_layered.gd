@@ -78,6 +78,13 @@ func _ready() -> void:
 	if preview:
 		preview.queue_free()
 	character = LayeredCharacter.new()
+	# 64x64 demo: source sheets are 128x128 per frame, so scale 0.5
+	# halves the on-screen footprint. Toggle TINY_DEMO to flip back to
+	# native resolution. Affects only the character — camera, world,
+	# and HUD stay at full size.
+	const TINY_DEMO := true
+	if TINY_DEMO:
+		character.scale = Vector2(0.5, 0.5)
 	add_child(character)
 	# Player y-sort: world tiles bump their y by cell.y * 0.001 for SW-priority.
 	# To keep the character ON TOP of grass / decor / props at the SAME iso

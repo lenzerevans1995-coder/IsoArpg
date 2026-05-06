@@ -697,10 +697,17 @@ func _vec_to_dir(v: Vector2) -> int:
 
 # ---- factory ---------------------------------------------------------
 
+# 64x64 demo: source frames are 192x192, so 64/192 ~= 0.33. All kinds
+# inherit this; elites with their own bigger silhouette (Brute,
+# Deathlord) get their multiplier on top via the per-kind overrides
+# below.
+const TINY_DEMO_SCALE := 0.33
+
 # Spawn config preset per class — keeps dungeon spawner code short.
 static func make(kind_id: int, target_player: Node2D = null) -> Skeleton:
 	var s := Skeleton.new()
 	s.kind = kind_id
+	s.sprite_scale = TINY_DEMO_SCALE
 	match kind_id:
 		Kind.WARRIOR:
 			s.max_hp = 35;  s.damage = 8;  s.attack_range = 56.0
@@ -712,10 +719,10 @@ static func make(kind_id: int, target_player: Node2D = null) -> Skeleton:
 			s.desired_range = 260.0; s.ranged = true
 		Kind.BRUTE:
 			s.max_hp = 110; s.damage = 18; s.move_speed = 70.0
-			s.attack_range = 64.0; s.sprite_scale = 1.25
+			s.attack_range = 64.0; s.sprite_scale = TINY_DEMO_SCALE * 1.25
 		Kind.DEATHLORD:
 			s.max_hp = 280; s.damage = 18; s.attack_range = 64.0
-			s.sprite_scale = 1.20
+			s.sprite_scale = TINY_DEMO_SCALE * 1.20
 		Kind.DARK_KNIGHT:
 			s.max_hp = 90;  s.damage = 14; s.attack_range = 60.0
 		Kind.BERSERKER:
