@@ -696,11 +696,16 @@ func _init_dropdowns() -> void:
 		# stuck with no options.
 		for cat in _all_categories():
 			category_dd.add_item(cat.label)
+	# Guarded connects — _init_dropdowns is called every editor toggle,
+	# so re-connecting raises 'already connected' on the second open.
 	if not category_dd.item_selected.is_connected(_on_category_selected):
 		category_dd.item_selected.connect(_on_category_selected)
-	group_dd.item_selected.connect(_on_group_selected)
-	family_dd.item_selected.connect(_on_family_selected)
-	variant_dd.item_selected.connect(_on_variant_selected)
+	if not group_dd.item_selected.is_connected(_on_group_selected):
+		group_dd.item_selected.connect(_on_group_selected)
+	if not family_dd.item_selected.is_connected(_on_family_selected):
+		family_dd.item_selected.connect(_on_family_selected)
+	if not variant_dd.item_selected.is_connected(_on_variant_selected):
+		variant_dd.item_selected.connect(_on_variant_selected)
 	_on_category_selected(0)
 
 func _on_category_selected(idx: int) -> void:
