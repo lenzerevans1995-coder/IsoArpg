@@ -18,6 +18,22 @@ const EFFECT_OPTIONS := ["", "Effect1", "Effect2", "Effect3", "Effect4", "Effect
 const SLASH_OPTIONS := ["", "Slash1", "Slash2"]
 const ANIM_OPTIONS := ["Attack1", "Attack2", "Attack3", "Attack4", "Attack5",
 		"AttackRun", "AttackRun2", "Special1", "Idle", "Walk", "Run"]
+# Demo weapons for the preview — what the rig holds while you tweak the
+# skill. Doesn't get saved into the SkillDef; purely visual context so
+# you see how the effect reads against different held weapons. Labels
+# map to mainhand sheet folder names.
+const WEAPON_OPTIONS := [
+	["(none)",       ""],
+	["Sword",        "Melee2"],     # 'Longsword'
+	["Greatsword",   "Melee5"],     # 'Broadsword' (heavy two-hander look)
+	["Dagger",       "Melee1"],
+	["Mace",         "Melee9"],
+	["Bow",          "Ranged1"],
+	["Long Bow",     "Ranged2"],
+	["Staff",        "Melee19"],    # 'Wizard's Staff'
+	["Wand",         "Melee22"],    # 'Wand of the Lich'
+	["Magic Hands",  "Magic1"],     # spell-cast pose, no held object
+]
 
 # Live state.
 var _def: Resource              # current SkillDef being edited
@@ -32,8 +48,11 @@ var _f_anim: OptionButton
 var _f_effect_a: OptionButton
 var _f_effect_b: OptionButton
 var _f_slash: OptionButton
+var _f_weapon: OptionButton
 var _f_dmg: SpinBox
 var _info_label: Label
+# Which weapon the preview rig currently holds. Editor-only — not saved.
+var _preview_weapon: String = ""
 
 # Color state.
 var _palette: Array = []
@@ -78,6 +97,14 @@ func _build_ui() -> void:
 	_f_effect_a= _add_option_row(grid, "Effect A", EFFECT_OPTIONS, func(idx): _def.effect_a_folder = EFFECT_OPTIONS[idx]; _refresh_preview())
 	_f_effect_b= _add_option_row(grid, "Effect B", EFFECT_OPTIONS, func(idx): _def.effect_b_folder = EFFECT_OPTIONS[idx]; _refresh_preview())
 	_f_slash   = _add_option_row(grid, "Slash",    SLASH_OPTIONS,  func(idx): _def.slash_folder    = SLASH_OPTIONS[idx];  _refresh_preview())
+	# Demo weapon: not saved, just gives the preview rig something to
+	# hold so you can see how the effect reads against a sword, a bow,
+	# magic hands, etc.
+	var weapon_labels: Array = []
+	for entry in WEAPON_OPTIONS: weapon_labels.append(String(entry[0]))
+	_f_weapon  = _add_option_row(grid, "Demo Weapon", weapon_labels, func(idx):
+		_preview_weapon = String(WEAPON_OPTIONS[idx][1])
+		_refresh_preview())
 	_f_dmg     = _add_spin_row(grid, "Damage Mult", 0.1, 10.0, 0.1, func(v): _def.damage_mult = float(v))
 
 	# Color editor — radio for which color to set, plus 81-swatch grid.
@@ -215,6 +242,11 @@ func _refresh_preview() -> void:
 		_preview_char.call("set_tint", layer, Color.WHITE)
 	# Show a body so effects read on a character, not in space.
 	_preview_char.call("equip", "body", "NakedBody")
+	# Demo weapon — drives the held silhouette while you tune. Not part
+	# of the saved SkillDef; the actual equipped weapon at runtime
+	# comes from the player's loadout.
+	if _preview_weapon != "":
+		_preview_char.call("equip", "mainhand", _preview_weapon)
 	if _def == null: return
 	if String(_def.effect_a_folder) != "":
 		_preview_char.call("equip", "vfx", String(_def.effect_a_folder))
