@@ -69,3 +69,5 @@ assets/charachters/Stand-alone Character creator - 2D Fantasy V1-0-3.zip
 *.log
 godot_log.txt
 draft_*.json
+__pycache__/
+*.pyc
