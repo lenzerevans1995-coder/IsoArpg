@@ -190,7 +190,13 @@ func _ready() -> void:
 			flora_layer.add_child(player)
 		else:
 			painted_world.add_child(player)
-		(player as Node2D).z_index = 2
+		# Match the flora layer's z so trees and player share the same
+		# z context — y-sort then governs depth within that layer
+		# (canopy hides player north of trunk, player draws over canopy
+		# south of trunk). Relative z = 0 on the player keeps it in
+		# lockstep with whatever the flora layer is set to.
+		(player as Node2D).z_index = 0
+		(player as Node2D).z_as_relative = true
 		var spawn := painted_world.get_node_or_null("spawns/player_start")
 		if spawn:
 			player.position = (spawn as Marker2D).position
