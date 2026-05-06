@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://b8playerbody01"]
+[gd_scene load_steps=4 format=3 uid="uid://b0nhxf402w341"]
 
 [ext_resource type="Script" path="res://player_layered.gd" id="1_player"]
+[ext_resource type="Texture2D" path="res://assets/charachters/Stand-alone Character creator - 2D Fantasy V1-0-3/Character creator - 2D Fantasy_Data/StreamingAssets/spritesheets/NakedBody/Idle.png" id="2_body"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_foot"]
 radius = 14.0
@@ -10,6 +11,14 @@ y_sort_enabled = true
 collision_layer = 1
 collision_mask = 1
 script = ExtResource("1_player")
+
+[node name="BodyPreview" type="Sprite2D" parent="."]
+texture = ExtResource("2_body")
+centered = true
+offset = Vector2(0, -64)
+region_enabled = true
+region_rect = Rect2(0, 256, 128, 128)
+modulate = Color(1, 1, 1, 0.6)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0)

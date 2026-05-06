@@ -71,6 +71,12 @@ var _running: bool = false
 var _current_anim: String = ""
 
 func _ready() -> void:
+	# Editor-only body preview lives in the scene so the artist can see
+	# the silhouette while positioning the CollisionShape2D. Free it at
+	# runtime — LayeredCharacter renders the real layered body instead.
+	var preview := get_node_or_null("BodyPreview")
+	if preview:
+		preview.queue_free()
 	character = LayeredCharacter.new()
 	add_child(character)
 	# Player y-sort: world tiles bump their y by cell.y * 0.001 for SW-priority.
