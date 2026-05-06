@@ -51,6 +51,7 @@ var _f_slash: OptionButton
 var _f_weapon: OptionButton
 var _f_dmg: SpinBox
 var _info_label: Label
+var _f_open: OptionButton
 # Which weapon the preview rig currently holds. Editor-only — not saved.
 var _preview_weapon: String = ""
 
@@ -118,6 +119,25 @@ func _build_ui() -> void:
 	left_scroll.add_child(left)
 
 	_add_label(left, "Skill Editor", 16)
+
+	# Open / new selector — drops down a list of every saved skill
+	# (.tres files under res://data/skills/) plus a (New) entry that
+	# resets the form to a blank SkillDef. Loads the picked skill into
+	# the form so it can be edited in-place and re-saved.
+	var open_row := HBoxContainer.new()
+	left.add_child(open_row)
+	var open_lbl := Label.new(); open_lbl.text = "Open"; open_row.add_child(open_lbl)
+	_f_open = OptionButton.new()
+	_f_open.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_f_open.item_selected.connect(_on_open_selected)
+	open_row.add_child(_f_open)
+	var refresh_btn := Button.new()
+	refresh_btn.text = "↻"
+	refresh_btn.tooltip_text = "Re-scan data/skills/"
+	refresh_btn.pressed.connect(_refresh_open_dropdown)
+	open_row.add_child(refresh_btn)
+	_refresh_open_dropdown()
+
 	var grid := GridContainer.new(); grid.columns = 2
 	left.add_child(grid)
 	_f_id      = _add_str_row(grid, "Skill ID", _on_id_changed)
@@ -375,8 +395,63 @@ func _on_save() -> void:
 	var err := ResourceSaver.save(_def, path)
 	if err == OK:
 		_info_label.text = "Saved -> %s" % path
+		# Refresh the Open dropdown so a freshly-saved skill appears
+		# without the user clicking the ↻ button.
+		_refresh_open_dropdown()
 	else:
 		_info_label.text = "Save FAILED (err=%d)" % err
+
+# Walk data/skills/ and rebuild the Open dropdown. Index 0 is always
+# (New) — selecting it resets the form to a blank SkillDef.
+func _refresh_open_dropdown() -> void:
+	if _f_open == null:
+		return
+	var current_id: String = String(_def.skill_id) if _def != null else ""
+	_f_open.clear()
+	_f_open.add_item("(New)", 0)
+	var ids: Array[String] = []
+	if DirAccess.dir_exists_absolute(SKILLS_DIR):
+		var d := DirAccess.open(SKILLS_DIR)
+		if d != null:
+			d.list_dir_begin()
+			var fn := d.get_next()
+			while fn != "":
+				if fn.ends_with(".tres"):
+					ids.append(fn.left(fn.length() - 5))
+				fn = d.get_next()
+			d.list_dir_end()
+	ids.sort()
+	for id in ids:
+		_f_open.add_item(id)
+	# Re-select whatever was active before the refresh so the user
+	# doesn't lose their position when they save.
+	for i in range(_f_open.item_count):
+		if _f_open.get_item_text(i) == current_id:
+			_f_open.selected = i
+			break
+
+func _on_open_selected(idx: int) -> void:
+	if idx <= 0:
+		# (New) — fresh blank SkillDef.
+		_def = SkillDefScript.new()
+		_load_fields_from_def()
+		_refresh_preview()
+		return
+	var id: String = _f_open.get_item_text(idx)
+	var path: String = "%s/%s.tres" % [SKILLS_DIR, id]
+	if not FileAccess.file_exists(path):
+		_info_label.text = "Missing: %s" % path
+		return
+	var loaded: Resource = load(path)
+	if loaded == null or not (loaded is SkillDefScript):
+		_info_label.text = "Could not load %s" % path
+		return
+	# Use a duplicate so unsaved edits don't mutate the on-disk
+	# resource until Save is pressed.
+	_def = loaded.duplicate(true)
+	_load_fields_from_def()
+	_refresh_preview()
+	_info_label.text = "Loaded %s" % id
 
 func _load_fields_from_def() -> void:
 	_f_id.text = String(_def.skill_id)
