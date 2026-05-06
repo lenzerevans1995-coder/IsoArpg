@@ -34,6 +34,24 @@ class_name SkillDef
 @export var effect_b_color: Color = Color.WHITE
 @export var slash_color: Color = Color.WHITE
 
+# World-space flipbook FX (Fantasy tileset Effects/ subfolders — AoE,
+# Bolt, Buff*, Cone, Dash, Hook, LevelUp). Spawned at the player's
+# foot when the skill fires, plays once via explosion_anim.gd, then
+# despawns. Empty = no world fx.
+# Stored as the subfolder name only (e.g. "AoE"). Full path is
+# resolved at runtime against FANTASY_FX_ROOT in skill_def.gd.
+@export var world_fx_folder: String = ""
+@export var world_fx_color: Color = Color.WHITE
+
+# Root path for Fantasy tileset effect frames. Caller resolves
+# `world_fx_folder` against this to find the .png frames.
+const FANTASY_FX_ROOT := "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects"
+
+static func world_fx_full_path(subfolder: String) -> String:
+	if subfolder == "":
+		return ""
+	return "%s/%s" % [FANTASY_FX_ROOT, subfolder]
+
 # Damage multiplier applied to the player's computed base damage
 # when this skill fires.
 @export var damage_mult: float = 1.0

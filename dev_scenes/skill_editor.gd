@@ -8,6 +8,7 @@ extends Control
 const SkillDefScript := preload("res://skill_def.gd")
 const LayeredCharacterScript := preload("res://layered_character.gd")
 const LoadoutScript := preload("res://loadout.gd")
+const ExplosionAnimScript := preload("res://explosion_anim.gd")
 
 const SKILLS_DIR := "res://data/skills"
 const PALETTE_PATH := "res://data/swatch_palette.json"
@@ -58,6 +59,10 @@ var _f_weapon: OptionButton
 var _f_dmg: SpinBox
 var _info_label: Label
 var _f_open: OptionButton
+var _f_world_fx: OptionButton
+# Discovered list of Fantasy tileset effect subfolders, populated at
+# _ready by scanning SkillDefScript.FANTASY_FX_ROOT. Index 0 is "" (none).
+var _world_fx_options: Array = [""]
 # Which weapon the preview rig currently holds. Editor-only — not saved.
 var _preview_weapon: String = ""
 
@@ -70,6 +75,7 @@ var _color_btns: Array = []
 func _ready() -> void:
 	_def = SkillDefScript.new()
 	_load_palette()
+	_load_world_fx_options()
 	_build_ui()
 	_refresh_preview()
 	_load_fields_from_def()
@@ -100,6 +106,25 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	_def.trigger_anim = anim
 	_set_option_to_value(_f_anim, ANIM_OPTIONS, anim)
 	_refresh_preview()
+
+# Walk the Fantasy tileset Effects/ root and populate _world_fx_options
+# with each subfolder. Re-runnable but typically called once on _ready.
+func _load_world_fx_options() -> void:
+	_world_fx_options = [""]
+	var d := DirAccess.open(SkillDefScript.FANTASY_FX_ROOT)
+	if d == null:
+		return
+	d.list_dir_begin()
+	var fn := d.get_next()
+	var found: Array = []
+	while fn != "":
+		if d.current_is_dir() and not fn.begins_with("."):
+			found.append(fn)
+		fn = d.get_next()
+	d.list_dir_end()
+	found.sort()
+	for name in found:
+		_world_fx_options.append(name)
 
 func _load_palette() -> void:
 	if FileAccess.file_exists(PALETTE_PATH):
@@ -152,6 +177,14 @@ func _build_ui() -> void:
 	_f_effect_a= _add_option_row(grid, "Effect A", EFFECT_OPTIONS, func(idx): _def.effect_a_folder = EFFECT_OPTIONS[idx]; _refresh_preview())
 	_f_effect_b= _add_option_row(grid, "Effect B", EFFECT_OPTIONS, func(idx): _def.effect_b_folder = EFFECT_OPTIONS[idx]; _refresh_preview())
 	_f_slash   = _add_option_row(grid, "Slash",    SLASH_OPTIONS,  func(idx): _def.slash_folder    = SLASH_OPTIONS[idx];  _refresh_preview())
+	# Fantasy-tileset world-space FX (AoE / Bolt / Buff# / Cone / Dash /
+	# Hook / LevelUp). Spawned once at the player's foot when the skill
+	# fires. Doesn't loop — explosion_anim auto-frees on completion.
+	var world_fx_labels: Array = []
+	for opt in _world_fx_options: world_fx_labels.append(opt if opt != "" else "(none)")
+	_f_world_fx = _add_option_row(grid, "World FX", world_fx_labels, func(idx):
+		_def.world_fx_folder = String(_world_fx_options[idx])
+		_spawn_world_fx_preview())
 	# Demo weapon: not saved, just gives the preview rig something to
 	# hold so you can see how the effect reads against a sword, a bow,
 	# magic hands, etc.
@@ -178,6 +211,9 @@ func _build_ui() -> void:
 		_add_color_row(color_grid, "Slash",
 			func(): return _def.slash_color,
 			func(c): _def.slash_color = c),
+		_add_color_row(color_grid, "World FX",
+			func(): return _def.world_fx_color,
+			func(c): _def.world_fx_color = c; _spawn_world_fx_preview()),
 	]
 
 	# Sticky save bar at the bottom of the form.
@@ -400,6 +436,20 @@ func _get_layer_sprite(layer: String) -> Sprite2D:
 	if _preview_char == null:
 		return null
 	return _preview_char.get_node_or_null(layer) as Sprite2D
+
+# One-shot spawn of the chosen world fx at the rig's preview anchor.
+# Triggered when the user picks a fx folder, picks its color, or
+# replays. The fx auto-frees on its own (explosion_anim plays once).
+func _spawn_world_fx_preview() -> void:
+	if _def == null or _preview_char == null: return
+	var folder: String = SkillDefScript.world_fx_full_path(String(_def.world_fx_folder))
+	if folder == "": return
+	var anchor_pos: Vector2 = (_preview_char as Node2D).position
+	var fx: Node2D = ExplosionAnimScript.spawn(_preview_vp, anchor_pos, folder)
+	if fx and _def.world_fx_color != Color.WHITE:
+		# Tint via modulate. Effect frames are typically white/yellow
+		# so modulate works without needing the luminance shader.
+		fx.modulate = _def.world_fx_color
 
 # --- save / load --------------------------------------------------
 

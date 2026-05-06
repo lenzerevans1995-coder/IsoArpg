@@ -230,6 +230,15 @@ func play_skill(def: Resource) -> void:
 	attacking = true
 	attack_time = 0.0
 	attack_hit_fired = false
+	# Spawn the world-fx flipbook (Fantasy tileset Effects/<folder>) at
+	# the player's foot. One-shot, auto-frees on completion.
+	var fx_folder: String = SkillDef.world_fx_full_path(String(def.world_fx_folder))
+	if fx_folder != "":
+		var ExplosionAnim := preload("res://explosion_anim.gd")
+		var fx_parent: Node = main if main else self
+		var fx: Node2D = ExplosionAnim.spawn(fx_parent, global_position, fx_folder)
+		if fx and def.world_fx_color != Color.WHITE:
+			fx.modulate = def.world_fx_color
 	_play(String(def.trigger_anim), ATTACK_FPS, false, _on_skill_finished)
 
 func _on_skill_finished() -> void:
