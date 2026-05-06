@@ -316,13 +316,43 @@ func _refresh_preview() -> void:
 	if _def == null: return
 	if String(_def.effect_a_folder) != "":
 		_preview_char.call("equip", "vfx", String(_def.effect_a_folder))
-		_preview_char.call("set_tint", "vfx", _def.effect_a_color)
+		_apply_effect_tint("vfx", _def.effect_a_color)
 	if String(_def.effect_b_folder) != "":
 		_preview_char.call("equip", "vfx2", String(_def.effect_b_folder))
-		_preview_char.call("set_tint", "vfx2", _def.effect_b_color)
+		_apply_effect_tint("vfx2", _def.effect_b_color)
 	if String(_def.slash_folder) != "":
 		_preview_char.call("equip", "slash", String(_def.slash_folder))
-		_preview_char.call("set_tint", "slash", _def.slash_color)
+		_apply_effect_tint("slash", _def.slash_color)
+
+# Replaces the layer's color with the picked tint via a luminance-tint
+# shader, so the rendered color matches the swatch exactly. modulate
+# would multiply with the source's existing color (e.g. Magic1 is
+# yellow → red modulate gives orange). The shader collapses to
+# luminance first, then recolors. White still shows the source's
+# native colors (luminance × white = source brightness only).
+const _EFFECT_TINT_SHADER := preload("res://shaders/effect_tint.gdshader")
+
+func _apply_effect_tint(layer: String, tint: Color) -> void:
+	var sprite: Sprite2D = _get_layer_sprite(layer)
+	if sprite == null:
+		return
+	# White tint = no recolor (let the source show its native palette).
+	if tint == Color.WHITE:
+		sprite.material = null
+		sprite.modulate = Color.WHITE
+		return
+	var mat := sprite.material as ShaderMaterial
+	if mat == null or mat.shader != _EFFECT_TINT_SHADER:
+		mat = ShaderMaterial.new()
+		mat.shader = _EFFECT_TINT_SHADER
+		sprite.material = mat
+	mat.set_shader_parameter("tint", tint)
+
+func _get_layer_sprite(layer: String) -> Sprite2D:
+	# LayeredCharacter exposes layers as named child Sprite2Ds.
+	if _preview_char == null:
+		return null
+	return _preview_char.get_node_or_null(layer) as Sprite2D
 	_preview_char.call("set_direction", _preview_dir)
 	_preview_char.call("play_anim", String(_def.trigger_anim), 12.0, true, Callable())
 

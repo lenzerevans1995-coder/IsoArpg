@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://skill_def.gd" id="1_arwm0"]
+
+[resource]
+script = ExtResource("1_arwm0")
+skill_id = "warrior_basic"
+display_name = "Slash"
+slash_folder = "Slash1"
+effect_a_color = Color(0.59607846, 0, 0.101960786, 1)
+slash_color = Color(0.67058825, 0.67058825, 0.67058825, 1)

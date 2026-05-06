@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://skill_def.gd" id="1_aq5ui"]
+
+[resource]
+script = ExtResource("1_aq5ui")
+skill_id = "warrior_whirlwind"
+display_name = "Spin Slash"
+trigger_anim = "Attack2"
+effect_a_folder = "Effect5"
+slash_folder = "Slash2"
+effect_a_color = Color(0.45882353, 0.6509804, 0.6666667, 1)
+slash_color = Color(0.24313726, 0.34901962, 0.05882353, 1)

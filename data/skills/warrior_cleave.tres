@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://skill_def.gd" id="1_gndt3"]
+
+[resource]
+script = ExtResource("1_gndt3")
+skill_id = "warrior_cleave"
+display_name = "Cleave"
+slash_folder = "Slash2"
+effect_a_color = Color(0.59607846, 0, 0.101960786, 1)
+slash_color = Color(0.4509804, 0, 0.05490196, 1)
