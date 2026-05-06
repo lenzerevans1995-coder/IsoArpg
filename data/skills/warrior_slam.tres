@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://skill_def.gd" id="1_qljyb"]
+
+[resource]
+script = ExtResource("1_qljyb")
+skill_id = "warrior_slam"
+display_name = "Slam"
+trigger_anim = "Attack4"
+effect_a_folder = "Effect1"
+effect_b_folder = "Effect3"
+slash_folder = "Slash1"
+effect_a_color = Color(0.7764706, 0, 0.14117648, 1)
+effect_b_color = Color(0.7764706, 0, 0.14117648, 1)
+slash_color = Color(0.7764706, 0, 0.14117648, 1)

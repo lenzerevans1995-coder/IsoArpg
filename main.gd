@@ -1869,9 +1869,14 @@ func _activate_skill_slot(slot_key: String) -> void:
 	var cd: float = float(entry.get("cooldown", 0.5))
 	if slot.has_method("trigger_cooldown"):
 		slot.trigger_cooldown(cd)
-	# Skill effects are not wired yet — basic attack still routes
-	# through the existing player_layered RMB attack path. Other
-	# skills are visual-only for now (cooldown sweep + flash).
+	# Load the SkillDef for this slot and tell the player to play it.
+	# Falls back silently if no .tres exists yet — slot still cools
+	# down so the rotation still feels live during authoring.
+	var def_path: String = "res://data/skills/%s.tres" % sid
+	if FileAccess.file_exists(def_path):
+		var def: Resource = load(def_path)
+		if def != null and player and player.has_method("play_skill"):
+			player.play_skill(def)
 
 func _on_xp_changed(current: int, needed: int) -> void:
 	if combat_hud == null:

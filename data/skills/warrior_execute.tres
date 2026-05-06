@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://skill_def.gd" id="1_sd2of"]
+
+[resource]
+script = ExtResource("1_sd2of")
+skill_id = "warrior_execute"
+display_name = "Execute"
+trigger_anim = "Attack2"
+effect_a_folder = "Effect2"
+effect_b_folder = "Magic3"
+slash_folder = "Slash2"
+effect_a_color = Color(0.09411765, 0.32941177, 0.6313726, 1)
+effect_b_color = Color(0.7764706, 0, 0.14117648, 1)
+slash_color = Color(0.7764706, 0, 0.14117648, 1)

@@ -188,6 +188,71 @@ func _start_attack() -> void:
 	var anim: String = ItemsDB.attack_anim_for(weapon_class)
 	_play(anim, ATTACK_FPS, false, _on_attack_finished)
 
+const _EFFECT_TINT_SHADER := preload("res://shaders/effect_tint.gdshader")
+
+# Fire a hotbar skill on the player. Equips the skill's effect_a /
+# effect_b / slash overlays onto the character's vfx / vfx2 / slash
+# layers (with tint shader for exact-color recolor), then plays the
+# skill's trigger_anim. Cleared on attack-finished.
+func play_skill(def: Resource) -> void:
+	if def == null or character == null:
+		return
+	# Cancel any in-flight attack so a button mash always triggers
+	# the latest skill rather than queueing.
+	attacking = false
+	# Equip skill overlays + colors.
+	if String(def.effect_a_folder) != "":
+		character.equip("vfx", String(def.effect_a_folder))
+		_apply_skill_tint("vfx", def.effect_a_color)
+	else:
+		character.clear_layer("vfx")
+	if String(def.effect_b_folder) != "":
+		character.equip("vfx2", String(def.effect_b_folder))
+		_apply_skill_tint("vfx2", def.effect_b_color)
+	else:
+		character.clear_layer("vfx2")
+	if String(def.slash_folder) != "":
+		character.equip("slash", String(def.slash_folder))
+		_apply_skill_tint("slash", def.slash_color)
+	else:
+		character.clear_layer("slash")
+	# Aim toward cursor like a regular attack.
+	var to_cursor: Vector2 = get_global_mouse_position() - position
+	if to_cursor.length() > 1.0:
+		direction = _vec_to_dir(to_cursor)
+		character.set_direction(direction)
+	attacking = true
+	attack_time = 0.0
+	attack_hit_fired = false
+	_play(String(def.trigger_anim), ATTACK_FPS, false, _on_skill_finished)
+
+func _on_skill_finished() -> void:
+	# Clear skill overlays so they don't linger past the cast.
+	if character:
+		character.clear_layer("vfx")
+		character.clear_layer("vfx2")
+		character.clear_layer("slash")
+	_on_attack_finished()
+
+# Apply the effect_tint shader to a layer with the given color so the
+# rendered effect matches the picked palette swatch exactly. Mirrors
+# what the skill editor preview does. White = no shader (source's
+# native colors).
+func _apply_skill_tint(layer: String, tint: Color) -> void:
+	var sprite: Sprite2D = character.get_node_or_null(layer) as Sprite2D
+	if sprite == null:
+		return
+	if tint == Color.WHITE:
+		sprite.material = null
+		sprite.modulate = Color.WHITE
+		return
+	var mat := sprite.material as ShaderMaterial
+	if mat == null or mat.shader != _EFFECT_TINT_SHADER:
+		mat = ShaderMaterial.new()
+		mat.shader = _EFFECT_TINT_SHADER
+		sprite.material = mat
+	mat.set_shader_parameter("tint", tint)
+
 func _on_attack_finished() -> void:
 	attacking = false
 	# Auto-repeat while RMB is held.

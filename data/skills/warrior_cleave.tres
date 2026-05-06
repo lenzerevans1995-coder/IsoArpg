@@ -6,6 +6,8 @@
 script = ExtResource("1_gndt3")
 skill_id = "warrior_cleave"
 display_name = "Cleave"
+effect_b_folder = "Effect5"
 slash_folder = "Slash2"
 effect_a_color = Color(0.59607846, 0, 0.101960786, 1)
-slash_color = Color(0.4509804, 0, 0.05490196, 1)
+effect_b_color = Color(0.7764706, 0, 0.14117648, 1)
+slash_color = Color(0.7764706, 0, 0.14117648, 1)
