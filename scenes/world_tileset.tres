@@ -1,7 +1,16 @@
 [gd_resource type="TileSet" format=3 uid="uid://dub5o86t3fphg"]
 
+[ext_resource type="Texture2D" uid="uid://vsa7ogs08ui" path="res://assets/curated_tiles/ground/grass_a2_w.png" id="1_ca322"]
 [ext_resource type="Texture2D" uid="uid://b7ih7d6jj4x3r" path="res://assets/curated_tiles/ground/dirt_a1_e.png" id="1_x2ew3"]
-[ext_resource type="Texture2D" uid="uid://b2rsnbm3xg1c1" path="res://assets/curated_tiles/ground/grass_a2_e.png" id="2_0gbfb"]
+[ext_resource type="Texture2D" uid="uid://drwa5t77c1c3i" path="res://assets/curated_tiles/flora/flora_b1_e.png" id="3_senu8"]
+[ext_resource type="Texture2D" uid="uid://ba3sprvn4vuc0" path="res://assets/curated_tiles/flora/flowers_a22_e.png" id="4_senu8"]
+[ext_resource type="Texture2D" uid="uid://cw1lj5o3waodx" path="res://assets/curated_tiles/flora/tree_a2_e.png" id="5_usih3"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_usih3"]
+texture = ExtResource("1_ca322")
+margins = Vector2i(0, 158)
+texture_region_size = Vector2i(256, 96)
+0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x2ew3"]
 resource_name = "Ground_a1"
@@ -10,14 +19,28 @@ margins = Vector2i(0, 160)
 texture_region_size = Vector2i(256, 96)
 0:0/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ca322"]
-texture = ExtResource("2_0gbfb")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1fadj"]
+texture = ExtResource("3_senu8")
+margins = Vector2i(0, 135)
+texture_region_size = Vector2i(256, 113)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1u8rc"]
+texture = ExtResource("4_senu8")
 margins = Vector2i(0, 160)
 texture_region_size = Vector2i(256, 96)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h8tly"]
+texture = ExtResource("5_usih3")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 64)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(23.143433, 13.547371, 0, -32, -22.578953, 14.676323, 0, 32)
+
 [resource]
 tile_shape = 1
+tile_layout = 5
 tile_size = Vector2i(128, 64)
 physics_layer_0/collision_layer = 1
 physics_layer_1/collision_layer = 1
@@ -26,4 +49,7 @@ custom_data_layer_0/type = 4
 custom_data_layer_1/name = "lift"
 custom_data_layer_1/type = 2
 sources/2 = SubResource("TileSetAtlasSource_x2ew3")
-sources/4 = SubResource("TileSetAtlasSource_ca322")
+sources/1 = SubResource("TileSetAtlasSource_usih3")
+sources/4 = SubResource("TileSetAtlasSource_1fadj")
+sources/5 = SubResource("TileSetAtlasSource_1u8rc")
+sources/6 = SubResource("TileSetAtlasSource_h8tly")

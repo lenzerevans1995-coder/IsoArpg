@@ -1,4 +1,4 @@
-extends Node2D
+extends CharacterBody2D
 
 # Drop-in replacement for player.gd that drives a LayeredCharacter (stacked
 # equipment sprites) instead of a single Sprite2D. Loads the saved loadout from
@@ -8,6 +8,12 @@ extends Node2D
 # plays (Melee->Attack1, Ranged->Attack2, Magic->Special1).
 # Full mount movement: when a mount is equipped, base SPEED * MOUNT_SPEED_MULT
 # and the body uses RideIdle/RideRun anims so the rider sits on the mount.
+#
+# Movement: was Node2D + manual position += step + flora_at-cell pre-check.
+# Now CharacterBody2D + velocity + move_and_slide so painted TileMapLayer
+# polygons block the player automatically. The legacy _cell_blocked path is
+# still consulted as a pre-check for the chunk-streamed world (which has no
+# TileSet polygons), so movement works in both worlds.
 
 const FRAME_W := 128
 const FRAME_H := 128
@@ -72,6 +78,18 @@ func _ready() -> void:
 	# cell, give the player node a much bigger y nudge (~0.5 px) so it always
 	# y-sorts after any tile sharing that cell. Sub-pixel; not visible.
 	position.y += 0.5
+	# Physics body for collision against painted TileMapLayer polygons.
+	# Small circle at the foot — the player's reach is the chest sprite,
+	# but the COLLISION footprint should be tight (one iso cell roughly).
+	# Set collision_layer / mask = 1 to match the TileSet's physics layers.
+	collision_layer = 1
+	collision_mask = 1
+	var coll := CollisionShape2D.new()
+	var shape := CircleShape2D.new()
+	shape.radius = 14.0    # ~quarter-cell footprint at iso 128x64
+	coll.shape = shape
+	coll.position = Vector2(0, 0)
+	add_child(coll)
 
 	_loadout = Loadout.load_or_default()
 	Loadout.apply(character, _loadout)
@@ -217,18 +235,20 @@ func _process(delta: float) -> void:
 		dodge_cooldown_left = max(0.0, dodge_cooldown_left - delta)
 	if dodging:
 		dodge_time += delta
-		var step := dodge_dir * DODGE_SPEED * delta
-		var target_pos := position + step
-		if not _cell_blocked(target_pos):
-			position = target_pos
-		else:
-			var tx := position + Vector2(step.x, 0)
-			if not _cell_blocked(tx):
-				position = tx
+		# Pre-check legacy chunk-world collision; if blocked, zero out
+		# the axis manually. Then move_and_slide applies physics on top
+		# (so painted-world polygons stop us regardless).
+		var dodge_step := dodge_dir * DODGE_SPEED * delta
+		var dv := dodge_dir * DODGE_SPEED
+		if _cell_blocked(position + dodge_step):
+			if not _cell_blocked(position + Vector2(dodge_step.x, 0)):
+				dv.y = 0.0
+			elif not _cell_blocked(position + Vector2(0, dodge_step.y)):
+				dv.x = 0.0
 			else:
-				var ty := position + Vector2(0, step.y)
-				if not _cell_blocked(ty):
-					position = ty
+				dv = Vector2.ZERO
+		velocity = dv
+		move_and_slide()
 		if dodge_time >= DODGE_DURATION:
 			# Fallback in case the finished_cb didn't fire (e.g. anim re-triggered).
 			_on_dodge_finished()
@@ -265,18 +285,22 @@ func _process(delta: float) -> void:
 	if moving:
 		direction = _vec_to_dir(move_v)
 		character.set_direction(direction)
+		# Pre-check legacy chunk-world collision (flora_at lookup) and
+		# zero out the axis if blocked. Then move_and_slide handles the
+		# painted-world TileMapLayer polygons on top.
 		var step := move_v * speed * delta
-		var target_pos := position + step
-		if not _cell_blocked(target_pos):
-			position = target_pos
-		else:
-			var tx := position + Vector2(step.x, 0)
-			if not _cell_blocked(tx):
-				position = tx
+		var v := move_v * speed
+		if _cell_blocked(position + step):
+			if not _cell_blocked(position + Vector2(step.x, 0)):
+				v.y = 0.0
+			elif not _cell_blocked(position + Vector2(0, step.y)):
+				v.x = 0.0
 			else:
-				var ty := position + Vector2(0, step.y)
-				if not _cell_blocked(ty):
-					position = ty
+				v = Vector2.ZERO
+		velocity = v
+		move_and_slide()
+	else:
+		velocity = Vector2.ZERO
 
 	# Pick anim. Mount swaps to Ride*; otherwise Walk/Run/Idle.
 	# Run only triggers while Shift is held; otherwise Walk for both keyboard
