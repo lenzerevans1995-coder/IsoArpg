@@ -7,7 +7,6 @@
 radius = 16.03122
 
 [node name="PlayerBody" type="CharacterBody2D" unique_id=1148642894]
-y_sort_enabled = true
 script = ExtResource("1_player")
 
 [node name="BodyPreview" type="Sprite2D" parent="." unique_id=1757603710]
