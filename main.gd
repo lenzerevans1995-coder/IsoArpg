@@ -187,11 +187,9 @@ func _ready() -> void:
 		else:
 			player.position = Vector2.ZERO
 	else:
-		world.add_child(player)
-	player.set("main", self)
-	else:
 		# Legacy chunk-streamed world. Hardcoded battle-arena spawn at
 		# iso cell (1, -36); arena.json overwrites once persistent.
+		world.add_child(player)
 		player.position = grid_to_screen(Vector2i(1, -36)) if BATTLE_WORLD else Vector2.ZERO
 		# Editor overlay (toggled with key 1).
 		editor = EDITOR_SCENE.instantiate()
@@ -205,6 +203,7 @@ func _ready() -> void:
 			_apply_battle_terrain_rules()
 			player.position = grid_to_screen(Vector2i(1, -36))
 		_update_chunks()
+	player.set("main", self)
 	_set_lighting_mode(1)
 	_spawn_combat_hud()
 	# Goblin spawn disabled for now (paused while iterating on dungeon
