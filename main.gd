@@ -110,6 +110,10 @@ var clouds: Array[Sprite2D] = []
 var cloud_velocities: Array[Vector2] = []
 @onready var player_scene := preload("res://player.tscn")
 const PLAYER_LAYERED_SCRIPT := preload("res://player_layered.gd")
+# Player scene with a child CollisionShape2D you can drag visually in
+# Godot's 2D editor. Replaces script-only .new() so the collision
+# shape's position/radius are editable WITHOUT code edits.
+const PLAYER_BODY_SCENE := preload("res://scenes/player_body.tscn")
 # Painted-world hook. When true, main.gd loads scenes/world_painted.tscn
 # under the World node and skips the chunk streamer + custom paint
 # editor's arena.json. Player spawns at the spawn marker (or 0,0 if
@@ -165,7 +169,10 @@ func _ready() -> void:
 	# Always use the LayeredCharacter player (the character-creator
 	# rig). Longbow archer is shelved while we iterate on the dungeon
 	# / chest interactions / skill bar.
-	player = PLAYER_LAYERED_SCRIPT.new()
+	# Instantiate the scene (not .new()) so the CollisionShape2D under
+	# scenes/player_body.tscn comes along — that shape is editable in
+	# Godot's 2D viewport (drag handles, change radius without code).
+	player = PLAYER_BODY_SCENE.instantiate()
 	world.add_child(player)
 	player.set("main", self)
 

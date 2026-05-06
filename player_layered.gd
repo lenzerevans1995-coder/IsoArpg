@@ -78,18 +78,25 @@ func _ready() -> void:
 	# cell, give the player node a much bigger y nudge (~0.5 px) so it always
 	# y-sorts after any tile sharing that cell. Sub-pixel; not visible.
 	position.y += 0.5
-	# Physics body for collision against painted TileMapLayer polygons.
-	# Small circle at the foot — the player's reach is the chest sprite,
-	# but the COLLISION footprint should be tight (one iso cell roughly).
-	# Set collision_layer / mask = 1 to match the TileSet's physics layers.
+	# Physics body collision: the CollisionShape2D is now a SCENE child
+	# of scenes/player_body.tscn so it's visually adjustable in the
+	# Godot 2D viewport (drag the handle, change radius). The script
+	# only kicks in if the scene wasn't loaded (legacy 'new()' instantiation
+	# path), in which case we fall back to a default circle.
 	collision_layer = 1
 	collision_mask = 1
-	var coll := CollisionShape2D.new()
-	var shape := CircleShape2D.new()
-	shape.radius = 14.0    # ~quarter-cell footprint at iso 128x64
-	coll.shape = shape
-	coll.position = Vector2(0, 0)
-	add_child(coll)
+	var existing_shape := false
+	for c in get_children():
+		if c is CollisionShape2D:
+			existing_shape = true
+			break
+	if not existing_shape:
+		var coll := CollisionShape2D.new()
+		var shape := CircleShape2D.new()
+		shape.radius = 14.0
+		coll.shape = shape
+		coll.position = Vector2(0, 0)
+		add_child(coll)
 
 	_loadout = Loadout.load_or_default()
 	Loadout.apply(character, _loadout)
