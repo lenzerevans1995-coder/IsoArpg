@@ -345,11 +345,12 @@ func _process(delta: float) -> void:
 	# testing.
 	const FIXED_LIFT := 48.0
 	character.position.y = -(FIXED_LIFT + manual_lift_debug)
-	# Player draws above layer 1 (ground) AND layer 2 (grass / decor /
-	# stones), but below layer 3+ (trees, walls, roofs). So the character
-	# walks over decor and stops being hidden by tall grass, while still
-	# being occluded by trees and walls when they're south of the player.
-	z_index = 250
+	# z_index left at 0 so y-sort governs depth ordering (tiles vs player
+	# sort by their screen Y under the painted_world's y_sort_enabled
+	# parent). Was 250 in the chunk-streamed world to force the player
+	# above explicit layer-z tiles, but that overrides y-sort entirely
+	# and made the canopy never hide the player. y-sort + tile
+	# y_sort_origin is the correct knob now.
 
 	# Walking-through-grass leaf bursts: small particle pop whenever the
 	# player crosses into a NEW tall-grass cell (main.flora_at). Doesn't
