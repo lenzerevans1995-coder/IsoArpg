@@ -34,6 +34,15 @@ class_name SkillDef
 @export var effect_b_color: Color = Color.WHITE
 @export var slash_color: Color = Color.WHITE
 
-# Reserved for combat wiring (post-slice). Damage multiplier applied
-# to the player's base damage when this skill is the active one.
+# Damage multiplier applied to the player's computed base damage
+# when this skill fires.
 @export var damage_mult: float = 1.0
+
+# Damage shape — controls who gets hit when the skill lands.
+# 'cone'    : forward cone, angle = damage_angle_deg, range = damage_range
+# 'circle'  : full 360° around the player, range = damage_range
+# 'single'  : only the nearest enemy in front within damage_range
+# 'none'    : no damage (self-buff skills like Berserk)
+@export_enum("cone", "circle", "single", "none") var damage_shape: String = "cone"
+@export var damage_range: float = 110.0       # px
+@export var damage_angle_deg: float = 90.0    # full cone width (cone only)

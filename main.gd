@@ -3190,10 +3190,27 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	if player and "_loadout" in player:
 		loadout = player._loadout
 	var scaled_dmg: int = _CombatScript.compute_player_damage(stats, loadout)
+	# If an active skill is firing, override radius / half-angle / damage
+	# multiplier with what the SkillDef requested. Otherwise basic-attack
+	# defaults stand. Single-target / circle / none shapes are handled
+	# below; here we just compute the per-swing effective bounds.
+	var radius: float = ATTACK_RADIUS
+	var half_angle: float = ATTACK_HALF_ANGLE
+	var skill_shape: String = "cone"
+	var skill: Resource = (player.active_skill if player and "active_skill" in player else null)
+	if skill != null:
+		scaled_dmg = int(round(float(scaled_dmg) * float(skill.damage_mult)))
+		radius = float(skill.damage_range)
+		half_angle = deg_to_rad(float(skill.damage_angle_deg) * 0.5)
+		skill_shape = String(skill.damage_shape)
+		if skill_shape == "circle":
+			half_angle = PI                       # all directions
+		elif skill_shape == "none":
+			return                                # self-buff, no damage
 	# Ranged weapon: spawn an arrow toward cursor + skip melee cone.
 	# The arrow handles its own collision + damage on impact via
 	# arrow.gd, so we just hand off the rolled damage value.
-	if _player_is_ranged():
+	if _player_is_ranged() and skill == null:
 		_fire_player_arrow(origin, scaled_dmg)
 		return
 	# Damage any skeletons caught in the cone (dungeon mode).
@@ -3205,10 +3222,10 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 			var s_body_off: Vector2 = sk.body_offset if "body_offset" in sk else Vector2(0, -90)
 			var to_s: Vector2 = (sk.global_position + s_body_off) - (origin + Vector2(0, -90))
 			var ground_d: float = (sk.global_position - origin).length()
-			if ground_d > ATTACK_RADIUS or ground_d < 1.0:
+			if ground_d > radius or ground_d < 1.0:
 				continue
 			var ang_s: float = acos(clamp((sk.global_position - origin).normalized().dot(facing), -1.0, 1.0))
-			if ang_s > ATTACK_HALF_ANGLE:
+			if ang_s > half_angle:
 				continue
 			if sk.has_method("take_damage"):
 				sk.take_damage(skel_dmg)
@@ -3219,10 +3236,10 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 			continue
 		var to_m: Vector2 = m.position - origin
 		var d: float = to_m.length()
-		if d > ATTACK_RADIUS or d < 1.0:
+		if d > radius or d < 1.0:
 			continue
 		var ang: float = acos(clamp(to_m.normalized().dot(facing), -1.0, 1.0))
-		if ang > ATTACK_HALF_ANGLE:
+		if ang > half_angle:
 			continue
 		m.take_damage(scaled_dmg)
 		# Diablo-feel feedback: knockback, damage number, screen shake.
@@ -3237,16 +3254,16 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	# hit. Cleaver swings shouldn't damage every goblin in a 90° arc at
 	# once — that one-shots the whole pack from a single click.
 	var best_goblin: Node2D = null
-	var best_d: float = ATTACK_RADIUS + 1.0
+	var best_d: float = radius + 1.0
 	for g in goblins:
 		if not is_instance_valid(g) or g.dead:
 			continue
 		var to_g: Vector2 = g.global_position - origin
 		var dg: float = to_g.length()
-		if dg > ATTACK_RADIUS or dg < 1.0:
+		if dg > radius or dg < 1.0:
 			continue
 		var ang_g: float = acos(clamp(to_g.normalized().dot(facing), -1.0, 1.0))
-		if ang_g > ATTACK_HALF_ANGLE:
+		if ang_g > half_angle:
 			continue
 		if dg < best_d:
 			best_d = dg

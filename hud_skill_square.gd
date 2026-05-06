@@ -65,10 +65,16 @@ func _process(delta: float) -> void:
 	_cd_left = max(0.0, _cd_left - delta)
 	_cd_flash = max(0.0, _cd_flash - delta)
 	queue_redraw()
+	if _cd_overlay and is_instance_valid(_cd_overlay):
+		_cd_overlay.queue_redraw()
 
 const _SkillDB := preload("res://skill_db.gd")
 const _PIXELIZE_SHADER := preload("res://shaders/skill_icon_pixelize.gdshader")
 var _icon_node: TextureRect
+# Cooldown overlay drawn ON TOP of the icon. Lives as the last child
+# so it renders after the TextureRect (children paint after the
+# parent's _draw, in sibling order).
+var _cd_overlay: Control = null
 
 func _ready() -> void:
 	_apply_icon()
@@ -95,6 +101,15 @@ func _apply_icon() -> void:
 		_icon_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_icon_node.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		add_child(_icon_node)
+	# Ensure the cooldown overlay exists AND is the last child so it
+	# renders on top of the icon. Children paint after the parent's
+	# _draw, in sibling order — last sibling wins.
+	if _cd_overlay == null or not is_instance_valid(_cd_overlay):
+		_cd_overlay = _CooldownOverlay.new()
+		_cd_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_cd_overlay.set("host", self)
+		add_child(_cd_overlay)
+	move_child(_cd_overlay, get_child_count() - 1)
 	# (Re)assign the shader material every call so hot-reloads pick up
 	# changes to the .gdshader file and shader parameter tweaks above
 	# actually take effect (a previous run could have left a different
@@ -156,18 +171,10 @@ func _draw() -> void:
 	_corner_tri(w - 4, 4, ts, 1)
 	_corner_tri(4, h - 4, ts, 2)
 	_corner_tri(w - 4, h - 4, ts, 3)
-	# Cooldown sweep — dark band fills from top to bottom as the timer
-	# decays, drawn over the icon (TextureRect z = -1 vs draw at 0).
-	if _cd_left > 0.0 and _cd_total > 0.0:
-		var t: float = clamp(_cd_left / _cd_total, 0.0, 1.0)
-		var cav_y: int = 5
-		var cav_h: int = h - 10
-		var fill_h: int = int(round(float(cav_h) * t))
-		draw_rect(Rect2(5, cav_y, w - 10, fill_h), Color(0, 0, 0, 0.55), true)
-	# Press flash — bright tint over the cavity for ~0.15 s on activate.
-	if _cd_flash > 0.0:
-		var fa: float = _cd_flash / 0.15
-		draw_rect(Rect2(5, 5, w - 10, h - 10), Color(1, 1, 0.7, 0.35 * fa), true)
+	# Cooldown sweep + press flash live in _CooldownOverlay (the last
+	# child) so they render ON TOP of the icon TextureRect. Drawing
+	# them here in the parent's _draw left them hidden behind the
+	# child icon.
 
 func _corner_tri(x: int, y: int, ts: int, corner: int) -> void:
 	var pts := PackedVector2Array()
@@ -177,3 +184,29 @@ func _corner_tri(x: int, y: int, ts: int, corner: int) -> void:
 		2:  pts = PackedVector2Array([Vector2(x, y), Vector2(x + ts, y), Vector2(x, y - ts)])
 		_:  pts = PackedVector2Array([Vector2(x, y), Vector2(x - ts, y), Vector2(x, y - ts)])
 	draw_colored_polygon(pts, COL_GOLD)
+
+# Inline child Control that draws the cooldown sweep + press flash on
+# top of the icon. Reads timer state from its `host` HUDSkillSquare.
+class _CooldownOverlay extends Control:
+	var host: Control = null
+	func _ready() -> void:
+		# Cover the entire parent so we can draw within the cavity area.
+		anchor_right = 1.0
+		anchor_bottom = 1.0
+	func _draw() -> void:
+		if host == null:
+			return
+		var w: int = int(size.x)
+		var h: int = int(size.y)
+		var cd_left: float = float(host.get("_cd_left"))
+		var cd_total: float = float(host.get("_cd_total"))
+		var cd_flash: float = float(host.get("_cd_flash"))
+		if cd_left > 0.0 and cd_total > 0.0:
+			var t: float = clamp(cd_left / cd_total, 0.0, 1.0)
+			var cav_y: int = 5
+			var cav_h: int = h - 10
+			var fill_h: int = int(round(float(cav_h) * t))
+			draw_rect(Rect2(5, cav_y, w - 10, fill_h), Color(0, 0, 0, 0.55), true)
+		if cd_flash > 0.0:
+			var fa: float = cd_flash / 0.15
+			draw_rect(Rect2(5, 5, w - 10, h - 10), Color(1, 1, 0.7, 0.35 * fa), true)

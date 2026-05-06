@@ -190,6 +190,11 @@ func _start_attack() -> void:
 
 const _EFFECT_TINT_SHADER := preload("res://shaders/effect_tint.gdshader")
 
+# Active skill being played (cleared when the skill anim finishes).
+# main.attack_at reads this to apply the skill's damage shape /
+# range / multiplier in place of the basic-attack cone.
+var active_skill: Resource = null
+
 # Fire a hotbar skill on the player. Equips the skill's effect_a /
 # effect_b / slash overlays onto the character's vfx / vfx2 / slash
 # layers (with tint shader for exact-color recolor), then plays the
@@ -200,6 +205,7 @@ func play_skill(def: Resource) -> void:
 	# Cancel any in-flight attack so a button mash always triggers
 	# the latest skill rather than queueing.
 	attacking = false
+	active_skill = def
 	# Equip skill overlays + colors.
 	if String(def.effect_a_folder) != "":
 		character.equip("vfx", String(def.effect_a_folder))
@@ -232,6 +238,7 @@ func _on_skill_finished() -> void:
 		character.clear_layer("vfx")
 		character.clear_layer("vfx2")
 		character.clear_layer("slash")
+	active_skill = null
 	_on_attack_finished()
 
 # Apply the effect_tint shader to a layer with the given color so the
