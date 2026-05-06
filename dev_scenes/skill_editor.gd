@@ -216,6 +216,10 @@ func _build_ui() -> void:
 	_preview_vp.transparent_bg = true
 	_preview_vp.disable_3d = true
 	_preview_vp.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
+	# Render every frame so the LayeredCharacter's anim playback shows
+	# motion. Default UPDATE_WHEN_VISIBLE only repaints on dirty events
+	# and the rig was freezing on its first frame.
+	_preview_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	holder.add_child(_preview_vp)
 	_preview_char = LayeredCharacterScript.new()
 	(_preview_char as Node2D).position = Vector2(210, 280)
