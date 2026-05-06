@@ -180,7 +180,17 @@ func _ready() -> void:
 	if USE_PAINTED_WORLD:
 		painted_world = PAINTED_WORLD_SCENE.instantiate()
 		world.add_child(painted_world)
-		painted_world.add_child(player)   # sibling of TileMapLayers
+		# Player lives on the FLORA TileMapLayer so it y-sorts directly
+		# against trees and tall props. z_index = 2 lifts the player
+		# above ground / grass / decor layers (which sit at z=0) so
+		# flat tiles never occlude the body, only flora at the same
+		# layer can hide it via y-sort.
+		var flora_layer: Node = painted_world.get_node_or_null("flora")
+		if flora_layer:
+			flora_layer.add_child(player)
+		else:
+			painted_world.add_child(player)
+		(player as Node2D).z_index = 2
 		var spawn := painted_world.get_node_or_null("spawns/player_start")
 		if spawn:
 			player.position = (spawn as Marker2D).position
