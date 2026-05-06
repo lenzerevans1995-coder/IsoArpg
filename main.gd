@@ -110,6 +110,14 @@ var clouds: Array[Sprite2D] = []
 var cloud_velocities: Array[Vector2] = []
 @onready var player_scene := preload("res://player.tscn")
 const PLAYER_LAYERED_SCRIPT := preload("res://player_layered.gd")
+# Painted-world hook. When true, main.gd loads scenes/world_painted.tscn
+# under the World node and skips the chunk streamer + custom paint
+# editor's arena.json. Player spawns at the spawn marker (or 0,0 if
+# absent). Flip to false to fall back to the legacy chunk-streamed
+# world while the painted scene is still under construction.
+const USE_PAINTED_WORLD := true
+const PAINTED_WORLD_SCENE := preload("res://scenes/world_painted.tscn")
+var painted_world: Node2D = null
 const EDITOR_SCENE := preload("res://editor.tscn")
 var editor: Node
 
@@ -159,33 +167,35 @@ func _ready() -> void:
 	# / chest interactions / skill bar.
 	player = PLAYER_LAYERED_SCRIPT.new()
 	world.add_child(player)
-	# Hardcoded battle-arena spawn at iso cell (-20, -20). Auto-save will
-	# overwrite this once arena.json starts persisting position again, but
-	# until that's rock-solid we always start here so the test world opens
-	# in a known state.
-	player.position = grid_to_screen(Vector2i(1, -36)) if BATTLE_WORLD else Vector2.ZERO
 	player.set("main", self)
-	# Editor overlay (toggled with key 1).
-	editor = EDITOR_SCENE.instantiate()
-	add_child(editor)
-	editor.set("main_ref", self)
-	# In BATTLE_WORLD mode, replay the persistent arena.json into the world
-	# at boot so painted floors, walls and elevated A1/A6 tiles are visible
-	# (and walkable) without having to open the editor first.
-	if BATTLE_WORLD and editor.has_method("_load_arena"):
-		# Reparent paint_root onto world first so loaded paints share the
-		# main world's transform / y-sort instead of being stuck on the
-		# CanvasLayer at default identity.
-		if editor.has_method("_ensure_paint_root_on_world"):
-			editor._ensure_paint_root_on_world()
-		editor._load_arena()
-		editor.set("_auto_loaded_draft", true)
-		_apply_battle_terrain_rules()
-		# Force the test-arena spawn AFTER the editor finishes loading the
-		# arena (which would otherwise restore the saved player position).
-		# Until position-save is reliable we always reset here.
-		player.position = grid_to_screen(Vector2i(1, -36))
-	_update_chunks()
+
+	if USE_PAINTED_WORLD:
+		# Painted world path: drop scenes/world_painted.tscn under World,
+		# spawn the player at its 'player_start' Marker2D (or origin if
+		# missing), skip the chunk streamer + custom paint editor entirely.
+		painted_world = PAINTED_WORLD_SCENE.instantiate()
+		world.add_child(painted_world)
+		var spawn := painted_world.get_node_or_null("spawns/player_start")
+		if spawn:
+			player.position = (spawn as Marker2D).global_position
+		else:
+			player.position = Vector2.ZERO
+	else:
+		# Legacy chunk-streamed world. Hardcoded battle-arena spawn at
+		# iso cell (1, -36); arena.json overwrites once persistent.
+		player.position = grid_to_screen(Vector2i(1, -36)) if BATTLE_WORLD else Vector2.ZERO
+		# Editor overlay (toggled with key 1).
+		editor = EDITOR_SCENE.instantiate()
+		add_child(editor)
+		editor.set("main_ref", self)
+		if BATTLE_WORLD and editor.has_method("_load_arena"):
+			if editor.has_method("_ensure_paint_root_on_world"):
+				editor._ensure_paint_root_on_world()
+			editor._load_arena()
+			editor.set("_auto_loaded_draft", true)
+			_apply_battle_terrain_rules()
+			player.position = grid_to_screen(Vector2i(1, -36))
+		_update_chunks()
 	_set_lighting_mode(1)
 	_spawn_combat_hud()
 	# Goblin spawn disabled for now (paused while iterating on dungeon
