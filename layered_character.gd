@@ -29,7 +29,9 @@ const LAYERS := [
 	"head",
 	"offhand",
 	"mainhand",
-	"vfx",
+	"slash",     # weapon-trail overlay (Slash1/Slash2 sheets)
+	"vfx",       # primary skill effect (Effect#/Magic# sheets)
+	"vfx2",      # secondary effect for combo skills
 ]
 
 # Some slots don't have every anim file; if a sheet is missing the layer hides
