@@ -40,6 +40,12 @@ var _def: Resource              # current SkillDef being edited
 var _preview_vp: SubViewport
 var _preview_char: Node2D
 var _preview_dir: int = 2
+# Cache last-played anim so colour pick doesn't restart playback
+# every refresh. play_anim resets _anim_time = 0 — with the shader
+# tint repaint piling on, the rig appeared to freeze on frame 0.
+var _last_played_anim: String = ""
+var _last_played_dir: int = -1
+var _last_loadout: Dictionary = {}
 
 # Field refs.
 var _f_id: LineEdit
@@ -347,6 +353,23 @@ func _refresh_preview() -> void:
 	if String(_def.slash_folder) != "":
 		_preview_char.call("equip", "slash", String(_def.slash_folder))
 		_apply_effect_tint("slash", _def.slash_color)
+	# Set direction + (re)play the anim. Only restart playback if the
+	# anim/dir/loadout actually changed — otherwise a color pick would
+	# reset _anim_time = 0 every refresh and the rig snaps back to
+	# frame 0 each swatch click.
+	_preview_char.call("set_direction", _preview_dir)
+	var loadout_sig: Dictionary = {
+		"a": String(_def.effect_a_folder),
+		"b": String(_def.effect_b_folder),
+		"s": String(_def.slash_folder),
+		"w": _preview_weapon,
+	}
+	var anim: String = String(_def.trigger_anim)
+	if anim != _last_played_anim or _preview_dir != _last_played_dir or loadout_sig != _last_loadout:
+		_preview_char.call("play_anim", anim, 12.0, true, Callable())
+		_last_played_anim = anim
+		_last_played_dir = _preview_dir
+		_last_loadout = loadout_sig
 
 # Replaces the layer's color with the picked tint via a luminance-tint
 # shader, so the rendered color matches the swatch exactly. modulate
@@ -377,8 +400,6 @@ func _get_layer_sprite(layer: String) -> Sprite2D:
 	if _preview_char == null:
 		return null
 	return _preview_char.get_node_or_null(layer) as Sprite2D
-	_preview_char.call("set_direction", _preview_dir)
-	_preview_char.call("play_anim", String(_def.trigger_anim), 12.0, true, Callable())
 
 # --- save / load --------------------------------------------------
 
