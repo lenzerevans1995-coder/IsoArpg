@@ -64,6 +64,33 @@ func _ready() -> void:
 	_build_ui()
 	_refresh_preview()
 	_load_fields_from_def()
+	# Capture key presses for quick-fire (1-6 for attack anims, 0 for Idle).
+	# Doesn't fight LineEdit text input — _input only reads keys when no
+	# text field is focused.
+	set_process_unhandled_key_input(true)
+
+# Quick-fire keybinds for the preview — match the Unity creator's
+# attack-cycle workflow. Updates the trigger anim dropdown so the
+# saved SkillDef reflects whatever you last fired.
+const _ANIM_KEYMAP := {
+	KEY_1: "Attack1",   # primary attack (RMB equivalent)
+	KEY_2: "Attack2",   # alt attack
+	KEY_3: "Attack3",
+	KEY_4: "Attack4",
+	KEY_5: "Attack5",
+	KEY_6: "Special1",  # cast pose / spell trigger
+	KEY_0: "Idle",      # back to rest
+}
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not (event is InputEventKey) or not event.pressed or event.echo:
+		return
+	var anim: String = String(_ANIM_KEYMAP.get(event.keycode, ""))
+	if anim == "":
+		return
+	_def.trigger_anim = anim
+	_set_option_to_value(_f_anim, ANIM_OPTIONS, anim)
+	_refresh_preview()
 
 func _load_palette() -> void:
 	if FileAccess.file_exists(PALETTE_PATH):

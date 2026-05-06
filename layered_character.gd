@@ -152,8 +152,14 @@ func _refresh_layer(layer_name: String) -> void:
 func _apply_region_to_all() -> void:
 	var rect := Rect2(_frame * FRAME_W, _direction * FRAME_H, FRAME_W, FRAME_H)
 	for layer_name in LAYERS:
+		# Guarded — _ready may not yet have populated every layer
+		# (e.g. after adding 'slash' / 'vfx2' to LAYERS, an existing
+		# scene instance hits this loop before its _ready finishes
+		# building the new Sprite2Ds).
+		if not _sprites.has(layer_name):
+			continue
 		var s: Sprite2D = _sprites[layer_name]
-		if s.texture != null:
+		if s != null and s.texture != null:
 			s.region_rect = rect
 
 static func _load_sheet(folder: String, anim_name: String) -> Texture2D:

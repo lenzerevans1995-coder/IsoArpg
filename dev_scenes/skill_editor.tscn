@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8skilleditor01"]
+[gd_scene format=3 uid="uid://r6m6udvdkvvs"]
 
 [ext_resource type="Script" path="res://dev_scenes/skill_editor.gd" id="1_skill_editor"]
 
