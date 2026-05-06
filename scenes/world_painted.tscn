@@ -1,26 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8worldpainted01"]
+[gd_scene format=3 uid="uid://dub5k0334e8hg"]
 
-[ext_resource type="TileSet" uid="uid://b8worldtileset01" path="res://scenes/world_tileset.tres" id="1_tileset"]
+[ext_resource type="TileSet" uid="uid://dub5o86t3fphg" path="res://scenes/world_tileset.tres" id="1_tileset"]
 
-[node name="WorldPainted" type="Node2D"]
+[node name="WorldPainted" type="Node2D" unique_id=1089704045]
 y_sort_enabled = true
 
-[node name="ground" type="TileMapLayer" parent="."]
-y_sort_enabled = true
-tile_set = ExtResource("1_tileset")
-
-[node name="ground_decor" type="TileMapLayer" parent="."]
+[node name="ground" type="TileMapLayer" parent="." unique_id=1842303113]
 y_sort_enabled = true
 tile_set = ExtResource("1_tileset")
 
-[node name="walls" type="TileMapLayer" parent="."]
+[node name="grass" type="TileMapLayer" parent="." unique_id=1842303114]
 y_sort_enabled = true
 tile_set = ExtResource("1_tileset")
 
-[node name="flora" type="TileMapLayer" parent="."]
+[node name="ground_decor" type="TileMapLayer" parent="." unique_id=77187863]
 y_sort_enabled = true
 tile_set = ExtResource("1_tileset")
 
-[node name="spawns" type="Node2D" parent="."]
+[node name="walls" type="TileMapLayer" parent="." unique_id=1931950393]
+y_sort_enabled = true
+tile_set = ExtResource("1_tileset")
 
-[node name="player_start" type="Marker2D" parent="spawns"]
+[node name="flora" type="TileMapLayer" parent="." unique_id=128389729]
+y_sort_enabled = true
+tile_set = ExtResource("1_tileset")
+
+[node name="spawns" type="Node2D" parent="." unique_id=1303303199]
+
+[node name="player_start" type="Marker2D" parent="spawns" unique_id=773361639]
