@@ -36,7 +36,8 @@ texture = ExtResource("5_usih3")
 texture_region_size = Vector2i(256, 256)
 0:0/0 = 0
 0:0/0/texture_origin = Vector2i(0, 64)
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(23.143433, 13.547371, 0, -32, -22.578953, 14.676323, 0, 32)
+0:0/0/y_sort_origin = 245
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(12, 4, 0, -2, -12, 4, 0, 10)
 
 [resource]
 tile_shape = 1
