@@ -140,25 +140,32 @@ static func play(def: Resource, parent: Node, origin: Vector2, target: Vector2) 
 		p_scale = float(sd.projectile_scale)
 	origin = origin + origin_off
 	target = target + target_off
+	# Important: add to the parent FIRST, then set global_position.
+	# Setting `position` before parenting puts the flipbook at parent-
+	# local coords equal to the global value, which double-offsets when
+	# the parent itself has a non-zero global_position (typical when
+	# parent = a TileMapLayer inside the painted-world tree).
 	match motion:
 		"at_player":
 			var fb := _make_flipbook(frames, fps, color, p_scale)
-			fb.position = origin
+			fb.z_index = 10; fb.z_as_relative = true
 			parent.add_child(fb)
+			fb.global_position = origin
 		"at_target":
 			var fb2 := _make_flipbook(frames, fps, color, p_scale)
-			fb2.position = target
+			fb2.z_index = 10; fb2.z_as_relative = true
 			parent.add_child(fb2)
+			fb2.global_position = target
 		"travel":
 			var fb3 := _make_flipbook(frames, fps, color, p_scale)
-			fb3.position = origin
+			fb3.z_index = 10; fb3.z_as_relative = true
+			parent.add_child(fb3)
+			fb3.global_position = origin
 			fb3.rotation = (target - origin).angle()
 			var dist: float = origin.distance_to(target)
 			var speed: float = max(50.0, float(def.get("projectile_speed")))
-			# Tween-based linear travel; the flipbook animates in parallel.
-			parent.add_child(fb3)
 			var tw := fb3.create_tween()
-			tw.tween_property(fb3, "position", target, dist / speed)
+			tw.tween_property(fb3, "global_position", target, dist / speed)
 			tw.tween_callback(func(): if is_instance_valid(fb3): fb3.queue_free())
 		"arc_rain":
 			var count: int = max(1, int(def.get("projectile_arc_count")))
@@ -169,8 +176,9 @@ static func play(def: Resource, parent: Node, origin: Vector2, target: Vector2) 
 				var spot: Vector2 = target + Vector2(cos(ang), sin(ang)) * r
 				var drop_frames: Array = frames.duplicate()
 				var fb4 := _make_flipbook(drop_frames, fps, color, p_scale)
-				fb4.position = spot + Vector2(0, -200)
+				fb4.z_index = 10; fb4.z_as_relative = true
 				parent.add_child(fb4)
+				fb4.global_position = spot + Vector2(0, -200)
 				var tw2 := fb4.create_tween()
 				tw2.tween_interval(float(i) * 0.05)
-				tw2.tween_property(fb4, "position", spot, 0.35)
+				tw2.tween_property(fb4, "global_position", spot, 0.35)

@@ -258,9 +258,13 @@ func play_skill(def: Resource) -> void:
 	# Spawn the projectile (Phase 4) — uses pack/category/name from
 	# SkillDef and the chosen motion mode. Origin = player; target =
 	# cursor world position. Empty pack = no projectile, skip silently.
+	# Parent to the player's parent (inside the SubViewport / world)
+	# instead of `main` (the editor root, outside the viewport) so the
+	# projectile renders in the same viewport as the player and shares
+	# its coordinate system.
 	if String(def.get("projectile_pack")) != "" and String(def.get("projectile_name")) != "":
 		var ProjRuntime := preload("res://projectile_runtime.gd")
-		var proj_parent: Node = main if main else self
+		var proj_parent: Node = get_parent() if get_parent() else self
 		ProjRuntime.play(def, proj_parent, global_position, get_global_mouse_position())
 	_play(String(def.trigger_anim), ATTACK_FPS, false, _on_skill_finished)
 
