@@ -10,7 +10,8 @@ shader_parameter/water2_col = Color(0.04, 0.35, 0.78, 1)
 shader_parameter/foam_col = Color(0.8125, 0.9609, 0.9648, 1)
 shader_parameter/distortion_speed = 2.0
 shader_parameter/tile = Vector2(5.0, 5.0)
-shader_parameter/pixel_size = 128.0
+shader_parameter/world_pixel = 8.0
+shader_parameter/world_scale = 256.0
 shader_parameter/iso_y_squash = 0.5
 
 [node name="WorldPainted" type="Node2D" unique_id=1089704045]

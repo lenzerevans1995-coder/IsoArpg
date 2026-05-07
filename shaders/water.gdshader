@@ -18,12 +18,24 @@ uniform vec4 foam_col   : source_color = vec4(0.8125, 0.9609, 0.9648, 1.0);
 
 uniform float distortion_speed : hint_range(0.1, 8.0) = 2.0;
 uniform vec2  tile = vec2(5.0, 5.0);
-// Pixelate the rendered surface to N steps per UV unit. 128 = matches
-// the project's 128 px iso tile + chunky pixel-art output.
-uniform float pixel_size : hint_range(16.0, 512.0) = 128.0;
+// Side length (in world pixels) of each chunky pixel block. Bigger
+// number = chunkier blocks. 8 reads as solid pixel-art at the demo
+// scale; 4 is finer; 16 is very blocky.
+uniform float world_pixel : hint_range(1.0, 32.0) = 8.0;
+// World units per repeat of the noise pattern. 256 means the whole
+// circle layout cycles every 256 world px regardless of how big any
+// individual tile is — adjacent tiles share the same noise field so
+// they read as one continuous body of water, not separate puddles.
+uniform float world_scale : hint_range(32.0, 1024.0) = 256.0;
 // 1.0 = render flat / top-down. 0.5 = stretch the V axis 2:1 so wave
 // streaks read along the iso diamond (this project's tile_size 128x64).
 uniform float iso_y_squash : hint_range(0.3, 1.0) = 0.5;
+
+// World position of this fragment, computed in the vertex stage so
+// neighboring tiles see CONTINUOUS coordinates (previously the per-tile
+// UV [0..1] restarted at every tile edge, making each cell its own
+// little island of water with visible seams).
+varying vec2 v_world;
 
 const float TWOPI = 6.283185307;
 const float SIXPI = 18.84955592;
@@ -135,18 +147,26 @@ vec3 water(vec2 uv, vec3 cdir, float t) {
 	return ret;
 }
 
+void vertex() {
+	// Forward the world-space position so the fragment stage can sample
+	// noise that's continuous across tile boundaries.
+	v_world = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
+}
+
 void fragment() {
-	// Tile-aligned pixelation: snap UV to a `pixel_size`-step grid so
-	// the output looks like a chunky pixel-art surface rather than a
-	// smooth gradient. 128 cells across the diamond is a good match for
-	// the 128 px iso atlas tile.
-	vec2 uv = floor(UV * pixel_size) / pixel_size;
-	// Stretch V to mimic the 2:1 iso projection so wave streaks read
-	// "along the diamond." Tile size in this project is 128x64 (1:0.5).
+	// Snap world position to a chunky grid so the surface reads as
+	// pixel art. The grid is defined in WORLD coords (not per-tile),
+	// so a single 8x8 pixel never spans two tiles unless the tile
+	// boundary itself sits on the grid line.
+	vec2 wp = floor(v_world / world_pixel) * world_pixel;
+	// Convert chunked world position into the noise function's UV-like
+	// input. Because v_world is continuous across the grid, adjacent
+	// tiles share one shifting body of water — no per-cell reset.
+	vec2 uv = wp / world_scale;
 	uv.y *= iso_y_squash;
-	// Use the source tile's alpha as the diamond mask — atlas water
-	// tiles have transparent outer corners, and we want to keep that
-	// shape rather than fill the entire square fragment.
+	// Source tile alpha = diamond mask. Iso atlas tiles have
+	// transparent outer corners; keep the shape rather than filling
+	// the whole quad.
 	vec4 src = texture(TEXTURE, UV);
 	if (src.a < 0.05) discard;
 	vec3 col = water(uv * tile, vec3(0.0, 1.0, 0.0), TIME * distortion_speed);
