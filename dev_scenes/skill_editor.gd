@@ -506,15 +506,14 @@ func _form_row(label: String, control: Control, swatch: Button = null) -> HBoxCo
 	control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hb.add_child(control)
 	if swatch != null:
-		swatch.custom_minimum_size = Vector2(22, 22)
 		hb.add_child(swatch)
 	return hb
 
 # Build a swatch button bound to a getter / setter on the SkillDef.
-func _swatch(getter: Callable, setter: Callable) -> Button:
+func _swatch(getter: Callable, setter: Callable, tip: String = "Pick a color from the 81-swatch palette") -> Button:
 	var btn := Button.new()
-	btn.flat = true
-	btn.custom_minimum_size = Vector2(22, 22)
+	btn.custom_minimum_size = Vector2(34, 28)
+	btn.tooltip_text = tip
 	_paint_color_button(btn, getter.call())
 	btn.pressed.connect(func(): _open_palette_popup(btn, getter, setter))
 	return btn
@@ -662,74 +661,63 @@ func _build_col_projectile() -> Control:
 	_proj_info.add_theme_color_override("font_color", COL_TEXT_FAINT)
 	_proj_info.add_theme_font_size_override("font_size", 10)
 	pj.add_child(_proj_info)
-	col.add_child(_section_card("06", "Projectile", pj))
-
-	# MOTION + TIMING merged.
-	var mt := VBoxContainer.new()
-	mt.add_theme_constant_override("separation", 8)
+	# Motion + numeric tuning all in the SAME card so nothing gets cut
+	# off when the projectile tab is short on vertical space. Two-column
+	# field grid for the spinboxes packs more knobs per pixel.
 	_f_proj_motion = OptionButton.new()
 	for o in MOTION_OPTIONS: _f_proj_motion.add_item(o)
 	_f_proj_motion.item_selected.connect(func(idx):
 		_def.projectile_motion = MOTION_OPTIONS[idx]; _refresh_proj_visibility())
 	_style_input(_f_proj_motion)
-	mt.add_child(_form_row("Motion", _f_proj_motion))
+	pj.add_child(_form_row("Motion", _f_proj_motion))
 
-	_f_proj_scale = SpinBox.new()
-	_f_proj_scale.min_value = 0.1; _f_proj_scale.max_value = 4.0; _f_proj_scale.step = 0.05
-	_f_proj_scale.value = 0.5
-	_f_proj_scale.value_changed.connect(func(v): _def.projectile_scale = float(v))
-	_style_input(_f_proj_scale)
-	mt.add_child(_form_row("Scale", _f_proj_scale))
+	# Two-column SpinBox grid: pairs of (label / spin) per row.
+	var spin_grid := GridContainer.new()
+	spin_grid.columns = 4
+	spin_grid.add_theme_constant_override("h_separation", 8)
+	spin_grid.add_theme_constant_override("v_separation", 6)
+	pj.add_child(spin_grid)
 
-	_f_proj_fps = SpinBox.new()
-	_f_proj_fps.min_value = 1; _f_proj_fps.max_value = 60; _f_proj_fps.step = 1
-	_f_proj_fps.value = 24
-	_f_proj_fps.value_changed.connect(func(v): _def.projectile_fps = float(v))
-	_style_input(_f_proj_fps)
-	mt.add_child(_form_row("FPS", _f_proj_fps))
+	_f_proj_scale = _grid_spin(spin_grid, "Scale", 0.1, 4.0, 0.05, 0.5,
+		func(v): _def.projectile_scale = float(v))
+	_f_proj_fps = _grid_spin(spin_grid, "FPS", 1, 60, 1, 24,
+		func(v): _def.projectile_fps = float(v))
+	_f_proj_speed = _grid_spin(spin_grid, "Speed", 50, 2000, 10, 220,
+		func(v): _def.projectile_speed = float(v))
+	_f_proj_start = _grid_spin(spin_grid, "Start", 0, 64, 1, 0,
+		func(v): _def.projectile_start_frame = int(v))
+	_f_proj_end = _grid_spin(spin_grid, "End", -1, 64, 1, -1,
+		func(v): _def.projectile_end_frame = int(v))
+	_f_proj_arc_count = _grid_spin(spin_grid, "Arc N", 1, 32, 1, 8,
+		func(v): _def.projectile_arc_count = int(v))
+	_f_proj_arc_radius = _grid_spin(spin_grid, "Arc R", 0, 600, 8, 120,
+		func(v): _def.projectile_arc_radius = float(v))
 
-	_f_proj_speed = SpinBox.new()
-	_f_proj_speed.min_value = 50; _f_proj_speed.max_value = 2000; _f_proj_speed.step = 10
-	_f_proj_speed.value = 220
-	_f_proj_speed.value_changed.connect(func(v): _def.projectile_speed = float(v))
-	_style_input(_f_proj_speed)
-	mt.add_child(_form_row("Speed", _f_proj_speed))
+	col.add_child(_section_card("06", "Projectile", pj))
 
-	col.add_child(_section_card("07", "Motion & Timing", mt))
-
-	# FRAME TRIM + ARC params.
-	var ft := VBoxContainer.new()
-	ft.add_theme_constant_override("separation", 8)
-	_f_proj_start = SpinBox.new()
-	_f_proj_start.min_value = 0; _f_proj_start.max_value = 64; _f_proj_start.step = 1
-	_f_proj_start.value = 0
-	_f_proj_start.value_changed.connect(func(v): _def.projectile_start_frame = int(v))
-	_style_input(_f_proj_start)
-	ft.add_child(_form_row("Start frame", _f_proj_start))
-
-	_f_proj_end = SpinBox.new()
-	_f_proj_end.min_value = -1; _f_proj_end.max_value = 64; _f_proj_end.step = 1
-	_f_proj_end.value = -1
-	_f_proj_end.value_changed.connect(func(v): _def.projectile_end_frame = int(v))
-	_style_input(_f_proj_end)
-	ft.add_child(_form_row("End frame", _f_proj_end))
-
-	_f_proj_arc_count = SpinBox.new()
-	_f_proj_arc_count.min_value = 1; _f_proj_arc_count.max_value = 32; _f_proj_arc_count.step = 1
-	_f_proj_arc_count.value = 8
-	_f_proj_arc_count.value_changed.connect(func(v): _def.projectile_arc_count = int(v))
-	_style_input(_f_proj_arc_count)
-	ft.add_child(_form_row("Arc count", _f_proj_arc_count))
-
-	_f_proj_arc_radius = SpinBox.new()
-	_f_proj_arc_radius.min_value = 0; _f_proj_arc_radius.max_value = 600; _f_proj_arc_radius.step = 8
-	_f_proj_arc_radius.value = 120
-	_f_proj_arc_radius.value_changed.connect(func(v): _def.projectile_arc_radius = float(v))
-	_style_input(_f_proj_arc_radius)
-	ft.add_child(_form_row("Arc radius", _f_proj_arc_radius))
-
-	col.add_child(_section_card("08", "Trim & Arc", ft))
+	# Layer guide for the projectile tab so user has a hint.
+	var hint_v := VBoxContainer.new()
+	var hint := Label.new()
+	hint.text = "Drag the swatch next to NAME to recolor the projectile.\nMotion modes — at_player / at_target / travel / arc_rain.\nScroll the preview viewport with the mouse wheel to zoom."
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD
+	hint.add_theme_color_override("font_color", COL_TEXT_FAINT)
+	hint.add_theme_font_size_override("font_size", 10)
+	hint_v.add_child(hint)
+	col.add_child(_section_card("07", "Tips", hint_v))
 	return col
+
+func _grid_spin(grid: GridContainer, label: String, lo: float, hi: float, step: float, val: float, on_changed: Callable) -> SpinBox:
+	var l := _label_dim(label)
+	l.custom_minimum_size = Vector2(58, 0)
+	l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	grid.add_child(l)
+	var sb := SpinBox.new()
+	sb.min_value = lo; sb.max_value = hi; sb.step = step; sb.value = val
+	sb.value_changed.connect(on_changed)
+	_style_input(sb)
+	sb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.add_child(sb)
+	return sb
 
 func _build_col_preview() -> Control:
 	var col := VBoxContainer.new()
@@ -873,14 +861,17 @@ func _add_color_row(grid: GridContainer, label: String, getter: Callable, setter
 func _paint_color_button(btn: Button, color: Color) -> void:
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = color
-	sb.border_width_left = 1
-	sb.border_width_right = 1
-	sb.border_width_top = 1
-	sb.border_width_bottom = 1
-	sb.border_color = Color(0, 0, 0, 0.5)
+	sb.border_width_left = 2; sb.border_width_right = 2
+	sb.border_width_top = 2; sb.border_width_bottom = 2
+	sb.border_color = COL_RULE
+	sb.corner_radius_top_left = 2; sb.corner_radius_top_right = 2
+	sb.corner_radius_bottom_left = 2; sb.corner_radius_bottom_right = 2
 	btn.add_theme_stylebox_override("normal", sb)
-	btn.add_theme_stylebox_override("hover", sb)
-	btn.add_theme_stylebox_override("pressed", sb)
+	# Hover lifts to amber border so the swatch reads as interactive.
+	var hov := sb.duplicate() as StyleBoxFlat
+	hov.border_color = COL_AMBER
+	btn.add_theme_stylebox_override("hover", hov)
+	btn.add_theme_stylebox_override("pressed", hov)
 
 func _open_palette_popup(anchor_btn: Button, getter: Callable, setter: Callable) -> void:
 	var popup := PopupPanel.new()
