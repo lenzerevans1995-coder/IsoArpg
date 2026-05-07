@@ -67,6 +67,13 @@ var _last_loadout: Dictionary = {}
 # every cycle. Tracks the previous frame index so we can detect the
 # wraparound (current_frame < last_frame).
 var _proj_last_frame: int = -1
+
+# Damage tab refs.
+const DAMAGE_SHAPES := ["cone", "circle", "single", "none"]
+var _f_dmg_shape: OptionButton
+var _f_dmg_range: SpinBox
+var _f_dmg_angle: SpinBox
+var _damage_overlay: Node2D    # draws the cone / circle / single marker
 # Single drag owner so the dummy enemy and the offset markers can't all
 # capture the same click — overlapping hit-zones used to make moving
 # the enemy also slide the markers (and vice-versa).
@@ -243,9 +250,11 @@ func _build_ui() -> void:
 	var t_body := _build_col_identity();    t_body.name = "Body"
 	var t_fx   := _build_col_overlays();    t_fx.name   = "Effects"
 	var t_proj := _build_col_projectile();  t_proj.name = "Projectile"
+	var t_dmg  := _build_col_damage();      t_dmg.name  = "Damage"
 	tabs.add_child(t_body)
 	tabs.add_child(t_fx)
 	tabs.add_child(t_proj)
+	tabs.add_child(t_dmg)
 	split.add_child(tabs)
 
 	var preview_col := _build_col_preview()
@@ -550,22 +559,7 @@ func _build_col_identity() -> Control:
 	body.add_child(rot_btn)
 	col.add_child(_section_card("01", "Body", body))
 
-	# DAMAGE card.
-	var dmg := VBoxContainer.new()
-	dmg.add_theme_constant_override("separation", 14)
-	_f_dmg = SpinBox.new()
-	_f_dmg.min_value = 0.1; _f_dmg.max_value = 10.0; _f_dmg.step = 0.1
-	_f_dmg.value = 1.0
-	_f_dmg.value_changed.connect(func(v): _def.damage_mult = float(v))
-	_style_input(_f_dmg)
-	dmg.add_child(_form_row("Mult", _f_dmg))
-	var hint := Label.new()
-	hint.text = "Damage shape, range, and angle live on the SkillDef and are tuned per-skill in the .tres."
-	hint.autowrap_mode = TextServer.AUTOWRAP_WORD
-	hint.add_theme_color_override("font_color", COL_TEXT_FAINT)
-	hint.add_theme_font_size_override("font_size", 10)
-	dmg.add_child(hint)
-	col.add_child(_section_card("02", "Damage", dmg))
+	# (Damage moved to its own tab — see _build_col_damage.)
 
 	# Tips card.
 	var tips_v := VBoxContainer.new()
@@ -576,6 +570,60 @@ func _build_col_identity() -> Control:
 	tips.add_theme_font_size_override("font_size", 10)
 	tips_v.add_child(tips)
 	col.add_child(_section_card("03", "Hotkeys", tips_v))
+	return col
+
+func _build_col_damage() -> Control:
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 14)
+
+	# SHAPE / RANGE / ANGLE / MULT in one card.
+	var dmg := VBoxContainer.new()
+	dmg.add_theme_constant_override("separation", 10)
+
+	_f_dmg_shape = OptionButton.new()
+	for s in DAMAGE_SHAPES: _f_dmg_shape.add_item(s)
+	_f_dmg_shape.item_selected.connect(func(idx):
+		_def.damage_shape = DAMAGE_SHAPES[idx]
+		_refresh_damage_overlay())
+	_style_input(_f_dmg_shape)
+	dmg.add_child(_form_row("Shape", _f_dmg_shape))
+
+	_f_dmg_range = SpinBox.new()
+	_f_dmg_range.min_value = 0; _f_dmg_range.max_value = 600; _f_dmg_range.step = 4
+	_f_dmg_range.value = 110
+	_f_dmg_range.value_changed.connect(func(v):
+		_def.damage_range = float(v)
+		_refresh_damage_overlay())
+	_style_input(_f_dmg_range)
+	dmg.add_child(_form_row("Range", _f_dmg_range))
+
+	_f_dmg_angle = SpinBox.new()
+	_f_dmg_angle.min_value = 10; _f_dmg_angle.max_value = 360; _f_dmg_angle.step = 5
+	_f_dmg_angle.value = 90
+	_f_dmg_angle.value_changed.connect(func(v):
+		_def.damage_angle_deg = float(v)
+		_refresh_damage_overlay())
+	_style_input(_f_dmg_angle)
+	dmg.add_child(_form_row("Cone angle", _f_dmg_angle))
+
+	_f_dmg = SpinBox.new()
+	_f_dmg.min_value = 0.1; _f_dmg.max_value = 10.0; _f_dmg.step = 0.1
+	_f_dmg.value = 1.0
+	_f_dmg.value_changed.connect(func(v): _def.damage_mult = float(v))
+	_style_input(_f_dmg)
+	dmg.add_child(_form_row("Mult", _f_dmg))
+
+	col.add_child(_section_card("09", "Damage Area", dmg))
+
+	# Legend / hint.
+	var legend_v := VBoxContainer.new()
+	var legend := Label.new()
+	legend.text = "cone   — sector facing the cursor (range + angle)\ncircle — full 360° around the player (range)\nsingle — nearest enemy in front, within range\nnone   — self-buff / no damage\n\nThe red overlay in the preview reflects what gets hit."
+	legend.autowrap_mode = TextServer.AUTOWRAP_WORD
+	legend.add_theme_color_override("font_color", COL_TEXT_FAINT)
+	legend.add_theme_font_size_override("font_size", 10)
+	legend_v.add_child(legend)
+	col.add_child(_section_card("10", "Shapes", legend_v))
 	return col
 
 func _build_col_overlays() -> Control:
@@ -809,7 +857,74 @@ func _build_col_preview() -> Control:
 		func(world_pos): _def.projectile_target_offset = world_pos - _target_ref)
 	(_target_marker as Node2D).position = _target_ref + Vector2(0, -32)
 	_preview_vp.add_child(_target_marker)
+
+	# Damage-area overlay sits ON TOP of the player and renders the
+	# current shape (cone / circle / single) live as the user tweaks
+	# the Damage tab. Translucent red fill + crisper outline so it
+	# reads against the body silhouette without obscuring it.
+	_damage_overlay = _make_damage_overlay()
+	(_damage_overlay as Node2D).position = _PREVIEW_PLAYER_POS
+	_preview_vp.add_child(_damage_overlay)
 	return col
+
+func _make_damage_overlay() -> Node2D:
+	var n := Node2D.new()
+	var sc := GDScript.new()
+	sc.source_code = """
+extends Node2D
+var editor_ref: Node = null
+func _process(_d: float) -> void:
+	queue_redraw()
+func _draw() -> void:
+	if editor_ref == null or editor_ref._def == null: return
+	var def: Resource = editor_ref._def
+	var shape: String = String(def.damage_shape)
+	var rng: float = float(def.damage_range)
+	var ang: float = deg_to_rad(float(def.damage_angle_deg))
+	# Forward = right (+x) in editor preview. Players in-game face the
+	# cursor; here we pick a stable forward so the cone doesn't spin.
+	var fwd: Vector2 = Vector2(1, 0)
+	var fill := Color(1.0, 0.32, 0.28, 0.18)
+	var line := Color(1.0, 0.32, 0.28, 0.95)
+	match shape:
+		'circle':
+			draw_circle(Vector2.ZERO, rng, fill)
+			draw_arc(Vector2.ZERO, rng, 0.0, TAU, 64, line, 2.0)
+		'cone':
+			# Filled sector: triangulate the half-cone with a small step.
+			var half: float = ang * 0.5
+			var steps: int = 32
+			var pts := PackedVector2Array()
+			pts.append(Vector2.ZERO)
+			for i in range(steps + 1):
+				var t: float = float(i) / float(steps)
+				var theta: float = -half + ang * t
+				pts.append(fwd.rotated(theta) * rng)
+			pts.append(Vector2.ZERO)
+			var cols := PackedColorArray()
+			for i in pts.size(): cols.append(fill)
+			draw_polygon(pts, cols)
+			# Outline edges + arc.
+			draw_line(Vector2.ZERO, fwd.rotated(-half) * rng, line, 2.0)
+			draw_line(Vector2.ZERO, fwd.rotated( half) * rng, line, 2.0)
+			draw_arc(Vector2.ZERO, rng, fwd.angle() - half, fwd.angle() + half, 32, line, 2.0)
+		'single':
+			# Marker at the nearest-front-enemy spot: along forward, range away.
+			var p := fwd * rng
+			draw_circle(p, 8.0, fill)
+			draw_arc(p, 8.0, 0.0, TAU, 24, line, 2.0)
+			draw_line(Vector2.ZERO, p, line, 1.0)
+		_:
+			pass  # 'none' = no overlay
+"""
+	sc.reload()
+	n.set_script(sc)
+	n.set("editor_ref", self)
+	return n
+
+func _refresh_damage_overlay() -> void:
+	if _damage_overlay:
+		(_damage_overlay as Node2D).queue_redraw()
 
 # --- field-builder helpers ----------------------------------------
 
@@ -1090,6 +1205,14 @@ func _load_fields_from_def() -> void:
 		_paint_color_button(_color_btns[2], _def.slash_color)
 	# Projectile fields.
 	_load_projectile_fields_from_def()
+	# Damage-tab fields.
+	if _f_dmg_shape:
+		var s_idx: int = DAMAGE_SHAPES.find(String(_def.damage_shape))
+		if s_idx >= 0:
+			_f_dmg_shape.selected = s_idx
+		_f_dmg_range.value = float(_def.damage_range)
+		_f_dmg_angle.value = float(_def.damage_angle_deg)
+		_refresh_damage_overlay()
 
 func _set_option_to_value(ob: OptionButton, options: Array, value: String) -> void:
 	var idx := options.find(value)
