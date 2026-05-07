@@ -527,6 +527,10 @@ func take_damage(amount: int, flash_color: Color = Color(1.5, 0.6, 0.6)) -> void
 	hp -= amount
 	_hit_flash_left = 0.12
 	_hit_flash_color = flash_color
+	# GetHit reaction anim — only if alive and not already mid-locked
+	# anim (so windups / boss specials aren't interrupted).
+	if hp > 0 and _anim_locked_until <= 0.0:
+		_play("GetHit", DEFAULT_FPS, false, 0.22)
 	# Boss enrage: the first time HP drops below threshold, flip the
 	# enraged flag, gain a permanent speed/cooldown buff, refund the
 	# special timer so the boss immediately uses its slam, and play the

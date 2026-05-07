@@ -104,6 +104,10 @@ static func _make_flipbook(frames: Array, fps: float, color: Color, scale: float
 	fb.modulate = color
 	fb.centered = true
 	fb.scale = Vector2(scale, scale)
+	# Force NEAREST so fantasy / hd1 / pack1 / pack2 projectiles all
+	# look pixel-aligned with the rest of the world. Some packs default
+	# to LINEAR via their .import settings; this overrides per-node.
+	fb.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	return fb
 
 # Spawn the projectile in the world. `parent` should be a node in the

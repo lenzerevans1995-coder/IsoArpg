@@ -3230,6 +3230,17 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 			half_angle = PI                       # all directions
 		elif skill_shape == "none":
 			return                                # self-buff, no damage
+		# Apply per-skill damage_offset so cone / circle / single hitboxes
+		# can land in front of / beside / behind the caster instead of
+		# always centered on the body. Offset is in world px relative to
+		# the player's facing direction (x = forward, y = strafe).
+		if "damage_offset" in skill:
+			var off: Vector2 = skill.damage_offset
+			# Rotate the offset into the player's facing frame so a
+			# slam authored as "40 px forward" lands forward from the
+			# player regardless of which direction they're facing.
+			var fwd_angle: float = facing.angle()
+			origin = origin + off.rotated(fwd_angle)
 	# Ranged weapon: spawn an arrow toward cursor + skip melee cone.
 	# The arrow handles its own collision + damage on impact via
 	# arrow.gd, so we just hand off the rolled damage value.

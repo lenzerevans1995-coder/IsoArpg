@@ -8,11 +8,11 @@ shader = ExtResource("2_water")
 shader_parameter/water_col = Color(0.04, 0.38, 0.88, 1)
 shader_parameter/water2_col = Color(0.04, 0.35, 0.78, 1)
 shader_parameter/foam_col = Color(0.8125, 0.9609, 0.9648, 1)
-shader_parameter/distortion_speed = 2.0
+shader_parameter/distortion_speed = 2.59500012000262
 shader_parameter/tile = Vector2(5, 5)
-shader_parameter/world_pixel = 6.0
-shader_parameter/world_scale = 256.0
-shader_parameter/iso_y_squash = 0.5
+shader_parameter/world_pixel = 2.50000007125
+shader_parameter/world_scale = 128.00000455999998
+shader_parameter/iso_y_squash = 0.50000002142093
 
 [node name="WorldPainted" type="Node2D" unique_id=1089704045]
 y_sort_enabled = true
@@ -25,7 +25,7 @@ tile_set = ExtResource("1_tileset")
 [node name="water" type="TileMapLayer" parent="." unique_id=1409921005]
 y_sort_enabled = true
 material = SubResource("Mat_water")
-tile_map_data = PackedByteArray("AAAIAAAAAgAAAAAAAAAIAAEAAgAAAAAAAAAIAAIAAgAAAAAAAAAIAAMAAgAAAAAAAAAJAAMAAgAAAAAAAAAJAAQAAgAAAAAAAAAJAAUAAgAAAAAAAAAJAAYAAgAAAAAAAAAIAAYAAgAAAAAAAAAIAAUAAgAAAAAAAAAIAAcAAgAAAAAAAAAIAAgAAgAAAAAAAAAJAAgAAgAAAAAAAAAJAAcAAgAAAAAAAAAIAAQAAgAAAAAAAAAJAAIAAgAAAAAAAAAJAAEAAgAAAAAAAAAJAAAAAgAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAIAAAAAgAAAAAAAAAIAAEAAgAAAAAAAAAIAAIAAgAAAAAAAAAIAAMAAgAAAAAAAAAJAAMAAgAAAAAAAAAJAAQAAgAAAAAAAAAJAAUAAgAAAAAAAAAJAAYAAgAAAAAAAAAIAAYAAgAAAAAAAAAIAAUAAgAAAAAAAAAIAAcAAgAAAAAAAAAIAAgAAgAAAAAAAAAJAAgAAgAAAAAAAAAJAAcAAgAAAAAAAAAIAAQAAgAAAAAAAAAJAAIAAgAAAAAAAAAJAAEAAgAAAAAAAAAJAAAAAgAAAAAAAAAJAAkAAgAAAAAAAAAIAAkAAgAAAAAAAAAJAAoAAgAAAAAAAAAIAAoAAgAAAAAAAAA=")
 tile_set = ExtResource("1_tileset")
 
 [node name="grass" type="TileMapLayer" parent="." unique_id=2080482995]

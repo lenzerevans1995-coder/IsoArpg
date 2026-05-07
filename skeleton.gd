@@ -635,6 +635,12 @@ func take_damage(amount: int, _flash_color: Color = Color(1.6, 0.7, 0.7)) -> voi
 		amount = int(round(float(amount) * 0.4))
 	hp -= amount
 	_hit_flash_left = 0.12
+	# Play GetHit reaction anim — short locked window so it doesn't get
+	# overwritten by the AI loop until the flinch resolves. Skipped if
+	# the skeleton is mid-attack (don't interrupt windups) or about to
+	# die (death anim takes over below).
+	if hp > 0 and _anim_locked_until <= 0.0:
+		_play("GetHit", DEFAULT_FPS, 0.25)
 	if hp <= 0:
 		_die()
 	else:
@@ -748,15 +754,15 @@ const TINY_DEMO_SCALE := 0.5
 # if that file exists, so dev_scenes/enemy_collision_editor can tune
 # them without re-saving the script.
 const KIND_PRESETS := {
-	Kind.WARRIOR:     {"scale": 0.50, "cap": {"x": 0, "y": -30, "r": 13, "h": 32}},
-	Kind.ARCHER:      {"scale": 0.50, "cap": {"x": 0, "y": -30, "r": 12, "h": 32}},
-	Kind.WIZARD:      {"scale": 0.50, "cap": {"x": 0, "y": -30, "r": 12, "h": 32}},
-	Kind.BRUTE:       {"scale": 0.43, "cap": {"x": 0, "y": -40, "r": 18, "h": 44}},
-	Kind.DEATHLORD:   {"scale": 0.50, "cap": {"x": 0, "y": -46, "r": 19, "h": 50}},
-	Kind.DARK_KNIGHT: {"scale": 0.52, "cap": {"x": 0, "y": -32, "r": 14, "h": 34}},
-	Kind.BERSERKER:   {"scale": 0.55, "cap": {"x": 0, "y": -34, "r": 15, "h": 36}},
-	Kind.DARK_ARCHER: {"scale": 0.50, "cap": {"x": 0, "y": -30, "r": 12, "h": 32}},
-	Kind.NECROMANCER: {"scale": 0.50, "cap": {"x": 0, "y": -30, "r": 13, "h": 32}},
+	Kind.WARRIOR:     {"scale": 0.60, "cap": {"x": 0, "y": -36, "r": 15, "h": 38}},
+	Kind.ARCHER:      {"scale": 0.60, "cap": {"x": 0, "y": -36, "r": 14, "h": 38}},
+	Kind.WIZARD:      {"scale": 0.60, "cap": {"x": 0, "y": -36, "r": 14, "h": 38}},
+	Kind.BRUTE:       {"scale": 0.50, "cap": {"x": 0, "y": -46, "r": 21, "h": 50}},
+	Kind.DEATHLORD:   {"scale": 0.58, "cap": {"x": 0, "y": -52, "r": 22, "h": 56}},
+	Kind.DARK_KNIGHT: {"scale": 0.62, "cap": {"x": 0, "y": -38, "r": 16, "h": 40}},
+	Kind.BERSERKER:   {"scale": 0.65, "cap": {"x": 0, "y": -40, "r": 17, "h": 42}},
+	Kind.DARK_ARCHER: {"scale": 0.60, "cap": {"x": 0, "y": -36, "r": 14, "h": 38}},
+	Kind.NECROMANCER: {"scale": 0.60, "cap": {"x": 0, "y": -36, "r": 15, "h": 38}},
 }
 const PRESETS_JSON_PATH := "res://data/enemy_presets.json"
 static var _runtime_presets: Dictionary = {}

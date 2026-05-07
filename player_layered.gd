@@ -84,7 +84,10 @@ func _ready() -> void:
 	# and HUD stay at full size.
 	const TINY_DEMO := true
 	if TINY_DEMO:
-		character.scale = Vector2(0.5, 0.5)
+		# 0.6 of the 128 px LayeredCharacter sheets = ~77 px silhouette
+		# (was 0.5 / 64 px). User feedback that the player + same-size
+		# enemies read too small at the 64 px demo scale.
+		character.scale = Vector2(0.6, 0.6)
 	add_child(character)
 	# Player y-sort: world tiles bump their y by cell.y * 0.001 for SW-priority.
 	# To keep the character ON TOP of grass / decor / props at the SAME iso

@@ -97,6 +97,23 @@ A skill is a `SkillDef` resource (`skill_def.gd`) saved at `res://data/skills/<i
 
 **Runtime path**: `player_layered.gd::play_skill(def)` reads the SkillDef → equips Effect A / B / Slash layers with the luminance shader tinted to the saved colors → spawns world-FX (Fantasy tileset effect, `explosion_anim.gd`) → calls `ProjectileRuntime.play(def, parent, origin, target)` which scans the projectile folder via DirAccess, loads frames, applies offsets + scale, and drives one of the four motion modes.
 
+### Buff skill plan (`damage_shape = "none"`)
+
+`warrior_berserk` is the canonical self-buff. Plan for the buff system:
+
+1. **Trigger path** — `play_skill(def)` already runs the cast anim + spawns the buff projectile (`fantasy/Buffs/Buff1` `at_player`). Damage code returns early on `damage_shape = "none"`.
+2. **Buff resource** — add a sibling `BuffDef` (per-skill, optional). Fields:
+   - `duration_sec: float` (e.g. 6.0 for Berserk)
+   - `damage_mult_bonus: float` (1.5 = +50% damage while active)
+   - `move_speed_mult: float` (1.2)
+   - `incoming_damage_mult: float` (1.4 — Berserk takes more damage as a tradeoff)
+   - `tick_effect_folder: String` (optional aura layer that loops on the body for the duration, NOT a one-shot)
+3. **Runtime** — a small `ActiveBuff` struct on the player tracks `time_left`, applies the multipliers each frame to `compute_player_damage`, `move_speed`, and `take_player_damage`. Stacking rules: re-cast refreshes duration; multiple distinct buffs stack multiplicatively.
+4. **Visual feedback** — looping `vfx2` layer on the LayeredCharacter (e.g. `Magic1`) tinted to the buff's color, plus a HUD ring around the active skill icon ticking down. Cleared in `_on_skill_finished` for one-shots; explicit clear when the timer hits 0 for buffs.
+5. **Wiring** — read `def.damage_shape == "none"` in `play_skill` and pull the optional buff fields from `def` (or a separate `def.buff_resource`). No buff resource = simple self-effect cast with no stat changes.
+
+Implement when the warrior progression demands it; the hooks already exist.
+
 ### Skill DB (`skill_db.gd`)
 | Slot | Skill | Icon | CD |
 |------|-------|------|----|
