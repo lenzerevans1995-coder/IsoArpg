@@ -1,86 +1,154 @@
 shader_type canvas_item;
 
-// Pixel-art water: mostly ONE solid mid-teal with subtle deep patches drifting
-// across, plus animated white foam pixels ONLY along the water/land edges.
-// Edges are detected via per-fragment derivative of the water_amt mask, so
-// foam tracks wherever the water bed meets dry dirt on the source tile.
+// Iso water — based on the layered-circles + parallax distortion shader,
+// adapted for Godot 4 + this project's pixel-art look:
+//   * `source_color` (4.x) instead of legacy `hint_color`.
+//   * Uses TIME directly; no custom iTime uniform.
+//   * UV snapped to a `pixel_size` grid (default 128) so the output reads
+//     as chunky pixel art instead of smooth gradients — same approach
+//     the rest of the game uses for upscaling.
+//   * Iso V-axis squash so wave streaks run along the 2:1 diamond
+//     projection rather than orthogonal to it.
+//   * Discards outside the source tile's alpha so the iso diamond mask
+//     is preserved (atlas water tiles have transparent corners).
 
-uniform vec4 water_color : source_color = vec4(0.10, 0.42, 0.62, 1.0);
-uniform vec4 deep_color  : source_color = vec4(0.05, 0.28, 0.45, 1.0);
-uniform vec4 froth_color : source_color = vec4(0.95, 1.0, 1.0, 1.0);
+uniform vec4 water_col  : source_color = vec4(0.04, 0.38, 0.88, 1.0);
+uniform vec4 water2_col : source_color = vec4(0.04, 0.35, 0.78, 1.0);
+uniform vec4 foam_col   : source_color = vec4(0.8125, 0.9609, 0.9648, 1.0);
 
-uniform float pixel_size_world : hint_range(1.0, 8.0) = 1.0;
+uniform float distortion_speed : hint_range(0.1, 8.0) = 2.0;
+uniform vec2  tile = vec2(5.0, 5.0);
+// Pixelate the rendered surface to N steps per UV unit. 128 = matches
+// the project's 128 px iso tile + chunky pixel-art output.
+uniform float pixel_size : hint_range(16.0, 512.0) = 128.0;
+// 1.0 = render flat / top-down. 0.5 = stretch the V axis 2:1 so wave
+// streaks read along the iso diamond (this project's tile_size 128x64).
+uniform float iso_y_squash : hint_range(0.3, 1.0) = 0.5;
 
-// Body variation: fraction of water-pixels that flick darker per step.
-// Higher values = more visible animation across the surface.
-uniform float body_variation : hint_range(0.0, 1.0) = 0.10;
+const float TWOPI = 6.283185307;
+const float SIXPI = 18.84955592;
 
-// Animation step. Lower = faster pixel re-roll = more obvious motion.
-uniform float foam_step_seconds : hint_range(0.05, 1.0) = 0.12;
-uniform float foam_density      : hint_range(0.0, 1.0) = 0.55;   // chance a given edge pixel turns foam this step
-uniform float edge_threshold    : hint_range(0.001, 0.5) = 0.04; // |grad(water_amt)| above this counts as edge
-
-uniform float water_threshold : hint_range(0.0, 1.0) = 0.21;
-uniform float blend_softness  : hint_range(0.0, 0.2) = 0.05;
-
-// Optional UV snapping for the painterly world look (driven by the world
-// shader panel). 1.0 = no snap.
-uniform float pixel_size : hint_range(1.0, 32.0) = 1.0;
-
-varying vec2 world_pos;
-
-void vertex() {
-	world_pos = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
+float circ(vec2 pos, vec2 c, float s) {
+	c = abs(pos - c);
+	c = min(c, 1.0 - c);
+	return smoothstep(0.0, 0.002, sqrt(s) - sqrt(dot(c, c))) * -1.0;
 }
 
-float hash21(vec2 p) {
-	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+float waterlayer(vec2 uv) {
+	uv = mod(uv, 1.0);
+	float ret = 1.0;
+	ret += circ(uv, vec2(0.37378, 0.277169), 0.0268181);
+	ret += circ(uv, vec2(0.0317477, 0.540372), 0.0193742);
+	ret += circ(uv, vec2(0.430044, 0.882218), 0.0232337);
+	ret += circ(uv, vec2(0.641033, 0.695106), 0.0117864);
+	ret += circ(uv, vec2(0.0146398, 0.0791346), 0.0299458);
+	ret += circ(uv, vec2(0.43871, 0.394445), 0.0289087);
+	ret += circ(uv, vec2(0.909446, 0.878141), 0.028466);
+	ret += circ(uv, vec2(0.310149, 0.686637), 0.0128496);
+	ret += circ(uv, vec2(0.928617, 0.195986), 0.0152041);
+	ret += circ(uv, vec2(0.0438506, 0.868153), 0.0268601);
+	ret += circ(uv, vec2(0.308619, 0.194937), 0.00806102);
+	ret += circ(uv, vec2(0.349922, 0.449714), 0.00928667);
+	ret += circ(uv, vec2(0.0449556, 0.953415), 0.023126);
+	ret += circ(uv, vec2(0.117761, 0.503309), 0.0151272);
+	ret += circ(uv, vec2(0.563517, 0.244991), 0.0292322);
+	ret += circ(uv, vec2(0.566936, 0.954457), 0.00981141);
+	ret += circ(uv, vec2(0.0489944, 0.200931), 0.0178746);
+	ret += circ(uv, vec2(0.569297, 0.624893), 0.0132408);
+	ret += circ(uv, vec2(0.298347, 0.710972), 0.0114426);
+	ret += circ(uv, vec2(0.878141, 0.771279), 0.00322719);
+	ret += circ(uv, vec2(0.150995, 0.376221), 0.00216157);
+	ret += circ(uv, vec2(0.119673, 0.541984), 0.0124621);
+	ret += circ(uv, vec2(0.629598, 0.295629), 0.0198736);
+	ret += circ(uv, vec2(0.334357, 0.266278), 0.0187145);
+	ret += circ(uv, vec2(0.918044, 0.968163), 0.0182928);
+	ret += circ(uv, vec2(0.965445, 0.505026), 0.006348);
+	ret += circ(uv, vec2(0.514847, 0.865444), 0.00623523);
+	ret += circ(uv, vec2(0.710575, 0.0415131), 0.00322689);
+	ret += circ(uv, vec2(0.71403, 0.576945), 0.0215641);
+	ret += circ(uv, vec2(0.748873, 0.413325), 0.0110795);
+	ret += circ(uv, vec2(0.0623365, 0.896713), 0.0236203);
+	ret += circ(uv, vec2(0.980482, 0.473849), 0.00573439);
+	ret += circ(uv, vec2(0.647463, 0.654349), 0.0188713);
+	ret += circ(uv, vec2(0.651406, 0.981297), 0.00710875);
+	ret += circ(uv, vec2(0.428928, 0.382426), 0.0298806);
+	ret += circ(uv, vec2(0.811545, 0.62568), 0.00265539);
+	ret += circ(uv, vec2(0.400787, 0.74162), 0.00486609);
+	ret += circ(uv, vec2(0.331283, 0.418536), 0.00598028);
+	ret += circ(uv, vec2(0.894762, 0.0657997), 0.00760375);
+	ret += circ(uv, vec2(0.525104, 0.572233), 0.0141796);
+	ret += circ(uv, vec2(0.431526, 0.911372), 0.0213234);
+	ret += circ(uv, vec2(0.658212, 0.910553), 0.000741023);
+	ret += circ(uv, vec2(0.514523, 0.243263), 0.0270685);
+	ret += circ(uv, vec2(0.0249494, 0.252872), 0.00876653);
+	ret += circ(uv, vec2(0.502214, 0.47269), 0.0234534);
+	ret += circ(uv, vec2(0.693271, 0.431469), 0.0246533);
+	ret += circ(uv, vec2(0.415, 0.884418), 0.0271696);
+	ret += circ(uv, vec2(0.149073, 0.41204), 0.00497198);
+	ret += circ(uv, vec2(0.533816, 0.897634), 0.00650833);
+	ret += circ(uv, vec2(0.0409132, 0.83406), 0.0191398);
+	ret += circ(uv, vec2(0.638585, 0.646019), 0.0206129);
+	ret += circ(uv, vec2(0.660342, 0.966541), 0.0053511);
+	ret += circ(uv, vec2(0.513783, 0.142233), 0.00471653);
+	ret += circ(uv, vec2(0.124305, 0.644263), 0.00116724);
+	ret += circ(uv, vec2(0.99871, 0.583864), 0.0107329);
+	ret += circ(uv, vec2(0.894879, 0.233289), 0.00667092);
+	ret += circ(uv, vec2(0.246286, 0.682766), 0.00411623);
+	ret += circ(uv, vec2(0.0761895, 0.16327), 0.0145935);
+	ret += circ(uv, vec2(0.949386, 0.802936), 0.0100873);
+	ret += circ(uv, vec2(0.480122, 0.196554), 0.0110185);
+	ret += circ(uv, vec2(0.896854, 0.803707), 0.013969);
+	ret += circ(uv, vec2(0.292865, 0.762973), 0.00566413);
+	ret += circ(uv, vec2(0.0995585, 0.117457), 0.00869407);
+	ret += circ(uv, vec2(0.377713, 0.00335442), 0.0063147);
+	ret += circ(uv, vec2(0.506365, 0.531118), 0.0144016);
+	ret += circ(uv, vec2(0.408806, 0.894771), 0.0243923);
+	ret += circ(uv, vec2(0.143579, 0.85138), 0.00418529);
+	ret += circ(uv, vec2(0.0902811, 0.181775), 0.0108896);
+	ret += circ(uv, vec2(0.780695, 0.394644), 0.00475475);
+	ret += circ(uv, vec2(0.298036, 0.625531), 0.00325285);
+	ret += circ(uv, vec2(0.218423, 0.714537), 0.00157212);
+	ret += circ(uv, vec2(0.658836, 0.159556), 0.00225897);
+	ret += circ(uv, vec2(0.987324, 0.146545), 0.0288391);
+	ret += circ(uv, vec2(0.222646, 0.251694), 0.00092276);
+	ret += circ(uv, vec2(0.159826, 0.528063), 0.00605293);
+	return max(ret, 0.0);
 }
 
-float vnoise(vec2 p) {
-	vec2 i = floor(p);
-	vec2 f = fract(p);
-	f = f * f * (3.0 - 2.0 * f);
-	float a = hash21(i);
-	float b = hash21(i + vec2(1.0, 0.0));
-	float c = hash21(i + vec2(0.0, 1.0));
-	float d = hash21(i + vec2(1.0, 1.0));
-	return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+vec3 water(vec2 uv, vec3 cdir, float t) {
+	uv *= vec2(0.25);
+	vec2 a = 0.025 * cdir.xz / cdir.y;
+	float h = sin(uv.x + t);
+	uv += a * h;
+	h = sin(0.841471 * uv.x - 0.540302 * uv.y + t);
+	uv += a * h;
+	float d1 = mod(uv.x + uv.y, TWOPI);
+	float d2 = mod((uv.x + uv.y + 0.25) * 1.3, SIXPI);
+	d1 = t * 0.07 + d1;
+	d2 = t * 0.5 + d2;
+	vec2 dist = vec2(
+		sin(d1) * 0.15 + sin(d2) * 0.05,
+		cos(d1) * 0.15 + cos(d2) * 0.05
+	);
+	vec3 ret = mix(water_col.rgb, water2_col.rgb, waterlayer(uv + dist.xy));
+	ret = mix(ret, foam_col.rgb, waterlayer(vec2(1.0) - uv - dist.yx));
+	return ret;
 }
 
 void fragment() {
-	vec2 snap = TEXTURE_PIXEL_SIZE * pixel_size;
-	vec2 uv = (floor(UV / snap) + 0.5) * snap;
-	vec4 src = texture(TEXTURE, uv);
+	// Tile-aligned pixelation: snap UV to a `pixel_size`-step grid so
+	// the output looks like a chunky pixel-art surface rather than a
+	// smooth gradient. 128 cells across the diamond is a good match for
+	// the 128 px iso atlas tile.
+	vec2 uv = floor(UV * pixel_size) / pixel_size;
+	// Stretch V to mimic the 2:1 iso projection so wave streaks read
+	// "along the diamond." Tile size in this project is 128x64 (1:0.5).
+	uv.y *= iso_y_squash;
+	// Use the source tile's alpha as the diamond mask — atlas water
+	// tiles have transparent outer corners, and we want to keep that
+	// shape rather than fill the entire square fragment.
+	vec4 src = texture(TEXTURE, UV);
 	if (src.a < 0.05) discard;
-	float lum = dot(src.rgb, vec3(0.299, 0.587, 0.114));
-	float water_amt = 1.0 - smoothstep(water_threshold, water_threshold + blend_softness, lum);
-
-	// Edge detection: where water_amt changes rapidly between fragments,
-	// we're at the water/land seam. Use that as the foam region.
-	float edge = length(vec2(dFdx(water_amt), dFdy(water_amt)));
-
-	// Pixelate the world position.
-	vec2 px = floor(world_pos / pixel_size_world);
-
-	// Body water: almost entirely water_color. A small fraction of pixels
-	// flick to deep_color each animation step, producing scattered shimmer
-	// without large patches of variation.
-	float body_step = floor(TIME / foam_step_seconds);
-	float body_n = hash21(px + vec2(body_step, 17.0));
-	vec3 water_rgb = water_color.rgb;
-	if (body_n > 1.0 - body_variation) {
-		water_rgb = deep_color.rgb;
-	}
-
-	// Foam: ALL edge pixels always become froth, no hash gate, so the
-	// shoreline reads as a continuous unbroken band. A subtle time-based
-	// shimmer in brightness keeps it animated without uneven gaps.
-	if (edge > edge_threshold) {
-		float shimmer = 0.85 + 0.15 * sin(TIME * 4.0 + (px.x + px.y) * 0.6);
-		water_rgb = froth_color.rgb * shimmer;
-	}
-
-	vec3 final_rgb = mix(src.rgb, water_rgb, water_amt);
-	COLOR = vec4(final_rgb, src.a);
+	vec3 col = water(uv * tile, vec3(0.0, 1.0, 0.0), TIME * distortion_speed);
+	COLOR = vec4(col, src.a);
 }
