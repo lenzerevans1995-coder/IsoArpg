@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://skill_def.gd" id="1_8b5ko"]
+
+[resource]
+script = ExtResource("1_8b5ko")
+skill_id = "arrow_rain"
+display_name = "Arrow Rain"
+trigger_anim = "Attack3"
+slash_folder = "Slash2"
+slash_color = Color(0.7058824, 0.84705883, 0.91764706, 1)
+projectile_pack = "pack1"
+projectile_category = "AoE Sprites"
+projectile_name = "ArrowRain"
+projectile_motion = "at_target"
+projectile_color = Color(0.6745098, 0.8039216, 0.95686275, 1)
+projectile_fps = 26.0
+projectile_origin_offset = Vector2(4.75, -15.25)
+projectile_target_offset = Vector2(-0.25, -21.5)

@@ -105,6 +105,27 @@ func _ready() -> void:
 		set_spritesheet(spritesheet)
 	_apply_shader()
 	play_anim(default_anim, true)
+	_setup_body_collision()
+
+func _setup_body_collision() -> void:
+	# Global enemy rule: +1 z above parent layer so tall grass / flora
+	# tiles never visually swallow us.
+	z_index = 1
+	z_as_relative = true
+	# Full-body capsule covering the rendered silhouette feet-to-head,
+	# not just a foot disc.
+	var body := StaticBody2D.new()
+	body.name = "Body"
+	body.collision_layer = 1
+	body.collision_mask = 0
+	add_child(body)
+	var shape := CollisionShape2D.new()
+	var caps := CapsuleShape2D.new()
+	caps.radius = max(8.0, display_size * 0.22)
+	caps.height = max(12.0, display_size * 0.55)
+	shape.position = Vector2(0, -display_size * 0.5)
+	shape.shape = caps
+	body.add_child(shape)
 
 func set_display_size(size: float) -> void:
 	display_size = size

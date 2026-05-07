@@ -118,7 +118,16 @@ func _ready() -> void:
 	if spawn_camera:
 		camera = Camera2D.new()
 		camera.name = "Camera2D"
-		camera.zoom = Vector2(1.5, 1.5)
+		# Camera zoom 1 — the SubViewport (640x360) is what defines the
+		# rendered world span. SubViewportContainer.stretch_shrink = 2
+		# upscales the viewport texture 2x with NEAREST filter so the
+		# game looks pixelated while the HUD stays crisp at native res.
+		camera.zoom = Vector2(1, 1)
+		# position_smoothing on a Camera2D introduces sub-pixel
+		# interpolation — fights pixel-perfect alignment. Off.
+		camera.position_smoothing_enabled = false
+		# Anchor at center so the rendered viewport is symmetric.
+		camera.anchor_mode = Camera2D.ANCHOR_MODE_DRAG_CENTER
 		add_child(camera)
 		camera.make_current()
 	if spawn_lantern:
@@ -246,6 +255,13 @@ func play_skill(def: Resource) -> void:
 		var fx: Node2D = ExplosionAnim.spawn(fx_parent, global_position, fx_folder)
 		if fx and def.world_fx_color != Color.WHITE:
 			fx.modulate = def.world_fx_color
+	# Spawn the projectile (Phase 4) — uses pack/category/name from
+	# SkillDef and the chosen motion mode. Origin = player; target =
+	# cursor world position. Empty pack = no projectile, skip silently.
+	if String(def.get("projectile_pack")) != "" and String(def.get("projectile_name")) != "":
+		var ProjRuntime := preload("res://projectile_runtime.gd")
+		var proj_parent: Node = main if main else self
+		ProjRuntime.play(def, proj_parent, global_position, get_global_mouse_position())
 	_play(String(def.trigger_anim), ATTACK_FPS, false, _on_skill_finished)
 
 func _on_skill_finished() -> void:

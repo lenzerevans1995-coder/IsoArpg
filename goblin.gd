@@ -103,11 +103,17 @@ func _ready() -> void:
 	_sprite = Sprite2D.new()
 	_sprite.centered = true
 	_sprite.region_enabled = true
-	# Normal goblins are smaller than the player; archer/boss render full.
-	_sprite.scale = Vector2(0.75, 0.75) if goblin_kind <= 2 else Vector2(1, 1)
+	# 64x64 demo: 128px source frames -> 0.5 = 64. Boss kept slightly
+	# larger (0.6 -> ~77) so it reads as a boss without breaking the
+	# tile-aligned silhouette of regular grunts.
+	_sprite.scale = Vector2(0.5, 0.5) if goblin_kind <= 2 else Vector2(0.6, 0.6)
 	_sprite.offset = Vector2(0, -42)   # foot anchor so y-sort lines up
 	add_child(_sprite)
-	z_index = 250
+	# Global enemy rule: +1 above parent tile layer so tall grass / flora
+	# tiles never swallow the silhouette. Player uses the same lift so
+	# the two still y-sort against each other on equal footing.
+	z_index = 1
+	z_as_relative = true
 	_play("Idle", DEFAULT_FPS, true)
 
 var _outline_node: Node2D = null
@@ -364,6 +370,24 @@ func _setup_collision_shapes() -> void:
 	_apply_body_radius()
 	_body_shape.shape = _body_circle
 	body_area.add_child(_body_shape)
+
+	# Solid footprint — StaticBody on physics layer 1 so the player's
+	# move_and_slide is blocked by the goblin instead of walking through
+	# it. Child of the goblin Node2D so it follows position.
+	var solid := StaticBody2D.new()
+	solid.name = "SolidBody"
+	solid.collision_layer = 1
+	solid.collision_mask = 0
+	add_child(solid)
+	var solid_shape := CollisionShape2D.new()
+	# Full-body capsule covering the rendered silhouette feet-to-head,
+	# not just a foot disc. Boss is bumped to keep the wider footprint.
+	var solid_caps := CapsuleShape2D.new()
+	solid_caps.radius = 14.0 * (1.6 if is_boss else 1.0)
+	solid_caps.height = 36.0
+	solid_shape.position = Vector2(0, -32)
+	solid_shape.shape = solid_caps
+	solid.add_child(solid_shape)
 
 	# Attack reach is computed mathematically in player_in_attack_range
 	# (foot-to-foot + summed body radii). The old AttackArea CollisionShape

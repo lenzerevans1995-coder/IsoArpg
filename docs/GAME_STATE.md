@@ -68,6 +68,35 @@ assets/                 — gitignored, lives on disk only
 - Polynomial XP curve, total to L5 ≈ 870. `add_xp()` cascades level-ups (+5 stat / +1 skill point each).
 - `_allocate_stat_point` in `panels_ui.gd` now refills hp/mp to new max on Vit/Energy spend so the orb visibly responds; emits `hp_changed` / `mp_changed` to refresh HUD.
 
+### Skill / VFX system (composable, data-driven)
+
+A skill is a `SkillDef` resource (`skill_def.gd`) saved at `res://data/skills/<id>.tres`. The author builds it visually in `dev_scenes/skill_editor.tscn` — no code changes per skill. A skill is a stack of independently-tuned layers:
+
+| Layer | Pool | Sources |
+|---|---|---|
+| Trigger body anim | 11 | `Attack1..5`, `AttackRun`, `AttackRun2`, `Special1`, `Idle`, `Walk`, `Run` (LayeredCharacter sheets) |
+| Effect A overlay | 9 | `Effect1..5`, `Magic1..3`, `(none)` (character-creator pack) |
+| Effect B overlay | 9 | same pool, second slot for combos (e.g. aura + cast burst) |
+| Slash trail | 3 | `Slash1`, `Slash2`, `(none)` |
+| Per-layer tint | 81 | swatches in `data/swatch_palette.json`, applied via the `effect_tint.gdshader` luminance-recolor (Effect A / B / Slash / Projectile each get their own) |
+| Projectile | 70 | `data/projectiles.json` registry: HD pack 1 (10), Pack 1 (20), Pack 2 (26), Fantasy tileset (14) |
+| Projectile motion | 4 | `at_player`, `at_target`, `travel`, `arc_rain` |
+| Origin / target offset | continuous | blue / red drag markers in editor stage |
+| Projectile scale + frame trim + fps + speed + arc count + arc radius | continuous | per-skill numeric tuning |
+| Damage shape | 4 | `cone`, `circle`, `single`, `none` |
+
+**Modularity score (rough combinatorial space)**: `11 × 9 × 9 × 3 × 71 × 4 × 4 ≈ 10.1M` discrete configurations before any color picks. With four palette-tinted layers (`81^4 ≈ 43M` color combos on top), the coarse upper bound is **~430 trillion unique skill configurations** — and that's still ignoring the continuous fields (offsets, scale, frame trim, fps, speed, arc count, arc radius, damage range, damage angle). For practical purposes the system is *open-ended*: every skill can have its own visual identity without writing a line of GDScript.
+
+**Editor UX** (`dev_scenes/skill_editor.tscn`):
+- Cascading Pack → Category → Name pickers populate the projectile slot.
+- Draggable **blue** marker = origin offset (where projectile spawns relative to caster). Visible for `at_player` + `travel`.
+- Draggable **red** marker = target offset (where projectile lands relative to enemy silhouette). Visible for `at_target` + `travel` + `arc_rain`.
+- Draggable **dummy enemy** silhouette in the preview stage; the red marker follows it so target offsets stay anchored to the enemy's body.
+- Body anim + projectile auto-fire in sync each loop — the projectile spawns automatically each time the trigger anim wraps from frame 14 → 0, no need to press Play Skill repeatedly.
+- Preview SubViewport renders at 140×140, NEAREST-upscaled 4× to match the in-game pixel grid.
+
+**Runtime path**: `player_layered.gd::play_skill(def)` reads the SkillDef → equips Effect A / B / Slash layers with the luminance shader tinted to the saved colors → spawns world-FX (Fantasy tileset effect, `explosion_anim.gd`) → calls `ProjectileRuntime.play(def, parent, origin, target)` which scans the projectile folder via DirAccess, loads frames, applies offsets + scale, and drives one of the four motion modes.
+
 ### Skill DB (`skill_db.gd`)
 | Slot | Skill | Icon | CD |
 |------|-------|------|----|
@@ -259,7 +288,7 @@ Granite + warm-grey "stage", brushed-bronze rim, gold pinstripe, dark cavity, wh
 | Combat FX | `arrow.gd`, `attack_effect.gd`, `hit_fx.gd`, `thunder_fx.gd`, `explosion_anim.gd` (chain_lightning_fx, ice_spike_fx, archer_shot_fx archived with Effekseer) |
 | Dungeon | `dungeon.gd`, `portal_dialog.gd` |
 | Loot | `loot/*.gd` (see Loot section) |
-| Skills | `skill_db.gd` |
+| Skills | `skill_db.gd`, `skill_def.gd`, `projectile_runtime.gd`, `dev_scenes/skill_editor.gd` |
 | HUD | `combat_hud.gd/.tscn`, `hud_center_bar.gd`, `hud_skill_square.gd`, `hud_orb.gd`, `hud_stamina_bar.gd`, `hud_stone_button.gd`, `hud_ui_buttons.gd`, `icon_atlas.gd` |
 | Panels | `panels_ui.gd`, `inventory_ui.gd`, `stat_stepper_btn.gd`, `inventory.gd`, `items_db.gd` |
 | Editor | `editor.gd/.tscn`, `editor_overlay.gd`, `building_generator.gd` |

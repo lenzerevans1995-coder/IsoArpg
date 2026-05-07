@@ -9,9 +9,12 @@ class_name LootDrop
 # screen doesn't fill with permanent vertical pillars.
 
 const COIN_PATH := "res://assets/drops/gold_drop/coins_drop.png"
-# Coin pile asset is now pre-sized to match other floor assets — render
-# at 1:1, no scaling.
-const COIN_SCALE := 1.0
+# Baked icons are authored at 128 px. At 0.5 they read crisp but tiny;
+# the user wants the silhouette larger AND less pixely, so 0.75 keeps
+# the icon under character height (~64 px) while sampling more source
+# pixels per screen pixel — softer-looking blocks at the SubViewport's
+# upscale stage.
+const COIN_SCALE := 0.75
 # Code-drawn rarity beam — values dialed in via loot_beam_editor.tscn.
 const BEAM_WIDTH := 3.5
 const BEAM_HEIGHT := 160.0
@@ -71,11 +74,18 @@ var _rarity: int = Rarity.COMMON
 # Rolled item this drop represents. Future pickup logic reads this to
 # grant the right inventory slot. Empty = generic gold-only drop.
 var item_id: String = ""
-var _hover_radius: float = 64.0
+var _hover_radius: float = 32.0
 
 func _build_for(rarity: int) -> void:
 	_rarity = rarity
 	add_to_group("loot_drop")
+	# Same global rule as enemies / player: lift one z-step above the
+	# parent tile layer so tall grass / flora never visually swallows
+	# the drop. Without this, drops parented to flora landed at z=2
+	# while drops parented to the world root stayed at z=0, which was
+	# the "different layers sometimes not always" inconsistency.
+	z_index = 1
+	z_as_relative = true
 	# Item icon on the floor — uses the baked ground sprite if it exists,
 	# else falls back to the inventory icon. Coins are gone — drops now
 	# show the actual rolled item.
@@ -107,9 +117,9 @@ func _build_for(rarity: int) -> void:
 	area.input_pickable = true
 	var shape := CollisionShape2D.new()
 	var rect := RectangleShape2D.new()
-	rect.size = Vector2(64, 64)
+	rect.size = Vector2(32, 32)   # matches the halved icon footprint (0.5 * 128 px = 64? -> click box 32 keeps it tight on the icon, not bleeding into adjacent drops)
 	shape.shape = rect
-	shape.position = Vector2(0, -32)
+	shape.position = Vector2(0, -16)
 	area.add_child(shape)
 	area.input_event.connect(_on_area_input_event)
 	add_child(area)

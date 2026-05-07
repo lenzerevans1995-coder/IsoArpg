@@ -18,17 +18,37 @@ shader_parameter/sharpness = 6.0
 [node name="Main" type="Node2D" unique_id=130589620]
 script = ExtResource("1_main")
 
-[node name="Ambient" type="CanvasModulate" parent="." unique_id=1034215082]
+[node name="GameLayer" type="CanvasLayer" parent="." unique_id=1502103139]
+layer = 0
+
+[node name="GameContainer" type="SubViewportContainer" parent="GameLayer" unique_id=1502103140]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch = true
+stretch_shrink = 2
+
+[node name="GameViewport" type="SubViewport" parent="GameLayer/GameContainer" unique_id=1502103141]
+handle_input_locally = false
+size = Vector2i(640, 360)
+render_target_update_mode = 4
+
+[node name="Ambient" type="CanvasModulate" parent="GameLayer/GameContainer/GameViewport" unique_id=1034215082]
 color = Color(0.62, 0.66, 0.78, 1)
 
-[node name="Sun" type="DirectionalLight2D" parent="." unique_id=77213188]
+[node name="Sun" type="DirectionalLight2D" parent="GameLayer/GameContainer/GameViewport" unique_id=77213188]
 rotation = 0.85
 color = Color(1, 0.96, 0.85, 1)
 energy = 0.35
 height = 0.5
 
-[node name="World" type="Node2D" parent="." unique_id=2122235246]
+[node name="World" type="Node2D" parent="GameLayer/GameContainer/GameViewport" unique_id=2122235246]
 y_sort_enabled = true
+
+[node name="Clouds" type="Node2D" parent="GameLayer/GameContainer/GameViewport" unique_id=1012105282]
+z_index = 100
+z_as_relative = false
 
 [node name="Weather" type="CanvasLayer" parent="." unique_id=392514524]
 layer = 5
@@ -60,10 +80,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="Clouds" type="Node2D" parent="." unique_id=1012105282]
-z_index = 100
-z_as_relative = false
-
 [node name="HUD" type="CanvasLayer" parent="." unique_id=565631523]
 layer = 10
 
@@ -80,4 +96,3 @@ text = "WASD/LMB - walk    RMB - attack    1 - editor    F1-F4 lighting    5 rai
 [node name="TextureRect" type="TextureRect" parent="HUD" unique_id=2138399657]
 offset_right = 481.0
 offset_bottom = 254.0
-

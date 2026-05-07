@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://456e11av5ipl" path="res://assets/charachters/Stand-alone Character creator - 2D Fantasy V1-0-3/Character creator - 2D Fantasy_Data/StreamingAssets/spritesheets/NakedBody/Idle.png" id="2_body"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_foot"]
-radius = 34.0147
+radius = 19.235384
 
 [node name="PlayerBody" type="CharacterBody2D" unique_id=1148642894]
 script = ExtResource("1_player")

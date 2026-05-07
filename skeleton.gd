@@ -105,8 +105,38 @@ func _ready() -> void:
 	add_child(_sprite)
 	add_to_group("skeleton")
 	add_to_group("enemy")
-	z_index = 250
+	# Global enemy rule: lift one z-step above the parent tile layer so
+	# tall-grass / flora tiles never visually swallow the silhouette.
+	# Still relative so the player (which uses the same +1 lift) y-sorts
+	# against us per ground y-position.
+	z_index = 1
+	z_as_relative = true
+	_setup_body_collision()
 	_play("Idle", DEFAULT_FPS)
+
+func _setup_body_collision() -> void:
+	# StaticBody2D so the player's move_and_slide blocks against the
+	# skeleton's footprint. Child of the skeleton Node2D, so it follows
+	# the skeleton as it moves. Radius scales with sprite_scale (10 px
+	# at the 0.5 demo scale = 20 px footprint, sized for 64 px sprites).
+	var body := StaticBody2D.new()
+	body.name = "Body"
+	body.collision_layer = 1
+	body.collision_mask = 0
+	add_child(body)
+	var shape := CollisionShape2D.new()
+	# Capsule dimensions come from KIND_PRESETS (override-able via the
+	# enemy_collision_editor dev scene). x/y position the capsule center
+	# in skeleton-local space (foot = origin), r/h = capsule radius and
+	# middle height (total span = h + 2r).
+	var preset: Dictionary = get_kind_preset(kind)
+	var cap: Dictionary = preset.get("cap", {})
+	var caps := CapsuleShape2D.new()
+	caps.radius = float(cap.get("r", 14.0))
+	caps.height = float(cap.get("h", 36.0))
+	shape.position = Vector2(float(cap.get("x", 0.0)), float(cap.get("y", -32.0)))
+	shape.shape = caps
+	body.add_child(shape)
 
 func _ensure_highlight() -> void:
 	if _highlight and is_instance_valid(_highlight):
@@ -701,13 +731,74 @@ func _vec_to_dir(v: Vector2) -> int:
 # inherit this; elites with their own bigger silhouette (Brute,
 # Deathlord) get their multiplier on top via the per-kind overrides
 # below.
-const TINY_DEMO_SCALE := 0.33
+const TINY_DEMO_SCALE := 0.5
+
+# Per-kind visual + collision preset. `scale` = Sprite2D.scale used by
+# the renderer; `cap` = capsule footprint used by _setup_body_collision
+# (x/y in local pixels, r = radius, h = capsule middle height — total
+# vertical span = h + 2*r).
+#
+# Render targets at 64x64 demo:
+#   - 128 px source kinds at scale 0.5  -> 64 px
+#   - 192 px Brute / Deathlord scaled larger so they READ as the bigger
+#     silhouette (Brute ~83 px, Deathlord ~96 px) instead of the size
+#     parity that 64/192 forced.
+#
+# These defaults are overridden at runtime by data/enemy_presets.json
+# if that file exists, so dev_scenes/enemy_collision_editor can tune
+# them without re-saving the script.
+const KIND_PRESETS := {
+	Kind.WARRIOR:     {"scale": 0.50, "cap": {"x": 0, "y": -30, "r": 13, "h": 32}},
+	Kind.ARCHER:      {"scale": 0.50, "cap": {"x": 0, "y": -30, "r": 12, "h": 32}},
+	Kind.WIZARD:      {"scale": 0.50, "cap": {"x": 0, "y": -30, "r": 12, "h": 32}},
+	Kind.BRUTE:       {"scale": 0.43, "cap": {"x": 0, "y": -40, "r": 18, "h": 44}},
+	Kind.DEATHLORD:   {"scale": 0.50, "cap": {"x": 0, "y": -46, "r": 19, "h": 50}},
+	Kind.DARK_KNIGHT: {"scale": 0.52, "cap": {"x": 0, "y": -32, "r": 14, "h": 34}},
+	Kind.BERSERKER:   {"scale": 0.55, "cap": {"x": 0, "y": -34, "r": 15, "h": 36}},
+	Kind.DARK_ARCHER: {"scale": 0.50, "cap": {"x": 0, "y": -30, "r": 12, "h": 32}},
+	Kind.NECROMANCER: {"scale": 0.50, "cap": {"x": 0, "y": -30, "r": 13, "h": 32}},
+}
+const PRESETS_JSON_PATH := "res://data/enemy_presets.json"
+static var _runtime_presets: Dictionary = {}
+
+static func _ensure_presets_loaded() -> void:
+	if not _runtime_presets.is_empty():
+		return
+	if not FileAccess.file_exists(PRESETS_JSON_PATH):
+		_runtime_presets = {"_loaded": true}
+		return
+	var f := FileAccess.open(PRESETS_JSON_PATH, FileAccess.READ)
+	if f == null:
+		_runtime_presets = {"_loaded": true}
+		return
+	var txt := f.get_as_text()
+	f.close()
+	var parsed: Variant = JSON.parse_string(txt)
+	if parsed is Dictionary:
+		_runtime_presets = parsed
+	_runtime_presets["_loaded"] = true
+
+static func get_kind_preset(kind_id: int) -> Dictionary:
+	_ensure_presets_loaded()
+	var defaults: Dictionary = KIND_PRESETS.get(kind_id, {"scale": 0.5, "cap": {"x": 0, "y": -30, "r": 13, "h": 32}})
+	var out: Dictionary = defaults.duplicate(true)
+	var override: Variant = _runtime_presets.get(str(kind_id), null)
+	if override is Dictionary:
+		if override.has("scale"):
+			out["scale"] = override["scale"]
+		if override.has("cap") and override["cap"] is Dictionary:
+			for ck in override["cap"]:
+				out["cap"][ck] = override["cap"][ck]
+	return out
 
 # Spawn config preset per class — keeps dungeon spawner code short.
 static func make(kind_id: int, target_player: Node2D = null) -> Skeleton:
 	var s := Skeleton.new()
 	s.kind = kind_id
-	s.sprite_scale = TINY_DEMO_SCALE
+	# sprite_scale comes from KIND_PRESETS (overridable via JSON) so the
+	# size hierarchy is data-driven and visual.
+	var preset: Dictionary = get_kind_preset(kind_id)
+	s.sprite_scale = float(preset.get("scale", TINY_DEMO_SCALE))
 	match kind_id:
 		Kind.WARRIOR:
 			s.max_hp = 35;  s.damage = 8;  s.attack_range = 56.0
@@ -719,10 +810,9 @@ static func make(kind_id: int, target_player: Node2D = null) -> Skeleton:
 			s.desired_range = 260.0; s.ranged = true
 		Kind.BRUTE:
 			s.max_hp = 110; s.damage = 18; s.move_speed = 70.0
-			s.attack_range = 64.0; s.sprite_scale = TINY_DEMO_SCALE * 1.25
+			s.attack_range = 64.0
 		Kind.DEATHLORD:
 			s.max_hp = 280; s.damage = 18; s.attack_range = 64.0
-			s.sprite_scale = TINY_DEMO_SCALE * 1.20
 		Kind.DARK_KNIGHT:
 			s.max_hp = 90;  s.damage = 14; s.attack_range = 60.0
 		Kind.BERSERKER:

@@ -93,12 +93,13 @@ var flower_families: Array = []   # Array of Array[Texture2D]
 const ATTACK_RADIUS := 150.0
 const ATTACK_HALF_ANGLE := 1.2   # radians (~69deg, ~138deg total cone)
 
-@onready var world: Node2D = $World
+@onready var game_viewport: SubViewport = $GameLayer/GameContainer/GameViewport
+@onready var world: Node2D = $GameLayer/GameContainer/GameViewport/World
 @onready var hud_label: Label = $HUD/Label
-@onready var ambient: CanvasModulate = $Ambient
-@onready var sun: DirectionalLight2D = $Sun
+@onready var ambient: CanvasModulate = $GameLayer/GameContainer/GameViewport/Ambient
+@onready var sun: DirectionalLight2D = $GameLayer/GameContainer/GameViewport/Sun
 @onready var rain: CPUParticles2D = $Weather/Rain
-@onready var clouds_root: Node2D = $Clouds
+@onready var clouds_root: Node2D = $GameLayer/GameContainer/GameViewport/Clouds
 @onready var beams_rect: ColorRect = $Atmosphere/Beams
 
 # Clouds live in world space at high z_index so the player walks under them
@@ -195,13 +196,17 @@ func _ready() -> void:
 		# (canopy hides player north of trunk, player draws over canopy
 		# south of trunk). Relative z = 0 on the player keeps it in
 		# lockstep with whatever the flora layer is set to.
-		(player as Node2D).z_index = 0
+		# Match the global enemy z lift (+1 above flora) so player and
+		# enemies share a z bucket and y-sort against each other normally
+		# while always rendering above tall-grass / flora tiles.
+		(player as Node2D).z_index = 1
 		(player as Node2D).z_as_relative = true
 		var spawn := painted_world.get_node_or_null("spawns/player_start")
 		if spawn:
 			player.position = (spawn as Marker2D).position
 		else:
 			player.position = Vector2.ZERO
+		_spawn_overworld_skeletons(flora_layer if flora_layer else painted_world, player.position)
 	else:
 		# Legacy chunk-streamed world. Hardcoded battle-arena spawn at
 		# iso cell (1, -36); arena.json overwrites once persistent.
@@ -226,6 +231,24 @@ func _ready() -> void:
 	# layout and editor flow). Re-enable by uncommenting the call.
 	# if BATTLE_WORLD:
 	# 	_spawn_battle_goblins()
+
+var overworld_skeletons: Array = []
+
+func _spawn_overworld_skeletons(parent: Node, around: Vector2) -> void:
+	# One of each of the 9 skeleton kinds for the demo.
+	var kinds := [
+		Skeleton.Kind.WARRIOR, Skeleton.Kind.ARCHER, Skeleton.Kind.WIZARD,
+		Skeleton.Kind.BRUTE, Skeleton.Kind.DEATHLORD, Skeleton.Kind.DARK_KNIGHT,
+		Skeleton.Kind.BERSERKER, Skeleton.Kind.DARK_ARCHER, Skeleton.Kind.NECROMANCER,
+	]
+	# All at the player's y-row so they share the same y-sort comparison
+	# against any tall-grass tiles. x offsets fan them out left/right.
+	for i in kinds.size():
+		var sk := Skeleton.make(kinds[i], player)
+		parent.add_child(sk)
+		var dx: float = (i - 4) * 80.0
+		sk.position = around + Vector2(dx, 0)
+		overworld_skeletons.append(sk)
 
 var monster_debug_panel: Control = null
 
@@ -463,7 +486,7 @@ func _spawn_spider(idx: int, count: int) -> void:
 		return
 	var s: Node2D = Monster.new()
 	s.spritesheet = tex
-	s.display_size = 80.0
+	s.display_size = 64.0
 	s.hp = SPIDER_HP
 	s.max_hp = SPIDER_HP
 	s.damage = SPIDER_DAMAGE
@@ -3213,10 +3236,14 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	if _player_is_ranged() and skill == null:
 		_fire_player_arrow(origin, scaled_dmg)
 		return
-	# Damage any skeletons caught in the cone (dungeon mode).
+	# Damage any skeletons caught in the cone (dungeon mode + overworld).
+	var _skel_pool: Array = []
 	if in_dungeon and dungeon and "skeletons" in dungeon:
+		_skel_pool.append_array(dungeon.skeletons)
+	_skel_pool.append_array(overworld_skeletons)
+	if _skel_pool.size() > 0:
 		var skel_dmg: int = scaled_dmg
-		for sk in dungeon.skeletons:
+		for sk in _skel_pool:
 			if sk == null or not is_instance_valid(sk) or sk.dead:
 				continue
 			var s_body_off: Vector2 = sk.body_offset if "body_offset" in sk else Vector2(0, -90)

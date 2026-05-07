@@ -1,0 +1,1961 @@
+{
+	"fantasy": {
+		"AoE": {
+			"AoE": {
+				"frame_count": 30,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0029.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0031.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0033.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0035.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0037.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0039.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0041.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0043.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0045.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0047.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0049.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0051.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0053.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0055.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0057.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE/0059.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/AoE",
+				"size": [
+					512,
+					512
+				]
+			}
+		},
+		"Bolts": {
+			"Bolt": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "travel",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Bolt",
+				"size": [
+					264,
+					124
+				]
+			}
+		},
+		"Buffs": {
+			"Buff1": {
+				"frame_count": 7,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff1/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff1/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff1/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff1/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff1/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff1/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff1/0013.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff1",
+				"size": [
+					124,
+					124
+				]
+			},
+			"Buff10": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff10",
+				"size": [
+					124,
+					124
+				]
+			},
+			"Buff2": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff2",
+				"size": [
+					124,
+					124
+				]
+			},
+			"Buff3": {
+				"frame_count": 12,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3/0023.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff3",
+				"size": [
+					124,
+					124
+				]
+			},
+			"Buff4": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff4",
+				"size": [
+					124,
+					124
+				]
+			},
+			"Buff5 6": {
+				"frame_count": 14,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff5 6",
+				"size": [
+					124,
+					124
+				]
+			},
+			"Buff7 8": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff7 8",
+				"size": [
+					124,
+					124
+				]
+			},
+			"Buff9": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Buff9",
+				"size": [
+					124,
+					124
+				]
+			},
+			"LevelUp": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/LevelUp",
+				"size": [
+					124,
+					124
+				]
+			}
+		},
+		"Cones": {
+			"Cone": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Cone",
+				"size": [
+					335,
+					192
+				]
+			}
+		},
+		"Movement": {
+			"Dash": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Dash",
+				"size": [
+					456,
+					189
+				]
+			},
+			"Hook": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0001.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0003.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0005.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0007.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0009.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0011.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0013.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0015.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0017.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0019.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0021.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0023.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0025.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0027.png",
+					"res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/tilesets/Fantasy tileset - 2D Isometric V1.1/Fantasy tileset - 2D Isometric/Animations/Effects/Hook",
+				"size": [
+					335,
+					192
+				]
+			}
+		}
+	},
+	"hd1": {
+		"AoE": {
+			"DeathAoE": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/DeathAoE",
+				"size": [
+					512,
+					512
+				]
+			},
+			"FireAoE": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/FireAoE",
+				"size": [
+					512,
+					512
+				]
+			},
+			"IceAoE": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/IceAoE",
+				"size": [
+					512,
+					512
+				]
+			},
+			"SwordAoE": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/AoE/SwordAoE",
+				"size": [
+					256,
+					256
+				]
+			}
+		},
+		"Arrows": {
+			"Arrow": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "travel",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/Arrow",
+				"size": [
+					512,
+					26
+				]
+			},
+			"FireArrow": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "travel",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Arrows/FireArrow",
+				"size": [
+					512,
+					26
+				]
+			}
+		},
+		"Spells": {
+			"ArcSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/ArcSpell",
+				"size": [
+					256,
+					256
+				]
+			},
+			"DeathSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/DeathSpell",
+				"size": [
+					256,
+					64
+				]
+			},
+			"FireSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/FireSpell",
+				"size": [
+					256,
+					64
+				]
+			},
+			"IceSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles - 2D HD Character pack 1/Projectiles - 2D HD Character pack 1/Spells/IceSpell",
+				"size": [
+					256,
+					64
+				]
+			}
+		}
+	},
+	"pack1": {
+		"AoE Sprites": {
+			"ArrowRain": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/ArrowRain",
+				"size": [
+					256,
+					256
+				]
+			},
+			"DarkArrowRain": {
+				"frame_count": 8,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DarkArrowRain/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DarkArrowRain/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DarkArrowRain/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DarkArrowRain/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DarkArrowRain/0020.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DarkArrowRain/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DarkArrowRain/0030.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DarkArrowRain/0031.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DarkArrowRain",
+				"size": [
+					256,
+					256
+				]
+			},
+			"DeathAoE": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/DeathAoE",
+				"size": [
+					512,
+					512
+				]
+			},
+			"FireAoE": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireAoE",
+				"size": [
+					512,
+					512
+				]
+			},
+			"FireArrowRain": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/FireArrowRain",
+				"size": [
+					128,
+					128
+				]
+			},
+			"HolyAoe": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/HolyAoe",
+				"size": [
+					256,
+					256
+				]
+			},
+			"IceAoE": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/IceAoE",
+				"size": [
+					512,
+					512
+				]
+			},
+			"MeleeAoe": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/MeleeAoe",
+				"size": [
+					256,
+					256
+				]
+			},
+			"SphereAoe": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SphereAoe",
+				"size": [
+					256,
+					256
+				]
+			},
+			"SpikeAoE": {
+				"frame_count": 9,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SpikeAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SpikeAoE/0004.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SpikeAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SpikeAoE/0010.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SpikeAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SpikeAoE/0016.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SpikeAoE/0020.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SpikeAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SpikeAoE/0028.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/AoE Sprites/SpikeAoE",
+				"size": [
+					256,
+					256
+				]
+			}
+		},
+		"Arrow Sprites": {
+			"Arrow": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "travel",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/Arrow",
+				"size": [
+					128,
+					128
+				]
+			},
+			"MagicArrow": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "travel",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Arrow Sprites/MagicArrow",
+				"size": [
+					512,
+					26
+				]
+			}
+		},
+		"Spell Sprites": {
+			"ArcSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/ArcSpell",
+				"size": [
+					128,
+					128
+				]
+			},
+			"DarkArmSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell/0030.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DarkArmSpell",
+				"size": [
+					128,
+					22
+				]
+			},
+			"DeathSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/DeathSpell",
+				"size": [
+					64,
+					64
+				]
+			},
+			"FireSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/FireSpell",
+				"size": [
+					64,
+					64
+				]
+			},
+			"HolySpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HolySpell",
+				"size": [
+					128,
+					128
+				]
+			},
+			"HookSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0002.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0004.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0006.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0008.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0010.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0012.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0014.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0016.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0018.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0020.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0022.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0024.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0026.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0028.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell/0030.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/HookSpell",
+				"size": [
+					128,
+					22
+				]
+			},
+			"IceSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/IceSpell",
+				"size": [
+					256,
+					64
+				]
+			},
+			"LightArcSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 1/Spell Sprites/LightArcSpell",
+				"size": [
+					256,
+					256
+				]
+			}
+		}
+	},
+	"pack2": {
+		"AoE": {
+			"DarkArmsAoE": {
+				"frame_count": 26,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0006.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0008.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0010.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0012.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0014.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0016.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0018.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0020.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0022.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0024.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0026.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0028.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0029.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE/0030.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArmsAoE",
+				"size": [
+					256,
+					256
+				]
+			},
+			"DarkArrowRain": {
+				"frame_count": 8,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArrowRain/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArrowRain/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArrowRain/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArrowRain/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArrowRain/0020.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArrowRain/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArrowRain/0030.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArrowRain/0031.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/DarkArrowRain",
+				"size": [
+					256,
+					256
+				]
+			},
+			"FireArrowRain": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireArrowRain",
+				"size": [
+					128,
+					128
+				]
+			},
+			"FireTotem": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/FireTotem",
+				"size": [
+					128,
+					128
+				]
+			},
+			"HolyAoe": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/HolyAoe",
+				"size": [
+					256,
+					256
+				]
+			},
+			"IceAoE": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceAoE",
+				"size": [
+					256,
+					256
+				]
+			},
+			"IceTotem": {
+				"frame_count": 30,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0029.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0031.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0033.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0035.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0037.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0039.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0041.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0043.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0045.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0047.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0049.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0051.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0053.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0055.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0057.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem/0059.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/IceTotem",
+				"size": [
+					128,
+					128
+				]
+			},
+			"MeleeAoe": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/MeleeAoe",
+				"size": [
+					256,
+					256
+				]
+			},
+			"PoisonTotem": {
+				"frame_count": 30,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0029.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0031.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0033.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0035.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0037.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0039.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0041.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0043.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0045.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0047.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0049.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0051.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0053.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0055.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0057.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem/0059.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/PoisonTotem",
+				"size": [
+					128,
+					128
+				]
+			},
+			"ShapeShift": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift",
+				"size": [
+					64,
+					64
+				]
+			},
+			"ShapeShift2": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2/Rolling_0_029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/ShapeShift2",
+				"size": [
+					64,
+					64
+				]
+			},
+			"SphereAoe": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SphereAoe",
+				"size": [
+					256,
+					256
+				]
+			},
+			"SpikeAoE": {
+				"frame_count": 9,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SpikeAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SpikeAoE/0004.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SpikeAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SpikeAoE/0010.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SpikeAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SpikeAoE/0016.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SpikeAoE/0020.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SpikeAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SpikeAoE/0028.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SpikeAoE",
+				"size": [
+					256,
+					256
+				]
+			},
+			"Storm": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/Storm",
+				"size": [
+					256,
+					256
+				]
+			},
+			"SwordAoE": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_target",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/AoE/SwordAoE",
+				"size": [
+					256,
+					256
+				]
+			}
+		},
+		"Arrows": {
+			"Arrow": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "travel",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Arrow",
+				"size": [
+					128,
+					128
+				]
+			},
+			"Bullet": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "travel",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Arrows/Bullet",
+				"size": [
+					64,
+					64
+				]
+			}
+		},
+		"Spells": {
+			"ArcSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/ArcSpell",
+				"size": [
+					128,
+					128
+				]
+			},
+			"DarkArmSpell": {
+				"frame_count": 30,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0002.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0004.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0006.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0008.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0010.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0012.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0014.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0016.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0018.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0020.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0022.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0024.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0026.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0028.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0029.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell/0030.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DarkArmSpell",
+				"size": [
+					156,
+					32
+				]
+			},
+			"DeathSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/DeathSpell",
+				"size": [
+					64,
+					64
+				]
+			},
+			"FireSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/FireSpell",
+				"size": [
+					64,
+					64
+				]
+			},
+			"HolySpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HolySpell",
+				"size": [
+					128,
+					128
+				]
+			},
+			"HookSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0002.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0004.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0006.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0008.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0010.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0012.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0014.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0016.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0018.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0020.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0022.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0024.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0026.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0028.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell/0030.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/HookSpell",
+				"size": [
+					128,
+					22
+				]
+			},
+			"LightArcSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/LightArcSpell",
+				"size": [
+					256,
+					256
+				]
+			},
+			"NatureSpell": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/NatureSpell",
+				"size": [
+					512,
+					42
+				]
+			},
+			"Spear": {
+				"frame_count": 15,
+				"frames": [
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0001.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0003.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0005.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0007.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0009.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0011.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0013.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0015.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0017.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0019.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0021.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0023.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0025.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0027.png",
+					"res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear/0029.png"
+				],
+				"kind": "folder",
+				"motion_default": "at_player",
+				"path": "res://assets/charachters/Sprites/Players/Projectiles Character Pack 2/Spells/Spear",
+				"size": [
+					156,
+					32
+				]
+			}
+		}
+	}
+}

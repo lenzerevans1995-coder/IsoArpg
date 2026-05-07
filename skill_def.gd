@@ -56,6 +56,36 @@ static func world_fx_full_path(subfolder: String) -> String:
 # when this skill fires.
 @export var damage_mult: float = 1.0
 
+# Projectile (Phase 2-4 add). Resolved at runtime by projectile_runtime.gd
+# against `data/projectiles.json`. Empty pack/name = no projectile.
+#
+# motion modes:
+#   at_player  - plays at the player's position (cast aura, self-buff fx)
+#   at_target  - plays at the cursor / nearest enemy on impact (AoE, slam)
+#   travel     - flies from player to target (arrow, bolt, magic missile)
+#   arc_rain   - drops N copies in a spread radius around target (arrow rain)
+@export var projectile_pack: String = ""        # "pack1" / "pack2" / "hd1"
+@export var projectile_category: String = ""    # "Arrow Sprites" / "Spells" / "AoE" ...
+@export var projectile_name: String = ""        # subfolder name
+@export_enum("at_player", "at_target", "travel", "arc_rain") var projectile_motion: String = "travel"
+@export var projectile_color: Color = Color.WHITE
+@export var projectile_start_frame: int = 0     # trim head — first frame index played
+@export var projectile_end_frame: int = -1      # trim tail — last frame; -1 = full length
+@export var projectile_fps: float = 24.0
+@export var projectile_speed: float = 220.0     # px/sec for 'travel' mode
+@export var projectile_arc_count: int = 8       # number of drops for arc_rain
+@export var projectile_arc_radius: float = 120.0 # spread for arc_rain
+# Configurable spawn / impact offsets — the skill editor exposes these
+# as draggable blue (origin) and red (target) markers in the preview
+# stage. Origin is added to the caster's position; target is added to
+# the cursor / true target before motion logic runs.
+@export var projectile_origin_offset: Vector2 = Vector2(0, -32)
+@export var projectile_target_offset: Vector2 = Vector2(0, -32)
+# Render scale applied to the projectile flipbook. 0.5 matches the
+# 64-px-character demo (sources are typically 128 px; 0.5 = 64). Bump
+# to 1.0 for huge AoEs that should fill the screen.
+@export var projectile_scale: float = 0.5
+
 # Damage shape — controls who gets hit when the skill lands.
 # 'cone'    : forward cone, angle = damage_angle_deg, range = damage_range
 # 'circle'  : full 360° around the player, range = damage_range

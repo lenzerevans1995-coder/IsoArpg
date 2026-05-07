@@ -9,6 +9,9 @@ const SkillDefScript := preload("res://skill_def.gd")
 const LayeredCharacterScript := preload("res://layered_character.gd")
 const LoadoutScript := preload("res://loadout.gd")
 const ExplosionAnimScript := preload("res://explosion_anim.gd")
+const ProjectileRuntimeScript := preload("res://projectile_runtime.gd")
+const PROJECTILES_PATH := "res://data/projectiles.json"
+const MOTION_OPTIONS := ["at_player", "at_target", "travel", "arc_rain"]
 
 const SKILLS_DIR := "res://data/skills"
 const PALETTE_PATH := "res://data/swatch_palette.json"
@@ -47,6 +50,15 @@ var _preview_dir: int = 2
 var _last_played_anim: String = ""
 var _last_played_dir: int = -1
 var _last_loadout: Dictionary = {}
+# Auto-fire the projectile whenever the body anim loops back to frame 0,
+# so the preview stays in sync without the user pressing Play Skill on
+# every cycle. Tracks the previous frame index so we can detect the
+# wraparound (current_frame < last_frame).
+var _proj_last_frame: int = -1
+# Single drag owner so the dummy enemy and the offset markers can't all
+# capture the same click — overlapping hit-zones used to make moving
+# the enemy also slide the markers (and vice-versa).
+var _drag_owner: Node = null
 
 # Field refs.
 var _f_id: LineEdit
@@ -72,13 +84,55 @@ var _palette: Array = []
 # Each button's StyleBox bg_color reflects the current color.
 var _color_btns: Array = []
 
+# Projectile state + UI refs.
+var _projectile_registry: Dictionary = {}
+var _f_proj_pack: OptionButton
+var _f_proj_cat: OptionButton
+var _f_proj_name: OptionButton
+var _f_proj_motion: OptionButton
+var _f_proj_start: SpinBox
+var _f_proj_end: SpinBox
+var _f_proj_fps: SpinBox
+var _f_proj_speed: SpinBox
+var _f_proj_arc_count: SpinBox
+var _f_proj_arc_radius: SpinBox
+var _f_proj_scale: SpinBox
+var _f_proj_color_btn: Button
+var _proj_info: Label
+var _origin_marker: Node2D    # blue: where projectile spawns (player + origin_offset)
+var _target_marker: Node2D    # red:  where projectile lands  (test_target + target_offset)
+# Preview SubViewport renders at 1/PREVIEW_SHRINK of the on-screen
+# holder size, then NEAREST-upscales — same pattern as the main game's
+# 640x360→1280x720 rig. Bumping PREVIEW_SHRINK zooms in (each game
+# pixel becomes a bigger screen block).
+const _PREVIEW_SHRINK := 4
+const _PREVIEW_PLAYER_POS := Vector2(38, 84)
+# Live position of the dummy enemy — mutable so dragging it carries the
+# red target marker along (and so target_offset stays relative to the
+# enemy, not to a fixed point on the canvas).
+var _target_ref: Vector2 = Vector2(80, 60)
+var _dummy_enemy: Node2D
+
 func _ready() -> void:
 	_def = SkillDefScript.new()
 	_load_palette()
 	_load_world_fx_options()
+	_load_projectile_registry()
 	_build_ui()
 	_refresh_preview()
 	_load_fields_from_def()
+
+func _load_projectile_registry() -> void:
+	if not FileAccess.file_exists(PROJECTILES_PATH):
+		_projectile_registry = {}
+		return
+	var f := FileAccess.open(PROJECTILES_PATH, FileAccess.READ)
+	if f == null:
+		return
+	var parsed: Variant = JSON.parse_string(f.get_as_text())
+	f.close()
+	if parsed is Dictionary:
+		_projectile_registry = parsed
 	# Capture key presses for quick-fire (1-6 for attack anims, 0 for Idle).
 	# Doesn't fight LineEdit text input — _input only reads keys when no
 	# text field is focused.
@@ -216,6 +270,10 @@ func _build_ui() -> void:
 			func(c): _def.world_fx_color = c; _spawn_world_fx_preview()),
 	]
 
+	# Projectile section — pack/cat/name cascading pickers, motion mode,
+	# frame trim, fps, speed, and arc-rain params.
+	_build_projectile_section(left)
+
 	# Sticky save bar at the bottom of the form.
 	_info_label = Label.new()
 	_info_label.text = "Set a Skill ID and Save."
@@ -242,19 +300,29 @@ func _build_ui() -> void:
 		if _preview_char: _preview_char.call("set_direction", _preview_dir))
 	ctrl_row.add_child(dir_btn)
 	var play_btn := Button.new()
-	play_btn.text = "Replay"
+	play_btn.text = "Replay Anim"
 	play_btn.pressed.connect(_refresh_preview)
 	ctrl_row.add_child(play_btn)
+	# Phase 3 stage: fire the body anim AND spawn the projectile against
+	# the draggable target marker — same path as the in-game caster.
+	var fire_btn := Button.new()
+	fire_btn.text = "▶ Play Skill"
+	fire_btn.tooltip_text = "Plays the trigger anim + spawns the projectile from player to the red target marker (drag the marker with the mouse)."
+	fire_btn.pressed.connect(_on_play_skill)
+	ctrl_row.add_child(fire_btn)
 
 	var holder := SubViewportContainer.new()
 	holder.stretch = true
-	holder.custom_minimum_size = Vector2(420, 420)
+	holder.stretch_shrink = _PREVIEW_SHRINK
+	holder.custom_minimum_size = Vector2(560, 560)
 	holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	holder.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	holder.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	right.add_child(holder)
 	_preview_vp = SubViewport.new()
-	_preview_vp.size = Vector2i(420, 420)
+	# Stretch + stretch_shrink will resize the viewport to holder/SHRINK
+	# automatically; the explicit size below is just a starting value.
+	_preview_vp.size = Vector2i(140, 140)
 	_preview_vp.transparent_bg = true
 	_preview_vp.disable_3d = true
 	_preview_vp.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
@@ -264,9 +332,33 @@ func _build_ui() -> void:
 	_preview_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	holder.add_child(_preview_vp)
 	_preview_char = LayeredCharacterScript.new()
-	(_preview_char as Node2D).position = Vector2(210, 280)
-	(_preview_char as Node2D).scale = Vector2(2, 2)
+	(_preview_char as Node2D).position = _PREVIEW_PLAYER_POS
+	# Match in-game scale (player_layered.gd uses 0.5 of the 128 px
+	# LayeredCharacter sheets so the silhouette is 64 px tall). The
+	# SubViewportContainer's stretch_shrink handles the on-screen zoom.
+	(_preview_char as Node2D).scale = Vector2(0.5, 0.5)
 	_preview_vp.add_child(_preview_char)
+	# Two draggable markers: BLUE (origin offset, attached to player) and
+	# RED (target offset, attached to a fixed test-target reference).
+	# Show/hide is driven by the projectile motion mode. Dragging either
+	# updates the corresponding offset on the current SkillDef.
+	# Dummy enemy at the target reference so the red marker can be
+	# placed relative to a visual silhouette (chest, head, feet) instead
+	# of empty space. Draggable — moving it slides the red marker so the
+	# saved target_offset stays in the enemy's local frame.
+	_dummy_enemy = _make_dummy_enemy()
+	_dummy_enemy.position = _target_ref
+	_preview_vp.add_child(_dummy_enemy)
+
+	_origin_marker = _make_offset_marker(Color(0.3, 0.6, 1.0, 1.0),
+		func(world_pos): _def.projectile_origin_offset = world_pos - _PREVIEW_PLAYER_POS)
+	(_origin_marker as Node2D).position = _PREVIEW_PLAYER_POS + Vector2(0, -32)
+	_preview_vp.add_child(_origin_marker)
+
+	_target_marker = _make_offset_marker(Color(1.0, 0.25, 0.25, 1.0),
+		func(world_pos): _def.projectile_target_offset = world_pos - _target_ref)
+	(_target_marker as Node2D).position = _target_ref + Vector2(0, -32)
+	_preview_vp.add_child(_target_marker)
 
 # --- field-builder helpers ----------------------------------------
 
@@ -542,8 +634,336 @@ func _load_fields_from_def() -> void:
 		_paint_color_button(_color_btns[0], _def.effect_a_color)
 		_paint_color_button(_color_btns[1], _def.effect_b_color)
 		_paint_color_button(_color_btns[2], _def.slash_color)
+	# Projectile fields.
+	_load_projectile_fields_from_def()
 
 func _set_option_to_value(ob: OptionButton, options: Array, value: String) -> void:
 	var idx := options.find(value)
 	if idx >= 0:
 		ob.selected = idx
+
+# ---- Projectile editor (Phases 2-4) ------------------------------------
+
+func _build_projectile_section(parent: Node) -> void:
+	_add_label(parent, "\nProjectile", 14)
+	var grid := GridContainer.new(); grid.columns = 2
+	parent.add_child(grid)
+
+	_f_proj_pack = _add_option_row(grid, "Pack", _projectile_pack_labels(),
+		func(idx): _on_proj_pack_changed(idx))
+	_f_proj_cat = _add_option_row(grid, "Category", [""],
+		func(idx): _on_proj_cat_changed(idx))
+	_f_proj_name = _add_option_row(grid, "Name", [""],
+		func(idx): _on_proj_name_changed(idx))
+	_f_proj_motion = _add_option_row(grid, "Motion", MOTION_OPTIONS,
+		func(idx): _def.projectile_motion = MOTION_OPTIONS[idx]; _refresh_proj_visibility())
+	_f_proj_start = _add_spin_row(grid, "Start frame", 0, 64, 1,
+		func(v): _def.projectile_start_frame = int(v))
+	_f_proj_end = _add_spin_row(grid, "End frame (-1=full)", -1, 64, 1,
+		func(v): _def.projectile_end_frame = int(v))
+	_f_proj_fps = _add_spin_row(grid, "FPS", 1, 60, 1,
+		func(v): _def.projectile_fps = float(v))
+	_f_proj_speed = _add_spin_row(grid, "Speed (travel)", 50, 2000, 10,
+		func(v): _def.projectile_speed = float(v))
+	_f_proj_arc_count = _add_spin_row(grid, "Arc count", 1, 32, 1,
+		func(v): _def.projectile_arc_count = int(v))
+	_f_proj_arc_radius = _add_spin_row(grid, "Arc radius", 0, 600, 8,
+		func(v): _def.projectile_arc_radius = float(v))
+	_f_proj_scale = _add_spin_row(grid, "Render scale", 0.1, 4.0, 0.05,
+		func(v): _def.projectile_scale = float(v))
+
+	# Color row for projectile.
+	var color_row := HBoxContainer.new()
+	parent.add_child(color_row)
+	var clbl := Label.new(); clbl.text = "Projectile Color"; color_row.add_child(clbl)
+	_f_proj_color_btn = Button.new()
+	_f_proj_color_btn.custom_minimum_size = Vector2(72, 28)
+	_f_proj_color_btn.pressed.connect(func():
+		_open_palette_popup(_f_proj_color_btn,
+			func(): return _def.projectile_color,
+			func(c): _def.projectile_color = c))
+	color_row.add_child(_f_proj_color_btn)
+	_paint_color_button(_f_proj_color_btn, _def.projectile_color)
+
+	_proj_info = Label.new()
+	_proj_info.text = "(no projectile selected)"
+	_proj_info.autowrap_mode = TextServer.AUTOWRAP_WORD
+	parent.add_child(_proj_info)
+
+func _projectile_pack_labels() -> Array:
+	var packs: Array = ["(none)"]
+	for k in _projectile_registry.keys():
+		packs.append(String(k))
+	return packs
+
+func _on_proj_pack_changed(idx: int) -> void:
+	if idx <= 0:
+		_def.projectile_pack = ""
+		_def.projectile_category = ""
+		_def.projectile_name = ""
+		_repopulate_proj_cat([])
+		_repopulate_proj_name([])
+		_update_proj_info()
+		return
+	var pack: String = String(_projectile_registry.keys()[idx - 1])
+	_def.projectile_pack = pack
+	var cats: Array = _projectile_registry[pack].keys()
+	_repopulate_proj_cat(cats)
+	if cats.size() > 0:
+		_def.projectile_category = String(cats[0])
+		var names: Array = _projectile_registry[pack][cats[0]].keys()
+		_repopulate_proj_name(names)
+		# Auto-select first name so the cascading pickers always leave
+		# the SkillDef in a valid (and visible) state — otherwise the
+		# status label sits on "(no projectile selected)" until the user
+		# manually opens the Name dropdown.
+		if names.size() > 0:
+			_def.projectile_name = String(names[0])
+			_f_proj_name.selected = 0
+	_update_proj_info()
+
+func _on_proj_cat_changed(idx: int) -> void:
+	var pack: String = String(_def.projectile_pack)
+	if pack == "" or not _projectile_registry.has(pack): return
+	var cats: Array = _projectile_registry[pack].keys()
+	if idx < 0 or idx >= cats.size(): return
+	_def.projectile_category = String(cats[idx])
+	var names: Array = _projectile_registry[pack][cats[idx]].keys()
+	_repopulate_proj_name(names)
+	# Auto-select the first name in the new category so projectile_name
+	# is always populated whenever pack/category change.
+	if names.size() > 0:
+		_def.projectile_name = String(names[0])
+		_f_proj_name.selected = 0
+	_update_proj_info()
+
+func _on_proj_name_changed(idx: int) -> void:
+	var pack: String = String(_def.projectile_pack)
+	var cat: String = String(_def.projectile_category)
+	if pack == "" or cat == "": return
+	if not _projectile_registry.has(pack): return
+	if not _projectile_registry[pack].has(cat): return
+	var names: Array = _projectile_registry[pack][cat].keys()
+	if idx < 0 or idx >= names.size(): return
+	_def.projectile_name = String(names[idx])
+	# Auto-pick the registry's motion default if the user hasn't set one.
+	var entry: Dictionary = _projectile_registry[pack][cat][names[idx]]
+	if String(_def.projectile_motion) == "":
+		_def.projectile_motion = String(entry.get("motion_default", "travel"))
+		_set_option_to_value(_f_proj_motion, MOTION_OPTIONS, _def.projectile_motion)
+	# Clamp end-frame to the entry's frame_count - 1 if out of range.
+	var fc: int = int(entry.get("frame_count", 1))
+	if int(_def.projectile_end_frame) >= fc:
+		_def.projectile_end_frame = -1
+		_f_proj_end.value = -1
+	_update_proj_info()
+
+func _repopulate_proj_cat(cats: Array) -> void:
+	_f_proj_cat.clear()
+	for c in cats:
+		_f_proj_cat.add_item(String(c))
+
+func _repopulate_proj_name(names: Array) -> void:
+	_f_proj_name.clear()
+	for n in names:
+		_f_proj_name.add_item(String(n))
+
+func _update_proj_info() -> void:
+	if _proj_info == null: return
+	var pack: String = String(_def.projectile_pack)
+	var cat: String = String(_def.projectile_category)
+	var name: String = String(_def.projectile_name)
+	if pack == "" or cat == "" or name == "":
+		_proj_info.text = "(no projectile selected)"
+		return
+	var entry := ProjectileRuntimeScript.lookup(pack, cat, name)
+	if entry.is_empty():
+		_proj_info.text = "(missing in registry)"
+		return
+	_proj_info.text = "%s/%s/%s\n%d frames, default motion: %s" % [
+		pack, cat, name, int(entry.get("frame_count", 0)), String(entry.get("motion_default", "?"))]
+
+func _refresh_proj_visibility() -> void:
+	# Speed only matters for travel; arc params only for arc_rain. Keep
+	# them present but greyed instead of hiding so the layout doesn't jump.
+	var motion: String = String(_def.projectile_motion)
+	if _f_proj_speed: _f_proj_speed.editable = (motion == "travel")
+	if _f_proj_arc_count: _f_proj_arc_count.editable = (motion == "arc_rain")
+	if _f_proj_arc_radius: _f_proj_arc_radius.editable = (motion == "arc_rain")
+	# Marker visibility:
+	#   at_player → blue only (where the FX hugs the caster)
+	#   at_target → red  only (where the FX impacts)
+	#   travel    → both (origin AND impact)
+	#   arc_rain  → red  only (impact center; spread is numeric)
+	var show_blue: bool = motion in ["at_player", "travel"]
+	var show_red:  bool = motion in ["at_target", "travel", "arc_rain"]
+	if _origin_marker: _origin_marker.visible = show_blue
+	if _target_marker: _target_marker.visible = show_red
+
+func _load_projectile_fields_from_def() -> void:
+	if _f_proj_pack == null: return
+	# Pack
+	var packs: Array = _projectile_registry.keys()
+	var pi: int = packs.find(String(_def.projectile_pack))
+	_f_proj_pack.selected = (pi + 1) if pi >= 0 else 0
+	# Category + Name
+	if String(_def.projectile_pack) != "" and _projectile_registry.has(_def.projectile_pack):
+		var cats: Array = _projectile_registry[_def.projectile_pack].keys()
+		_repopulate_proj_cat(cats)
+		var ci: int = cats.find(String(_def.projectile_category))
+		if ci >= 0:
+			_f_proj_cat.selected = ci
+			var names: Array = _projectile_registry[_def.projectile_pack][cats[ci]].keys()
+			_repopulate_proj_name(names)
+			var ni: int = names.find(String(_def.projectile_name))
+			if ni >= 0:
+				_f_proj_name.selected = ni
+	_set_option_to_value(_f_proj_motion, MOTION_OPTIONS, String(_def.projectile_motion))
+	_f_proj_start.value = int(_def.projectile_start_frame)
+	_f_proj_end.value = int(_def.projectile_end_frame)
+	_f_proj_fps.value = float(_def.projectile_fps)
+	_f_proj_speed.value = float(_def.projectile_speed)
+	_f_proj_arc_count.value = int(_def.projectile_arc_count)
+	_f_proj_arc_radius.value = float(_def.projectile_arc_radius)
+	_f_proj_scale.value = float(_def.projectile_scale)
+	_paint_color_button(_f_proj_color_btn, _def.projectile_color)
+	# Sync marker positions to the loaded def's saved offsets.
+	if _origin_marker:
+		(_origin_marker as Node2D).position = _PREVIEW_PLAYER_POS + _def.projectile_origin_offset
+	if _target_marker:
+		(_target_marker as Node2D).position = _target_ref + _def.projectile_target_offset
+	_refresh_proj_visibility()
+	_update_proj_info()
+
+# ---- Visual stage (Phase 3) -------------------------------------------
+
+func _make_offset_marker(color: Color, on_moved: Callable) -> Node2D:
+	# Configurable spawn / impact marker. Renders as a solid circle
+	# outlined in the given color (blue = origin, red = target). Drag
+	# with LMB; on_moved is called with the new viewport position so the
+	# editor can save the corresponding offset to the SkillDef.
+	var marker := Node2D.new()
+	var sc := GDScript.new()
+	sc.source_code = """
+extends Node2D
+var marker_color: Color = Color.WHITE
+var on_moved: Callable = Callable()
+var editor_ref: Node = null
+var _drag := false
+func _process(_d: float) -> void:
+	queue_redraw()
+func _draw() -> void:
+	var fill := marker_color; fill.a = 0.22
+	draw_circle(Vector2.ZERO, 12.0, fill)
+	draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 32, marker_color, 2.0)
+	draw_line(Vector2(-7, 0), Vector2(7, 0), marker_color, 1.5)
+	draw_line(Vector2(0, -7), Vector2(0, 7), marker_color, 1.5)
+func _input(ev: InputEvent) -> void:
+	if not visible: return
+	if ev is InputEventMouseButton and ev.button_index == MOUSE_BUTTON_LEFT:
+		var lp := get_local_mouse_position()
+		if ev.pressed and lp.length() < 22.0:
+			# Only claim the click if no one else has already grabbed it.
+			if editor_ref and editor_ref._drag_owner == null:
+				_drag = true
+				editor_ref._drag_owner = self
+		elif not ev.pressed:
+			if _drag and editor_ref and editor_ref._drag_owner == self:
+				editor_ref._drag_owner = null
+			_drag = false
+	elif ev is InputEventMouseMotion and _drag:
+		position += get_local_mouse_position()
+		if on_moved.is_valid(): on_moved.call(position)
+"""
+	sc.reload()
+	marker.set_script(sc)
+	marker.set("marker_color", color)
+	marker.set("on_moved", on_moved)
+	marker.set("editor_ref", self)
+	return marker
+
+func _make_dummy_enemy() -> Node2D:
+	# Static skeleton-warrior idle frame as a visual reference for placing
+	# the red target marker. Draggable — clicking on the silhouette and
+	# dragging moves the enemy AND its attached red marker so the saved
+	# offset stays in the enemy's local frame.
+	var n := Node2D.new()
+	var sprite := Sprite2D.new()
+	var idle_path := "res://assets/charachters/Sprites/2D HD Undead pack 1/2D HD Undead pack 1/Spritesheets/With shadow/6Warrior/Idle.png"
+	if ResourceLoader.exists(idle_path):
+		var sheet: Texture2D = load(idle_path)
+		var fh: int = sheet.get_height() / 8
+		var atlas := AtlasTexture.new()
+		atlas.atlas = sheet
+		atlas.region = Rect2(0, 2 * fh, fh, fh)
+		sprite.texture = atlas
+	sprite.centered = true
+	sprite.offset = Vector2(0, -42)
+	# Match the in-game 64 px target silhouette (128 px source × 0.5).
+	sprite.scale = Vector2(0.5, 0.5)
+	n.add_child(sprite)
+	# Drag behaviour. Hit zone is a 32 px circle around the body center
+	# (offset up so it sits on the silhouette, not at the foot).
+	var sc := GDScript.new()
+	sc.source_code = """
+extends Node2D
+var editor_ref: Node = null
+var _drag := false
+func _input(ev: InputEvent) -> void:
+	if ev is InputEventMouseButton and ev.button_index == MOUSE_BUTTON_LEFT:
+		var lp := get_local_mouse_position() - Vector2(0, -28)
+		if ev.pressed and lp.length() < 28.0:
+			# Don't grab the click if the marker (or anything else) has
+			# already claimed it — markers are smaller and sit on top
+			# of the silhouette, so we want them to win on overlap.
+			if editor_ref and editor_ref._drag_owner == null:
+				_drag = true
+				editor_ref._drag_owner = self
+		elif not ev.pressed:
+			if _drag and editor_ref and editor_ref._drag_owner == self:
+				editor_ref._drag_owner = null
+			_drag = false
+	elif ev is InputEventMouseMotion and _drag:
+		position += get_local_mouse_position()
+		if editor_ref and editor_ref.has_method('_on_dummy_moved'):
+			editor_ref._on_dummy_moved(position)
+"""
+	sc.reload()
+	n.set_script(sc)
+	n.set("editor_ref", self)
+	return n
+
+func _on_dummy_moved(new_pos: Vector2) -> void:
+	# Slide the red target marker along with the dummy so its on-screen
+	# position relative to the enemy (= projectile_target_offset) stays
+	# consistent. _target_ref tracks the enemy's live position.
+	_target_ref = new_pos
+	if _target_marker:
+		(_target_marker as Node2D).position = _target_ref + _def.projectile_target_offset
+
+func _process(_dt: float) -> void:
+	# Auto-fire the projectile each time the body anim loops, so the
+	# preview shows the skill vfx + projectile in continuous sync. The
+	# user no longer has to mash Play Skill to see the loop.
+	if _preview_char == null or _def == null:
+		return
+	if String(_def.projectile_pack) == "" or String(_def.projectile_name) == "":
+		_proj_last_frame = -1
+		return
+	var cur: int = int(_preview_char.get("_frame"))
+	if _proj_last_frame >= 0 and cur < _proj_last_frame:
+		# Wraparound — anim looped. Fire a fresh projectile.
+		ProjectileRuntimeScript.play(_def, _preview_vp, _PREVIEW_PLAYER_POS, _target_ref)
+	_proj_last_frame = cur
+
+func _on_play_skill() -> void:
+	# Reset body rig and then fire the projectile with the player at the
+	# fixed preview position and the test target at the reference point.
+	# ProjectileRuntime adds origin/target offsets internally, so we pass
+	# the bare anchors here — the markers' positions ARE the offsets.
+	_refresh_preview()
+	if _def == null or _preview_vp == null:
+		return
+	if String(_def.projectile_pack) == "" or String(_def.projectile_name) == "":
+		return
+	ProjectileRuntimeScript.play(_def, _preview_vp, _PREVIEW_PLAYER_POS, _target_ref)
