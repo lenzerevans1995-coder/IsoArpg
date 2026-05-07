@@ -805,6 +805,12 @@ static func make(kind_id: int, target_player: Node2D = null) -> Skeleton:
 	# size hierarchy is data-driven and visual.
 	var preset: Dictionary = get_kind_preset(kind_id)
 	s.sprite_scale = float(preset.get("scale", TINY_DEMO_SCALE))
+	# Body offset (where projectiles fire from / aim at) tracks the
+	# rendered sprite center. Sprite is drawn with offset (0, -42) in
+	# unscaled-frame coords, so at scale `s` the body center sits at
+	# y = -42 * s. Old default (0, -90) was tuned for full-scale
+	# 128 px characters and floated arrows above the head.
+	s.body_offset = Vector2(0, -42.0 * s.sprite_scale)
 	match kind_id:
 		Kind.WARRIOR:
 			s.max_hp = 35;  s.damage = 8;  s.attack_range = 56.0
