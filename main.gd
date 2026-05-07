@@ -3172,20 +3172,24 @@ func _player_is_ranged() -> bool:
 # Spawn an arrow toward the cursor with the rolled per-swing damage.
 # Mirrors skeleton.gd's _fire_arrow_at_player except aimed at the
 # mouse and not flagged from_enemy.
-func _fire_player_arrow(origin: Vector2, dmg: int) -> void:
-	var aim: Vector2 = get_global_mouse_position()
-	var dir_v: Vector2 = aim - origin
-	if dir_v.length() < 1.0:
-		return
+func _fire_player_arrow(origin: Vector2, dmg: int, facing: Vector2 = Vector2.ZERO) -> void:
+	# Arrow direction is the player's facing vector — passed in from
+	# attack_at so we use the same coords (subviewport / world space)
+	# the player itself lives in. Calling `get_global_mouse_position`
+	# from main.gd would query the WINDOW viewport (different coord
+	# system than the player's SubViewport), aiming the arrow into a
+	# wrong space.
+	var dir_v: Vector2 = facing.normalized() if facing.length() > 0.01 else Vector2(1, 0)
 	var parent_node: Node = dungeon if (in_dungeon and dungeon) else world
 	if parent_node == null:
 		parent_node = self
 	var arrow := _ArrowScript.new()
-	arrow.direction = dir_v.normalized()
-	arrow.aim_target_pos = aim
+	arrow.direction = dir_v
+	# Distant aim target so the arrow flies until it impacts something.
+	arrow.aim_target_pos = origin + dir_v * 2000.0
 	arrow.damage = dmg
 	parent_node.add_child(arrow)
-	arrow.global_position = origin + Vector2(0, -48)
+	arrow.global_position = origin
 
 func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	if dir_vec.length() < 0.01:
@@ -3245,7 +3249,7 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	# The arrow handles its own collision + damage on impact via
 	# arrow.gd, so we just hand off the rolled damage value.
 	if _player_is_ranged() and skill == null:
-		_fire_player_arrow(origin, scaled_dmg)
+		_fire_player_arrow(origin, scaled_dmg, facing)
 		return
 	# Damage any skeletons caught in the cone (dungeon mode + overworld).
 	var _skel_pool: Array = []
