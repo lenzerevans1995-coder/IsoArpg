@@ -92,7 +92,7 @@ static var _sheet_cache: Dictionary = {}    # sheet path -> Texture2D (or null o
 signal died(skel)
 
 const HIGHLIGHT_TEX_PATH := "res://assets/drops/highlight/highlight_yellow.png"
-var _highlight: Sprite2D
+var _highlight: Node2D    # code-drawn ring, was Sprite2D legacy
 var _main_ref: Node = null    # cached lookup so AI loops don't search root every frame
 
 func _ready() -> void:
@@ -141,38 +141,50 @@ func _setup_body_collision() -> void:
 func _ensure_highlight() -> void:
 	if _highlight and is_instance_valid(_highlight):
 		return
-	# Code-drawn iso ellipse — replaces the legacy highlight_yellow.png
-	# texture so missing / scaled / re-imported assets can never break
-	# the hover ring. Same anchor (0, -4) and same red tint.
-	_highlight = Sprite2D.new()  # Sprite2D lets us z_index it; the actual
-	# drawing happens via a small inline-script Node2D child so we get
-	# custom _draw without subclassing.
-	_highlight.position = Vector2(0, -4)
-	_highlight.z_index = -1
-	add_child(_highlight)
+	# Code-drawn iso ellipse — direct Node2D with a _draw script so the
+	# ring renders without depending on a texture asset. Stored on the
+	# `_highlight` field (still typed Sprite2D for compatibility with
+	# _clear_highlight, but we treat it as a plain CanvasItem).
 	var ring := Node2D.new()
+	ring.position = Vector2(0, -4)
+	ring.z_index = -1
+	# Per-kind size: bigger silhouettes get a wider ring. 28 px x-radius
+	# is a good base for a 64-77 px-tall sprite; the y-radius is half
+	# for the iso 2:1 ellipse.
+	var rx: float = 26.0 * (sprite_scale / 0.6)
+	var ry: float = rx * 0.5
 	var sc := GDScript.new()
 	sc.source_code = """
 extends Node2D
-var rx: float = 28.0
-var ry: float = 14.0
+var rx: float = 26.0
+var ry: float = 13.0
+func _ready() -> void:
+	queue_redraw()
 func _draw() -> void:
-	# Soft outer glow.
+	# Soft outer glow — concentric ellipses with falling alpha.
 	for i in range(4):
-		var a: float = 0.10 - 0.02 * i
-		var bump: float = float(i) * 1.5
-		draw_arc(Vector2.ZERO, rx + bump, 0.0, TAU, 48, Color(1.0, 0.32, 0.30, a), 2.0)
-	# Crisp ring.
-	draw_arc(Vector2.ZERO, rx, 0.0, TAU, 48, Color(1.0, 0.32, 0.30, 0.95), 2.0)
+		var bump: float = float(i) * 2.0
+		var a: float = 0.16 - 0.03 * float(i)
+		_iso_arc(rx + bump, ry + bump * 0.5, Color(1.0, 0.32, 0.30, a), 1.5)
+	# Crisp middle ring.
+	_iso_arc(rx, ry, Color(1.0, 0.32, 0.30, 0.95), 2.0)
 	# Inner shimmer.
-	draw_arc(Vector2.ZERO, rx - 3.0, 0.0, TAU, 48, Color(1.0, 0.5, 0.5, 0.45), 1.0)
+	_iso_arc(rx - 3.0, ry - 1.5, Color(1.0, 0.55, 0.50, 0.55), 1.0)
+func _iso_arc(rx_: float, ry_: float, col: Color, w: float) -> void:
+	var pts := PackedVector2Array()
+	var n := 56
+	for i in range(n + 1):
+		var t: float = float(i) / float(n) * TAU
+		pts.append(Vector2(cos(t) * rx_, sin(t) * ry_))
+	for i in range(pts.size() - 1):
+		draw_line(pts[i], pts[i + 1], col, w)
 """
 	sc.reload()
 	ring.set_script(sc)
-	# Match the legacy texture footprint (which used sprite_scale * 1.6)
-	# so the ring's on-screen size tracks per-kind silhouettes.
-	ring.scale = Vector2(sprite_scale * 1.6, sprite_scale * 0.8)
-	_highlight.add_child(ring)
+	ring.set("rx", rx)
+	ring.set("ry", ry)
+	add_child(ring)
+	_highlight = ring
 
 func _clear_highlight() -> void:
 	if _highlight and is_instance_valid(_highlight):

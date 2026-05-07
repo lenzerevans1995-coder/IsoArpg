@@ -79,8 +79,8 @@ static func world_fx_full_path(subfolder: String) -> String:
 # as draggable blue (origin) and red (target) markers in the preview
 # stage. Origin is added to the caster's position; target is added to
 # the cursor / true target before motion logic runs.
-@export var projectile_origin_offset: Vector2 = Vector2(0, -32)
-@export var projectile_target_offset: Vector2 = Vector2(0, -32)
+@export var projectile_origin_offset: Vector2 = Vector2.ZERO
+@export var projectile_target_offset: Vector2 = Vector2.ZERO
 # Render scale applied to the projectile flipbook. 0.5 matches the
 # 64-px-character demo (sources are typically 128 px; 0.5 = 64). Bump
 # to 1.0 for huge AoEs that should fill the screen.

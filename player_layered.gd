@@ -196,7 +196,7 @@ func _zoom(factor: float) -> void:
 	camera.zoom = z
 
 func _start_attack() -> void:
-	var to_cursor: Vector2 = get_global_mouse_position() - position
+	var to_cursor: Vector2 = get_global_mouse_position() - global_position
 	if to_cursor.length() > 1.0:
 		direction = _vec_to_dir(to_cursor)
 		character.set_direction(direction)
@@ -242,7 +242,7 @@ func play_skill(def: Resource) -> void:
 	else:
 		character.clear_layer("slash")
 	# Aim toward cursor like a regular attack.
-	var to_cursor: Vector2 = get_global_mouse_position() - position
+	var to_cursor: Vector2 = get_global_mouse_position() - global_position
 	if to_cursor.length() > 1.0:
 		direction = _vec_to_dir(to_cursor)
 		character.set_direction(direction)
@@ -399,7 +399,7 @@ func _process(delta: float) -> void:
 	if input_v.length() > 0.1:
 		move_v = input_v.normalized()
 	elif mouse_held:
-		var to_cursor: Vector2 = get_global_mouse_position() - position
+		var to_cursor: Vector2 = get_global_mouse_position() - global_position
 		if to_cursor.length() > CLICK_ARRIVE_RADIUS:
 			move_v = to_cursor.normalized()
 
