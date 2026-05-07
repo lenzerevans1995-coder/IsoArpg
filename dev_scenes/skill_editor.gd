@@ -117,7 +117,11 @@ var _target_marker: Node2D    # red:  where projectile lands  (test_target + tar
 # holder size, then NEAREST-upscales — same pattern as the main game's
 # 640x360→1280x720 rig. Bumping PREVIEW_SHRINK zooms in (each game
 # pixel becomes a bigger screen block).
-const _PREVIEW_SHRINK := 4
+# Initial preview zoom — mouse wheel over the viewport adjusts at runtime.
+var _preview_shrink: int = 4
+const _PREVIEW_SHRINK_MIN := 1
+const _PREVIEW_SHRINK_MAX := 12
+var _preview_holder: SubViewportContainer    # cached so wheel handler can resize it
 const _PREVIEW_PLAYER_POS := Vector2(38, 84)
 # Live position of the dummy enemy — mutable so dragging it carries the
 # red target marker along (and so target_offset stays relative to the
@@ -224,27 +228,71 @@ func _build_ui() -> void:
 	# Header bar.
 	page.add_child(_build_header_bar())
 
-	# Four columns row.
-	var cols := HBoxContainer.new()
-	cols.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	cols.add_theme_constant_override("separation", 20)
-	page.add_child(cols)
+	# Tabs (form fields) on the left + always-visible Preview on the right.
+	var split := HBoxContainer.new()
+	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	split.add_theme_constant_override("separation", 20)
+	page.add_child(split)
 
-	cols.add_child(_build_col_identity())   # Identity / Body / Damage
-	cols.add_child(_build_col_overlays())   # Effect overlays + colors
-	cols.add_child(_build_col_projectile()) # Projectile / Motion / Timing
-	cols.add_child(_build_col_preview())    # Live preview
+	var tabs := TabContainer.new()
+	tabs.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	tabs.size_flags_stretch_ratio = 1.0
+	_style_tabs(tabs)
+	# Each tab is a single column; cards stack inside.
+	var t_body := _build_col_identity();    t_body.name = "Body"
+	var t_fx   := _build_col_overlays();    t_fx.name   = "Effects"
+	var t_proj := _build_col_projectile();  t_proj.name = "Projectile"
+	tabs.add_child(t_body)
+	tabs.add_child(t_fx)
+	tabs.add_child(t_proj)
+	split.add_child(tabs)
 
-	for i in cols.get_child_count():
-		var c := cols.get_child(i) as Control
-		c.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	cols.get_child(0).size_flags_stretch_ratio = 1.0
-	cols.get_child(1).size_flags_stretch_ratio = 1.0
-	cols.get_child(2).size_flags_stretch_ratio = 1.1
-	cols.get_child(3).size_flags_stretch_ratio = 1.6
-	# Build the projectile fields (must run after _build_col_projectile so
-	# the parent VBox exists). Ditto _refresh_open_dropdown.
+	var preview_col := _build_col_preview()
+	preview_col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	preview_col.size_flags_stretch_ratio = 1.4
+	split.add_child(preview_col)
+
 	_refresh_open_dropdown()
+
+func _style_tabs(tc: TabContainer) -> void:
+	# Tabs styled to match the section cards — same charcoal palette,
+	# amber underline on the selected tab.
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = COL_PANEL
+	bg.border_color = COL_RULE
+	bg.border_width_left = 1; bg.border_width_top = 1
+	bg.border_width_right = 1; bg.border_width_bottom = 1
+	bg.corner_radius_top_left = 2; bg.corner_radius_top_right = 2
+	bg.corner_radius_bottom_left = 2; bg.corner_radius_bottom_right = 2
+	bg.content_margin_left = 18; bg.content_margin_right = 18
+	bg.content_margin_top = 18; bg.content_margin_bottom = 18
+	tc.add_theme_stylebox_override("panel", bg)
+
+	var tab_unsel := StyleBoxFlat.new()
+	tab_unsel.bg_color = COL_RAISED
+	tab_unsel.border_color = COL_RULE
+	tab_unsel.border_width_bottom = 1
+	tab_unsel.content_margin_left = 18; tab_unsel.content_margin_right = 18
+	tab_unsel.content_margin_top = 8; tab_unsel.content_margin_bottom = 8
+	tc.add_theme_stylebox_override("tab_unselected", tab_unsel)
+
+	var tab_hov := tab_unsel.duplicate() as StyleBoxFlat
+	tab_hov.bg_color = COL_RAISED_HOV
+	tc.add_theme_stylebox_override("tab_hovered", tab_hov)
+
+	var tab_sel := StyleBoxFlat.new()
+	tab_sel.bg_color = COL_PANEL
+	tab_sel.border_color = COL_AMBER
+	tab_sel.border_width_bottom = 2
+	tab_sel.content_margin_left = 18; tab_sel.content_margin_right = 18
+	tab_sel.content_margin_top = 8; tab_sel.content_margin_bottom = 8
+	tc.add_theme_stylebox_override("tab_selected", tab_sel)
+
+	tc.add_theme_color_override("font_unselected_color", COL_TEXT_DIM)
+	tc.add_theme_color_override("font_hovered_color", COL_TEXT)
+	tc.add_theme_color_override("font_selected_color", COL_AMBER)
+	tc.add_theme_font_size_override("font_size", 12)
 
 # --- Foundry style helpers ---------------------------------------------
 
@@ -722,8 +770,11 @@ func _build_col_preview() -> Control:
 
 	var holder := SubViewportContainer.new()
 	holder.stretch = true
-	holder.stretch_shrink = _PREVIEW_SHRINK
+	holder.stretch_shrink = _preview_shrink
 	holder.custom_minimum_size = Vector2(420, 420)
+	holder.mouse_filter = Control.MOUSE_FILTER_PASS  # so wheel events fire
+	holder.gui_input.connect(_on_preview_wheel)
+	_preview_holder = holder
 	holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	holder.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	holder.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -1365,6 +1416,20 @@ func _process(_dt: float) -> void:
 		# Wraparound — anim looped. Fire a fresh projectile.
 		ProjectileRuntimeScript.play(_def, _preview_vp, _PREVIEW_PLAYER_POS, _target_ref)
 	_proj_last_frame = cur
+
+func _on_preview_wheel(ev: InputEvent) -> void:
+	if not (ev is InputEventMouseButton): return
+	var mb := ev as InputEventMouseButton
+	if not mb.pressed: return
+	var prev := _preview_shrink
+	if mb.button_index == MOUSE_BUTTON_WHEEL_UP:
+		_preview_shrink = min(_preview_shrink + 1, _PREVIEW_SHRINK_MAX)
+	elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+		_preview_shrink = max(_preview_shrink - 1, _PREVIEW_SHRINK_MIN)
+	else:
+		return
+	if _preview_shrink != prev and _preview_holder:
+		_preview_holder.stretch_shrink = _preview_shrink
 
 func _on_play_skill() -> void:
 	# Reset body rig and then fire the projectile with the player at the
