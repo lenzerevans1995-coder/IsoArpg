@@ -3254,20 +3254,30 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	_skel_pool.append_array(overworld_skeletons)
 	if _skel_pool.size() > 0:
 		var skel_dmg: int = scaled_dmg
+		# Single-target shape: collect every valid hit, then keep only
+		# the nearest one. Cone / circle hit everyone in range.
+		var single_best: Node = null
+		var single_best_d: float = INF
 		for sk in _skel_pool:
 			if sk == null or not is_instance_valid(sk) or sk.dead:
 				continue
-			var s_body_off: Vector2 = sk.body_offset if "body_offset" in sk else Vector2(0, -90)
-			var to_s: Vector2 = (sk.global_position + s_body_off) - (origin + Vector2(0, -90))
 			var ground_d: float = (sk.global_position - origin).length()
 			if ground_d > radius or ground_d < 1.0:
 				continue
 			var ang_s: float = acos(clamp((sk.global_position - origin).normalized().dot(facing), -1.0, 1.0))
 			if ang_s > half_angle:
 				continue
+			if skill_shape == "single":
+				if ground_d < single_best_d:
+					single_best_d = ground_d
+					single_best = sk
+				continue
 			if sk.has_method("take_damage"):
 				sk.take_damage(skel_dmg)
 				_spawn_damage_number(sk.global_position + Vector2(0, -32), skel_dmg)
+		if skill_shape == "single" and single_best != null and single_best.has_method("take_damage"):
+			single_best.take_damage(skel_dmg)
+			_spawn_damage_number(single_best.global_position + Vector2(0, -32), skel_dmg)
 	# Damage any aggressive monsters caught in the same cone.
 	for m in active_spiders:
 		if not is_instance_valid(m) or m.dead:

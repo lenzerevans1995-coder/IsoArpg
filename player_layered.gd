@@ -382,7 +382,12 @@ func _process(delta: float) -> void:
 		if not attack_hit_fired and attack_time >= ATTACK_IMPACT_TIME:
 			attack_hit_fired = true
 			if main and main.has_method("attack_at"):
-				main.attack_at(position, main.dir_to_vec(direction))
+				# Pass global_position — main.attack_at uses it as the
+				# origin for arrow spawn / cone-damage tests, which all
+				# need world-space coords. `position` is local to the
+				# player's parent (flora layer in painted world), so it
+				# would be wrong wherever the parent is offset.
+				main.attack_at(global_position, main.dir_to_vec(direction))
 		# Movement is locked during the attack swing.
 		return
 
