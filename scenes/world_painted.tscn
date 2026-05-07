@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://dub5k0334e8hg"]
 
 [ext_resource type="TileSet" uid="uid://dub5o86t3fphg" path="res://scenes/world_tileset.tres" id="1_tileset"]
-[ext_resource type="Shader" path="res://shaders/water.gdshader" id="2_water"]
+[ext_resource type="Shader" uid="uid://dv1uhmb4u5cms" path="res://shaders/water.gdshader" id="2_water"]
 
 [sub_resource type="ShaderMaterial" id="Mat_water"]
 shader = ExtResource("2_water")
@@ -9,7 +9,7 @@ shader_parameter/water_col = Color(0.04, 0.38, 0.88, 1)
 shader_parameter/water2_col = Color(0.04, 0.35, 0.78, 1)
 shader_parameter/foam_col = Color(0.8125, 0.9609, 0.9648, 1)
 shader_parameter/distortion_speed = 2.0
-shader_parameter/tile = Vector2(5.0, 5.0)
+shader_parameter/tile = Vector2(5, 5)
 shader_parameter/world_pixel = 6.0
 shader_parameter/world_scale = 256.0
 shader_parameter/iso_y_squash = 0.5
@@ -23,8 +23,9 @@ tile_map_data = PackedByteArray("AAAAAAEAAgAAAAAAAAABAAIAAgAAAAAAAAABAAMAAgAAAAA
 tile_set = ExtResource("1_tileset")
 
 [node name="water" type="TileMapLayer" parent="." unique_id=1409921005]
-material = SubResource("Mat_water")
 y_sort_enabled = true
+material = SubResource("Mat_water")
+tile_map_data = PackedByteArray("AAAIAAAAAgAAAAAAAAAIAAEAAgAAAAAAAAAIAAIAAgAAAAAAAAAIAAMAAgAAAAAAAAAJAAMAAgAAAAAAAAAJAAQAAgAAAAAAAAAJAAUAAgAAAAAAAAAJAAYAAgAAAAAAAAAIAAYAAgAAAAAAAAAIAAUAAgAAAAAAAAAIAAcAAgAAAAAAAAAIAAgAAgAAAAAAAAAJAAgAAgAAAAAAAAAJAAcAAgAAAAAAAAAIAAQAAgAAAAAAAAAJAAIAAgAAAAAAAAAJAAEAAgAAAAAAAAAJAAAAAgAAAAAAAAA=")
 tile_set = ExtResource("1_tileset")
 
 [node name="grass" type="TileMapLayer" parent="." unique_id=2080482995]

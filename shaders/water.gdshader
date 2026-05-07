@@ -21,7 +21,7 @@ uniform vec2  tile = vec2(5.0, 5.0);
 // Side length (in world pixels) of each chunky pixel block. Bigger
 // number = chunkier blocks. 8 reads as solid pixel-art at the demo
 // scale; 4 is finer; 16 is very blocky.
-uniform float world_pixel : hint_range(1.0, 32.0) = 6.0;
+uniform float world_pixel : hint_range(1.0, 32.0) = 4.0;
 // World units per repeat of the noise pattern. 256 means the whole
 // circle layout cycles every 256 world px regardless of how big any
 // individual tile is — adjacent tiles share the same noise field so
