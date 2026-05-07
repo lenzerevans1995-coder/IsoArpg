@@ -13,6 +13,18 @@ const ProjectileRuntimeScript := preload("res://projectile_runtime.gd")
 const PROJECTILES_PATH := "res://data/projectiles.json"
 const MOTION_OPTIONS := ["at_player", "at_target", "travel", "arc_rain"]
 
+# --- Foundry theme tokens -----------------------------------------------
+const COL_BG         := Color("#0E1116")
+const COL_PANEL      := Color("#161A21")
+const COL_RAISED     := Color("#1F252E")
+const COL_RAISED_HOV := Color("#262E3A")
+const COL_RULE       := Color("#2A3340")
+const COL_TEXT       := Color("#E8E2D2")
+const COL_TEXT_DIM   := Color("#8B8676")
+const COL_TEXT_FAINT := Color("#5A5448")
+const COL_AMBER      := Color("#D9A85A")
+const COL_AMBER_DIM  := Color("#7C5F33")
+
 const SKILLS_DIR := "res://data/skills"
 const PALETTE_PATH := "res://data/swatch_palette.json"
 
@@ -188,137 +200,534 @@ func _load_palette() -> void:
 			_palette = parsed
 
 func _build_ui() -> void:
-	custom_minimum_size = Vector2(960, 600)
-	var hbox := HBoxContainer.new()
-	hbox.anchor_right = 1.0
-	hbox.anchor_bottom = 1.0
-	add_child(hbox)
+	# --- "Foundry" layout: header + 4 columns, no scrolling --------------
+	custom_minimum_size = Vector2(1280, 720)
+	# Backplate fills the editor window with the deepest panel color.
+	var back := ColorRect.new()
+	back.color = COL_BG
+	back.anchor_right = 1.0; back.anchor_bottom = 1.0
+	add_child(back)
 
-	# --- left: form fields ---
-	var left_scroll := ScrollContainer.new()
-	left_scroll.custom_minimum_size = Vector2(360, 0)
-	left_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	hbox.add_child(left_scroll)
-	var left := VBoxContainer.new()
-	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	left_scroll.add_child(left)
+	# Outer margin around the whole page.
+	var pad := MarginContainer.new()
+	pad.anchor_right = 1.0; pad.anchor_bottom = 1.0
+	pad.add_theme_constant_override("margin_left",   24)
+	pad.add_theme_constant_override("margin_right",  24)
+	pad.add_theme_constant_override("margin_top",    18)
+	pad.add_theme_constant_override("margin_bottom", 24)
+	add_child(pad)
 
-	_add_label(left, "Skill Editor", 16)
+	var page := VBoxContainer.new()
+	page.add_theme_constant_override("separation", 18)
+	pad.add_child(page)
 
-	# Open / new selector — drops down a list of every saved skill
-	# (.tres files under res://data/skills/) plus a (New) entry that
-	# resets the form to a blank SkillDef. Loads the picked skill into
-	# the form so it can be edited in-place and re-saved.
-	var open_row := HBoxContainer.new()
-	left.add_child(open_row)
-	var open_lbl := Label.new(); open_lbl.text = "Open"; open_row.add_child(open_lbl)
+	# Header bar.
+	page.add_child(_build_header_bar())
+
+	# Four columns row.
+	var cols := HBoxContainer.new()
+	cols.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	cols.add_theme_constant_override("separation", 20)
+	page.add_child(cols)
+
+	cols.add_child(_build_col_identity())   # Identity / Body / Damage
+	cols.add_child(_build_col_overlays())   # Effect overlays + colors
+	cols.add_child(_build_col_projectile()) # Projectile / Motion / Timing
+	cols.add_child(_build_col_preview())    # Live preview
+
+	for i in cols.get_child_count():
+		var c := cols.get_child(i) as Control
+		c.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cols.get_child(0).size_flags_stretch_ratio = 1.0
+	cols.get_child(1).size_flags_stretch_ratio = 1.0
+	cols.get_child(2).size_flags_stretch_ratio = 1.1
+	cols.get_child(3).size_flags_stretch_ratio = 1.6
+	# Build the projectile fields (must run after _build_col_projectile so
+	# the parent VBox exists). Ditto _refresh_open_dropdown.
+	_refresh_open_dropdown()
+
+# --- Foundry style helpers ---------------------------------------------
+
+func _section_panel_style() -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = COL_PANEL
+	sb.border_color = COL_RULE
+	sb.border_width_left = 1; sb.border_width_top = 1
+	sb.border_width_right = 1; sb.border_width_bottom = 1
+	sb.corner_radius_top_left = 2; sb.corner_radius_top_right = 2
+	sb.corner_radius_bottom_left = 2; sb.corner_radius_bottom_right = 2
+	sb.shadow_color = Color(0, 0, 0, 0.35)
+	sb.shadow_size = 8
+	sb.shadow_offset = Vector2(0, 4)
+	sb.content_margin_left = 18; sb.content_margin_right = 18
+	sb.content_margin_top = 18; sb.content_margin_bottom = 18
+	return sb
+
+func _input_style(focus: bool = false, hover: bool = false) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = COL_RAISED_HOV if hover else COL_RAISED
+	sb.border_color = COL_AMBER if focus else COL_RULE
+	sb.border_width_bottom = 2 if focus else 1
+	sb.corner_radius_top_left = 2; sb.corner_radius_top_right = 2
+	sb.corner_radius_bottom_left = 2; sb.corner_radius_bottom_right = 2
+	sb.content_margin_left = 10; sb.content_margin_right = 10
+	sb.content_margin_top = 6; sb.content_margin_bottom = 6
+	return sb
+
+func _btn_secondary_style(hover: bool = false) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = COL_RAISED_HOV if hover else COL_RAISED
+	sb.border_color = COL_AMBER_DIM if hover else COL_RULE
+	sb.border_width_left = 1; sb.border_width_top = 1
+	sb.border_width_right = 1; sb.border_width_bottom = 1
+	sb.corner_radius_top_left = 2; sb.corner_radius_top_right = 2
+	sb.corner_radius_bottom_left = 2; sb.corner_radius_bottom_right = 2
+	sb.content_margin_left = 12; sb.content_margin_right = 12
+	sb.content_margin_top = 6; sb.content_margin_bottom = 6
+	return sb
+
+func _btn_primary_style(hover: bool = false) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = COL_AMBER if not hover else Color(1.05 * COL_AMBER.r, 1.05 * COL_AMBER.g, 1.05 * COL_AMBER.b, 1.0)
+	sb.corner_radius_top_left = 2; sb.corner_radius_top_right = 2
+	sb.corner_radius_bottom_left = 2; sb.corner_radius_bottom_right = 2
+	sb.content_margin_left = 16; sb.content_margin_right = 16
+	sb.content_margin_top = 8; sb.content_margin_bottom = 8
+	return sb
+
+# Apply the input-box style to any LineEdit/SpinBox/OptionButton in one call.
+func _style_input(c: Control) -> void:
+	c.add_theme_stylebox_override("normal", _input_style())
+	c.add_theme_stylebox_override("focus", _input_style(true))
+	c.add_theme_stylebox_override("hover", _input_style(false, true))
+	c.add_theme_color_override("font_color", COL_TEXT)
+	c.add_theme_font_size_override("font_size", 13)
+
+func _style_secondary_button(b: Button) -> void:
+	b.add_theme_stylebox_override("normal", _btn_secondary_style())
+	b.add_theme_stylebox_override("hover", _btn_secondary_style(true))
+	b.add_theme_stylebox_override("pressed", _btn_secondary_style(true))
+	b.add_theme_color_override("font_color", COL_TEXT)
+	b.add_theme_color_override("font_hover_color", COL_AMBER)
+	b.add_theme_font_size_override("font_size", 12)
+
+func _style_primary_button(b: Button) -> void:
+	b.add_theme_stylebox_override("normal", _btn_primary_style())
+	b.add_theme_stylebox_override("hover", _btn_primary_style(true))
+	b.add_theme_stylebox_override("pressed", _btn_primary_style())
+	b.add_theme_color_override("font_color", Color("#1A1410"))
+	b.add_theme_color_override("font_hover_color", Color("#1A1410"))
+	b.add_theme_font_size_override("font_size", 12)
+
+# A label-with-tracking style (uppercase, dim).
+func _label_dim(text: String) -> Label:
+	var l := Label.new()
+	l.text = text.to_upper()
+	l.add_theme_color_override("font_color", COL_TEXT_DIM)
+	l.add_theme_font_size_override("font_size", 11)
+	return l
+
+# Section card factory — wraps content in a styled PanelContainer with a
+# numbered header (amber prefix + white title + amber rule to right).
+func _section_card(num: String, title: String, body: Control) -> PanelContainer:
+	var card := PanelContainer.new()
+	card.add_theme_stylebox_override("panel", _section_panel_style())
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 14)
+	card.add_child(v)
+
+	# Header row.
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 10)
+	var n := Label.new(); n.text = "%s  —" % num
+	n.add_theme_color_override("font_color", COL_AMBER)
+	n.add_theme_font_size_override("font_size", 11)
+	hb.add_child(n)
+	var t := Label.new(); t.text = title.to_upper()
+	t.add_theme_color_override("font_color", COL_TEXT)
+	t.add_theme_font_size_override("font_size", 14)
+	hb.add_child(t)
+	# Filling amber rule.
+	var rule_wrap := CenterContainer.new()
+	rule_wrap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var rule := Panel.new()
+	var rsb := StyleBoxFlat.new()
+	rsb.bg_color = COL_AMBER; rsb.bg_color.a = 0.55
+	rule.add_theme_stylebox_override("panel", rsb)
+	rule.custom_minimum_size = Vector2(0, 1)
+	rule.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	rule_wrap.add_child(rule)
+	hb.add_child(rule_wrap)
+	v.add_child(hb)
+
+	# Body content.
+	v.add_child(body)
+	return card
+
+# Header bar at the top of the editor.
+func _build_header_bar() -> Control:
+	var panel := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = COL_PANEL
+	sb.border_color = COL_RULE
+	sb.border_width_bottom = 1
+	sb.content_margin_left = 18; sb.content_margin_right = 18
+	sb.content_margin_top = 12; sb.content_margin_bottom = 12
+	panel.add_theme_stylebox_override("panel", sb)
+	panel.custom_minimum_size = Vector2(0, 56)
+
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 16)
+	panel.add_child(hb)
+
+	# Brand mark + title.
+	var mark := Label.new()
+	mark.text = "✦"
+	mark.add_theme_color_override("font_color", COL_AMBER)
+	mark.add_theme_font_size_override("font_size", 20)
+	hb.add_child(mark)
+	var title := Label.new()
+	title.text = "FORGE"
+	title.add_theme_color_override("font_color", COL_TEXT)
+	title.add_theme_font_size_override("font_size", 18)
+	hb.add_child(title)
+
+	# Open selector.
+	var open_lbl := _label_dim("Open")
+	hb.add_child(open_lbl)
 	_f_open = OptionButton.new()
-	_f_open.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_f_open.custom_minimum_size = Vector2(180, 0)
 	_f_open.item_selected.connect(_on_open_selected)
-	open_row.add_child(_f_open)
+	_style_input(_f_open)
+	hb.add_child(_f_open)
 	var refresh_btn := Button.new()
 	refresh_btn.text = "↻"
 	refresh_btn.tooltip_text = "Re-scan data/skills/"
 	refresh_btn.pressed.connect(_refresh_open_dropdown)
-	open_row.add_child(refresh_btn)
-	_refresh_open_dropdown()
+	_style_secondary_button(refresh_btn)
+	hb.add_child(refresh_btn)
 
-	var grid := GridContainer.new(); grid.columns = 2
-	left.add_child(grid)
-	_f_id      = _add_str_row(grid, "Skill ID", _on_id_changed)
-	_f_name    = _add_str_row(grid, "Display Name", func(v): _def.display_name = v)
-	_f_anim    = _add_option_row(grid, "Trigger Anim", ANIM_OPTIONS, func(idx): _def.trigger_anim = ANIM_OPTIONS[idx]; _refresh_preview())
-	_f_effect_a= _add_option_row(grid, "Effect A", EFFECT_OPTIONS, func(idx): _def.effect_a_folder = EFFECT_OPTIONS[idx]; _refresh_preview())
-	_f_effect_b= _add_option_row(grid, "Effect B", EFFECT_OPTIONS, func(idx): _def.effect_b_folder = EFFECT_OPTIONS[idx]; _refresh_preview())
-	_f_slash   = _add_option_row(grid, "Slash",    SLASH_OPTIONS,  func(idx): _def.slash_folder    = SLASH_OPTIONS[idx];  _refresh_preview())
-	# Fantasy-tileset world-space FX (AoE / Bolt / Buff# / Cone / Dash /
-	# Hook / LevelUp). Spawned once at the player's foot when the skill
-	# fires. Doesn't loop — explosion_anim auto-frees on completion.
-	var world_fx_labels: Array = []
-	for opt in _world_fx_options: world_fx_labels.append(opt if opt != "" else "(none)")
-	_f_world_fx = _add_option_row(grid, "World FX", world_fx_labels, func(idx):
-		_def.world_fx_folder = String(_world_fx_options[idx])
-		_spawn_world_fx_preview())
-	# Demo weapon: not saved, just gives the preview rig something to
-	# hold so you can see how the effect reads against a sword, a bow,
-	# magic hands, etc.
+	# Identity inline (id + name) so it's always visible.
+	var id_lbl := _label_dim("ID")
+	hb.add_child(id_lbl)
+	_f_id = LineEdit.new()
+	_f_id.placeholder_text = "skill_id"
+	_f_id.custom_minimum_size = Vector2(140, 0)
+	_f_id.text_changed.connect(_on_id_changed)
+	_style_input(_f_id)
+	hb.add_child(_f_id)
+
+	var name_lbl := _label_dim("Name")
+	hb.add_child(name_lbl)
+	_f_name = LineEdit.new()
+	_f_name.placeholder_text = "Display name"
+	_f_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_f_name.text_changed.connect(func(v): _def.display_name = v)
+	_style_input(_f_name)
+	hb.add_child(_f_name)
+
+	# Spacer
+	var sep := Control.new()
+	sep.custom_minimum_size = Vector2(8, 0)
+	hb.add_child(sep)
+
+	# Status text (e.g. 'Saved -> ...').
+	_info_label = Label.new()
+	_info_label.text = "Foundry"
+	_info_label.add_theme_color_override("font_color", COL_TEXT_FAINT)
+	_info_label.add_theme_font_size_override("font_size", 11)
+	_info_label.custom_minimum_size = Vector2(220, 0)
+	hb.add_child(_info_label)
+
+	# Save CTA.
+	var save_btn := Button.new()
+	save_btn.text = "  SAVE  "
+	save_btn.pressed.connect(_on_save)
+	_style_primary_button(save_btn)
+	hb.add_child(save_btn)
+	return panel
+
+# Helper: standard form row (label left, control right, optional swatch).
+func _form_row(label: String, control: Control, swatch: Button = null) -> HBoxContainer:
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 10)
+	var l := _label_dim(label)
+	l.custom_minimum_size = Vector2(98, 0)
+	l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	hb.add_child(l)
+	control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(control)
+	if swatch != null:
+		swatch.custom_minimum_size = Vector2(22, 22)
+		hb.add_child(swatch)
+	return hb
+
+# Build a swatch button bound to a getter / setter on the SkillDef.
+func _swatch(getter: Callable, setter: Callable) -> Button:
+	var btn := Button.new()
+	btn.flat = true
+	btn.custom_minimum_size = Vector2(22, 22)
+	_paint_color_button(btn, getter.call())
+	btn.pressed.connect(func(): _open_palette_popup(btn, getter, setter))
+	return btn
+
+# --- Columns -----------------------------------------------------------
+
+func _build_col_identity() -> Control:
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 24)
+
+	# BODY card (trigger anim + demo weapon + rotate-dir).
+	var body := VBoxContainer.new()
+	body.add_theme_constant_override("separation", 14)
+	_f_anim = OptionButton.new()
+	for opt in ANIM_OPTIONS: _f_anim.add_item(opt)
+	_f_anim.item_selected.connect(func(idx):
+		_def.trigger_anim = ANIM_OPTIONS[idx]; _refresh_preview())
+	_style_input(_f_anim)
+	body.add_child(_form_row("Trigger anim", _f_anim))
 	var weapon_labels: Array = []
 	for entry in WEAPON_OPTIONS: weapon_labels.append(String(entry[0]))
-	_f_weapon  = _add_option_row(grid, "Demo Weapon", weapon_labels, func(idx):
-		_preview_weapon = String(WEAPON_OPTIONS[idx][1])
-		_refresh_preview())
-	_f_dmg     = _add_spin_row(grid, "Damage Mult", 0.1, 10.0, 0.1, func(v): _def.damage_mult = float(v))
-
-	# Per-effect color pickers. Each row: a label + a swatch button. The
-	# button's fill color is the currently-assigned color for that
-	# effect; clicking opens a popup with the 81-swatch palette.
-	_add_label(left, "\nColors", 14)
-	var color_grid := GridContainer.new(); color_grid.columns = 2
-	left.add_child(color_grid)
-	_color_btns = [
-		_add_color_row(color_grid, "Effect A",
-			func(): return _def.effect_a_color,
-			func(c): _def.effect_a_color = c),
-		_add_color_row(color_grid, "Effect B",
-			func(): return _def.effect_b_color,
-			func(c): _def.effect_b_color = c),
-		_add_color_row(color_grid, "Slash",
-			func(): return _def.slash_color,
-			func(c): _def.slash_color = c),
-		_add_color_row(color_grid, "World FX",
-			func(): return _def.world_fx_color,
-			func(c): _def.world_fx_color = c; _spawn_world_fx_preview()),
-	]
-
-	# Projectile section — pack/cat/name cascading pickers, motion mode,
-	# frame trim, fps, speed, and arc-rain params.
-	_build_projectile_section(left)
-
-	# Sticky save bar at the bottom of the form.
-	_info_label = Label.new()
-	_info_label.text = "Set a Skill ID and Save."
-	_info_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-	left.add_child(_info_label)
-	var save_btn := Button.new()
-	save_btn.text = "Save Skill"
-	save_btn.pressed.connect(_on_save)
-	left.add_child(save_btn)
-
-	# --- right: live preview ---
-	var right := VBoxContainer.new()
-	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	right.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	hbox.add_child(right)
-
-	# Toolbar above preview.
-	var ctrl_row := HBoxContainer.new()
-	right.add_child(ctrl_row)
-	var dir_btn := Button.new()
-	dir_btn.text = "Rotate Dir"
-	dir_btn.pressed.connect(func():
+	_f_weapon = OptionButton.new()
+	for opt in weapon_labels: _f_weapon.add_item(opt)
+	_f_weapon.item_selected.connect(func(idx):
+		_preview_weapon = String(WEAPON_OPTIONS[idx][1]); _refresh_preview())
+	_style_input(_f_weapon)
+	body.add_child(_form_row("Demo weapon", _f_weapon))
+	var rot_btn := Button.new()
+	rot_btn.text = "↻ Rotate Direction"
+	rot_btn.pressed.connect(func():
 		_preview_dir = (_preview_dir + 1) % 8
 		if _preview_char: _preview_char.call("set_direction", _preview_dir))
-	ctrl_row.add_child(dir_btn)
-	var play_btn := Button.new()
-	play_btn.text = "Replay Anim"
-	play_btn.pressed.connect(_refresh_preview)
-	ctrl_row.add_child(play_btn)
-	# Phase 3 stage: fire the body anim AND spawn the projectile against
-	# the draggable target marker — same path as the in-game caster.
+	_style_secondary_button(rot_btn)
+	body.add_child(rot_btn)
+	col.add_child(_section_card("01", "Body", body))
+
+	# DAMAGE card.
+	var dmg := VBoxContainer.new()
+	dmg.add_theme_constant_override("separation", 14)
+	_f_dmg = SpinBox.new()
+	_f_dmg.min_value = 0.1; _f_dmg.max_value = 10.0; _f_dmg.step = 0.1
+	_f_dmg.value = 1.0
+	_f_dmg.value_changed.connect(func(v): _def.damage_mult = float(v))
+	_style_input(_f_dmg)
+	dmg.add_child(_form_row("Mult", _f_dmg))
+	var hint := Label.new()
+	hint.text = "Damage shape, range, and angle live on the SkillDef and are tuned per-skill in the .tres."
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD
+	hint.add_theme_color_override("font_color", COL_TEXT_FAINT)
+	hint.add_theme_font_size_override("font_size", 10)
+	dmg.add_child(hint)
+	col.add_child(_section_card("02", "Damage", dmg))
+
+	# Tips card.
+	var tips_v := VBoxContainer.new()
+	var tips := Label.new()
+	tips.text = "Keys 1-6 fire Attack1-Special1 in the preview.\nKey 0 returns to Idle.\nDrag the blue / red markers in the preview to set spawn / impact offsets.\nDrag the dummy enemy to reposition it."
+	tips.autowrap_mode = TextServer.AUTOWRAP_WORD
+	tips.add_theme_color_override("font_color", COL_TEXT_FAINT)
+	tips.add_theme_font_size_override("font_size", 10)
+	tips_v.add_child(tips)
+	col.add_child(_section_card("03", "Hotkeys", tips_v))
+	return col
+
+func _build_col_overlays() -> Control:
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 24)
+
+	# OVERLAYS — each row inline: label / dropdown / swatch.
+	var ov := VBoxContainer.new()
+	ov.add_theme_constant_override("separation", 14)
+	_f_effect_a = OptionButton.new()
+	for o in EFFECT_OPTIONS: _f_effect_a.add_item(o if o != "" else "(none)")
+	_f_effect_a.item_selected.connect(func(idx):
+		_def.effect_a_folder = EFFECT_OPTIONS[idx]; _refresh_preview())
+	_style_input(_f_effect_a)
+	var sw_a := _swatch(
+		func(): return _def.effect_a_color,
+		func(c): _def.effect_a_color = c; _refresh_preview())
+	ov.add_child(_form_row("Effect A", _f_effect_a, sw_a))
+
+	_f_effect_b = OptionButton.new()
+	for o in EFFECT_OPTIONS: _f_effect_b.add_item(o if o != "" else "(none)")
+	_f_effect_b.item_selected.connect(func(idx):
+		_def.effect_b_folder = EFFECT_OPTIONS[idx]; _refresh_preview())
+	_style_input(_f_effect_b)
+	var sw_b := _swatch(
+		func(): return _def.effect_b_color,
+		func(c): _def.effect_b_color = c; _refresh_preview())
+	ov.add_child(_form_row("Effect B", _f_effect_b, sw_b))
+
+	_f_slash = OptionButton.new()
+	for o in SLASH_OPTIONS: _f_slash.add_item(o if o != "" else "(none)")
+	_f_slash.item_selected.connect(func(idx):
+		_def.slash_folder = SLASH_OPTIONS[idx]; _refresh_preview())
+	_style_input(_f_slash)
+	var sw_s := _swatch(
+		func(): return _def.slash_color,
+		func(c): _def.slash_color = c; _refresh_preview())
+	ov.add_child(_form_row("Slash", _f_slash, sw_s))
+
+	_color_btns = [sw_a, sw_b, sw_s]
+	col.add_child(_section_card("04", "Overlays", ov))
+
+	# Layer guide.
+	var guide_v := VBoxContainer.new()
+	var guide := Label.new()
+	guide.text = "A and B stack on the body rig. Slash plays on the dedicated weapon-trail layer above the mainhand. Each gets its own palette tint via the luminance-recolor shader."
+	guide.autowrap_mode = TextServer.AUTOWRAP_WORD
+	guide.add_theme_color_override("font_color", COL_TEXT_FAINT)
+	guide.add_theme_font_size_override("font_size", 10)
+	guide_v.add_child(guide)
+	col.add_child(_section_card("05", "Layer Order", guide_v))
+	return col
+
+func _build_col_projectile() -> Control:
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 20)
+
+	# PROJECTILE — pack/cat/name + color swatch.
+	var pj := VBoxContainer.new()
+	pj.add_theme_constant_override("separation", 14)
+	_f_proj_pack = OptionButton.new()
+	for label in _projectile_pack_labels(): _f_proj_pack.add_item(label)
+	_f_proj_pack.item_selected.connect(_on_proj_pack_changed)
+	_style_input(_f_proj_pack)
+	pj.add_child(_form_row("Pack", _f_proj_pack))
+
+	_f_proj_cat = OptionButton.new()
+	_f_proj_cat.item_selected.connect(_on_proj_cat_changed)
+	_style_input(_f_proj_cat)
+	pj.add_child(_form_row("Category", _f_proj_cat))
+
+	_f_proj_name = OptionButton.new()
+	_f_proj_name.item_selected.connect(_on_proj_name_changed)
+	_style_input(_f_proj_name)
+	_f_proj_color_btn = _swatch(
+		func(): return _def.projectile_color,
+		func(c): _def.projectile_color = c)
+	pj.add_child(_form_row("Name", _f_proj_name, _f_proj_color_btn))
+
+	_proj_info = Label.new()
+	_proj_info.text = "(no projectile selected)"
+	_proj_info.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_proj_info.add_theme_color_override("font_color", COL_TEXT_FAINT)
+	_proj_info.add_theme_font_size_override("font_size", 10)
+	pj.add_child(_proj_info)
+	col.add_child(_section_card("06", "Projectile", pj))
+
+	# MOTION + TIMING merged.
+	var mt := VBoxContainer.new()
+	mt.add_theme_constant_override("separation", 14)
+	_f_proj_motion = OptionButton.new()
+	for o in MOTION_OPTIONS: _f_proj_motion.add_item(o)
+	_f_proj_motion.item_selected.connect(func(idx):
+		_def.projectile_motion = MOTION_OPTIONS[idx]; _refresh_proj_visibility())
+	_style_input(_f_proj_motion)
+	mt.add_child(_form_row("Motion", _f_proj_motion))
+
+	_f_proj_scale = SpinBox.new()
+	_f_proj_scale.min_value = 0.1; _f_proj_scale.max_value = 4.0; _f_proj_scale.step = 0.05
+	_f_proj_scale.value = 0.5
+	_f_proj_scale.value_changed.connect(func(v): _def.projectile_scale = float(v))
+	_style_input(_f_proj_scale)
+	mt.add_child(_form_row("Scale", _f_proj_scale))
+
+	_f_proj_fps = SpinBox.new()
+	_f_proj_fps.min_value = 1; _f_proj_fps.max_value = 60; _f_proj_fps.step = 1
+	_f_proj_fps.value = 24
+	_f_proj_fps.value_changed.connect(func(v): _def.projectile_fps = float(v))
+	_style_input(_f_proj_fps)
+	mt.add_child(_form_row("FPS", _f_proj_fps))
+
+	_f_proj_speed = SpinBox.new()
+	_f_proj_speed.min_value = 50; _f_proj_speed.max_value = 2000; _f_proj_speed.step = 10
+	_f_proj_speed.value = 220
+	_f_proj_speed.value_changed.connect(func(v): _def.projectile_speed = float(v))
+	_style_input(_f_proj_speed)
+	mt.add_child(_form_row("Speed", _f_proj_speed))
+
+	col.add_child(_section_card("07", "Motion & Timing", mt))
+
+	# FRAME TRIM + ARC params.
+	var ft := VBoxContainer.new()
+	ft.add_theme_constant_override("separation", 14)
+	_f_proj_start = SpinBox.new()
+	_f_proj_start.min_value = 0; _f_proj_start.max_value = 64; _f_proj_start.step = 1
+	_f_proj_start.value = 0
+	_f_proj_start.value_changed.connect(func(v): _def.projectile_start_frame = int(v))
+	_style_input(_f_proj_start)
+	ft.add_child(_form_row("Start frame", _f_proj_start))
+
+	_f_proj_end = SpinBox.new()
+	_f_proj_end.min_value = -1; _f_proj_end.max_value = 64; _f_proj_end.step = 1
+	_f_proj_end.value = -1
+	_f_proj_end.value_changed.connect(func(v): _def.projectile_end_frame = int(v))
+	_style_input(_f_proj_end)
+	ft.add_child(_form_row("End frame", _f_proj_end))
+
+	_f_proj_arc_count = SpinBox.new()
+	_f_proj_arc_count.min_value = 1; _f_proj_arc_count.max_value = 32; _f_proj_arc_count.step = 1
+	_f_proj_arc_count.value = 8
+	_f_proj_arc_count.value_changed.connect(func(v): _def.projectile_arc_count = int(v))
+	_style_input(_f_proj_arc_count)
+	ft.add_child(_form_row("Arc count", _f_proj_arc_count))
+
+	_f_proj_arc_radius = SpinBox.new()
+	_f_proj_arc_radius.min_value = 0; _f_proj_arc_radius.max_value = 600; _f_proj_arc_radius.step = 8
+	_f_proj_arc_radius.value = 120
+	_f_proj_arc_radius.value_changed.connect(func(v): _def.projectile_arc_radius = float(v))
+	_style_input(_f_proj_arc_radius)
+	ft.add_child(_form_row("Arc radius", _f_proj_arc_radius))
+
+	col.add_child(_section_card("08", "Trim & Arc", ft))
+	return col
+
+func _build_col_preview() -> Control:
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 12)
+
+	var card := PanelContainer.new()
+	var sb := _section_panel_style()
+	sb.bg_color = COL_BG    # darker — preview is the "work surface"
+	card.add_theme_stylebox_override("panel", sb)
+	card.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	col.add_child(card)
+
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 10)
+	card.add_child(v)
+
+	var hdr := Label.new()
+	hdr.text = "PREVIEW"
+	hdr.add_theme_color_override("font_color", COL_TEXT_DIM)
+	hdr.add_theme_font_size_override("font_size", 11)
+	v.add_child(hdr)
+
+	# Toolbar above the viewport.
+	var tb := HBoxContainer.new()
+	tb.add_theme_constant_override("separation", 8)
+	var play_anim_btn := Button.new()
+	play_anim_btn.text = "↻ Replay"
+	play_anim_btn.pressed.connect(_refresh_preview)
+	_style_secondary_button(play_anim_btn)
+	tb.add_child(play_anim_btn)
 	var fire_btn := Button.new()
 	fire_btn.text = "▶ Play Skill"
-	fire_btn.tooltip_text = "Plays the trigger anim + spawns the projectile from player to the red target marker (drag the marker with the mouse)."
+	fire_btn.tooltip_text = "Plays the trigger anim + spawns the projectile from origin to target."
 	fire_btn.pressed.connect(_on_play_skill)
-	ctrl_row.add_child(fire_btn)
+	_style_primary_button(fire_btn)
+	tb.add_child(fire_btn)
+	v.add_child(tb)
 
 	var holder := SubViewportContainer.new()
 	holder.stretch = true
 	holder.stretch_shrink = _PREVIEW_SHRINK
-	holder.custom_minimum_size = Vector2(560, 560)
+	holder.custom_minimum_size = Vector2(420, 420)
 	holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	holder.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	holder.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	right.add_child(holder)
+	v.add_child(holder)
 	_preview_vp = SubViewport.new()
 	# Stretch + stretch_shrink will resize the viewport to holder/SHRINK
 	# automatically; the explicit size below is just a starting value.
@@ -359,6 +768,7 @@ func _build_ui() -> void:
 		func(world_pos): _def.projectile_target_offset = world_pos - _target_ref)
 	(_target_marker as Node2D).position = _target_ref + Vector2(0, -32)
 	_preview_vp.add_child(_target_marker)
+	return col
 
 # --- field-builder helpers ----------------------------------------
 
