@@ -141,18 +141,38 @@ func _setup_body_collision() -> void:
 func _ensure_highlight() -> void:
 	if _highlight and is_instance_valid(_highlight):
 		return
-	if not ResourceLoader.exists(HIGHLIGHT_TEX_PATH):
-		return
-	_highlight = Sprite2D.new()
-	_highlight.texture = load(HIGHLIGHT_TEX_PATH)
-	_highlight.centered = true
-	_highlight.modulate = Color(1.4, 0.30, 0.30, 0.9)
-	# Slightly larger than the body — reads cleaner around the feet
-	# than the asset's native footprint.
-	_highlight.scale = Vector2(sprite_scale * 1.6, sprite_scale * 1.6)
+	# Code-drawn iso ellipse — replaces the legacy highlight_yellow.png
+	# texture so missing / scaled / re-imported assets can never break
+	# the hover ring. Same anchor (0, -4) and same red tint.
+	_highlight = Sprite2D.new()  # Sprite2D lets us z_index it; the actual
+	# drawing happens via a small inline-script Node2D child so we get
+	# custom _draw without subclassing.
 	_highlight.position = Vector2(0, -4)
 	_highlight.z_index = -1
 	add_child(_highlight)
+	var ring := Node2D.new()
+	var sc := GDScript.new()
+	sc.source_code = """
+extends Node2D
+var rx: float = 28.0
+var ry: float = 14.0
+func _draw() -> void:
+	# Soft outer glow.
+	for i in range(4):
+		var a: float = 0.10 - 0.02 * i
+		var bump: float = float(i) * 1.5
+		draw_arc(Vector2.ZERO, rx + bump, 0.0, TAU, 48, Color(1.0, 0.32, 0.30, a), 2.0)
+	# Crisp ring.
+	draw_arc(Vector2.ZERO, rx, 0.0, TAU, 48, Color(1.0, 0.32, 0.30, 0.95), 2.0)
+	# Inner shimmer.
+	draw_arc(Vector2.ZERO, rx - 3.0, 0.0, TAU, 48, Color(1.0, 0.5, 0.5, 0.45), 1.0)
+"""
+	sc.reload()
+	ring.set_script(sc)
+	# Match the legacy texture footprint (which used sprite_scale * 1.6)
+	# so the ring's on-screen size tracks per-kind silhouettes.
+	ring.scale = Vector2(sprite_scale * 1.6, sprite_scale * 0.8)
+	_highlight.add_child(ring)
 
 func _clear_highlight() -> void:
 	if _highlight and is_instance_valid(_highlight):

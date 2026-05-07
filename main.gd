@@ -3275,9 +3275,23 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 			if sk.has_method("take_damage"):
 				sk.take_damage(skel_dmg)
 				_spawn_damage_number(sk.global_position + Vector2(0, -32), skel_dmg)
-		if skill_shape == "single" and single_best != null and single_best.has_method("take_damage"):
-			single_best.take_damage(skel_dmg)
-			_spawn_damage_number(single_best.global_position + Vector2(0, -32), skel_dmg)
+		# Single-target preference: if the player is currently HOVERED
+		# over a valid enemy that's also inside the cone, hit that one
+		# instead of the closest. Lets the player aim — Diablo-style —
+		# rather than always being forced onto the nearest target.
+		if skill_shape == "single":
+			var pick: Node = single_best
+			if _hovered_enemy != null and is_instance_valid(_hovered_enemy) \
+					and not _hovered_enemy.dead \
+					and _skel_pool.has(_hovered_enemy):
+				var hd: float = (_hovered_enemy.global_position - origin).length()
+				if hd <= radius and hd >= 1.0:
+					var hang: float = acos(clamp((_hovered_enemy.global_position - origin).normalized().dot(facing), -1.0, 1.0))
+					if hang <= half_angle:
+						pick = _hovered_enemy
+			if pick != null and pick.has_method("take_damage"):
+				pick.take_damage(skel_dmg)
+				_spawn_damage_number(pick.global_position + Vector2(0, -32), skel_dmg)
 	# Damage any aggressive monsters caught in the same cone.
 	for m in active_spiders:
 		if not is_instance_valid(m) or m.dead:
