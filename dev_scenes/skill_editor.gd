@@ -204,8 +204,8 @@ func _load_palette() -> void:
 			_palette = parsed
 
 func _build_ui() -> void:
-	# --- "Foundry" layout: header + 4 columns, no scrolling --------------
-	custom_minimum_size = Vector2(1280, 720)
+	# --- "Foundry" layout: header + tabs + preview, no scrolling --------
+	custom_minimum_size = Vector2(960, 600)
 	# Backplate fills the editor window with the deepest panel color.
 	var back := ColorRect.new()
 	back.color = COL_BG
@@ -305,10 +305,10 @@ func _section_panel_style() -> StyleBoxFlat:
 	sb.corner_radius_top_left = 2; sb.corner_radius_top_right = 2
 	sb.corner_radius_bottom_left = 2; sb.corner_radius_bottom_right = 2
 	sb.shadow_color = Color(0, 0, 0, 0.35)
-	sb.shadow_size = 8
-	sb.shadow_offset = Vector2(0, 4)
-	sb.content_margin_left = 18; sb.content_margin_right = 18
-	sb.content_margin_top = 18; sb.content_margin_bottom = 18
+	sb.shadow_size = 6
+	sb.shadow_offset = Vector2(0, 3)
+	sb.content_margin_left = 14; sb.content_margin_right = 14
+	sb.content_margin_top = 12; sb.content_margin_bottom = 12
 	return sb
 
 func _input_style(focus: bool = false, hover: bool = false) -> StyleBoxFlat:
@@ -500,7 +500,7 @@ func _form_row(label: String, control: Control, swatch: Button = null) -> HBoxCo
 	var hb := HBoxContainer.new()
 	hb.add_theme_constant_override("separation", 10)
 	var l := _label_dim(label)
-	l.custom_minimum_size = Vector2(98, 0)
+	l.custom_minimum_size = Vector2(82, 0)
 	l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	hb.add_child(l)
 	control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -523,11 +523,11 @@ func _swatch(getter: Callable, setter: Callable) -> Button:
 
 func _build_col_identity() -> Control:
 	var col := VBoxContainer.new()
-	col.add_theme_constant_override("separation", 24)
+	col.add_theme_constant_override("separation", 14)
 
 	# BODY card (trigger anim + demo weapon + rotate-dir).
 	var body := VBoxContainer.new()
-	body.add_theme_constant_override("separation", 14)
+	body.add_theme_constant_override("separation", 10)
 	_f_anim = OptionButton.new()
 	for opt in ANIM_OPTIONS: _f_anim.add_item(opt)
 	_f_anim.item_selected.connect(func(idx):
@@ -581,7 +581,7 @@ func _build_col_identity() -> Control:
 
 func _build_col_overlays() -> Control:
 	var col := VBoxContainer.new()
-	col.add_theme_constant_override("separation", 24)
+	col.add_theme_constant_override("separation", 14)
 
 	# OVERLAYS — each row inline: label / dropdown / swatch.
 	var ov := VBoxContainer.new()
@@ -636,7 +636,7 @@ func _build_col_projectile() -> Control:
 
 	# PROJECTILE — pack/cat/name + color swatch.
 	var pj := VBoxContainer.new()
-	pj.add_theme_constant_override("separation", 14)
+	pj.add_theme_constant_override("separation", 8)
 	_f_proj_pack = OptionButton.new()
 	for label in _projectile_pack_labels(): _f_proj_pack.add_item(label)
 	_f_proj_pack.item_selected.connect(_on_proj_pack_changed)
@@ -666,7 +666,7 @@ func _build_col_projectile() -> Control:
 
 	# MOTION + TIMING merged.
 	var mt := VBoxContainer.new()
-	mt.add_theme_constant_override("separation", 14)
+	mt.add_theme_constant_override("separation", 8)
 	_f_proj_motion = OptionButton.new()
 	for o in MOTION_OPTIONS: _f_proj_motion.add_item(o)
 	_f_proj_motion.item_selected.connect(func(idx):
@@ -699,7 +699,7 @@ func _build_col_projectile() -> Control:
 
 	# FRAME TRIM + ARC params.
 	var ft := VBoxContainer.new()
-	ft.add_theme_constant_override("separation", 14)
+	ft.add_theme_constant_override("separation", 8)
 	_f_proj_start = SpinBox.new()
 	_f_proj_start.min_value = 0; _f_proj_start.max_value = 64; _f_proj_start.step = 1
 	_f_proj_start.value = 0
@@ -771,7 +771,9 @@ func _build_col_preview() -> Control:
 	var holder := SubViewportContainer.new()
 	holder.stretch = true
 	holder.stretch_shrink = _preview_shrink
-	holder.custom_minimum_size = Vector2(420, 420)
+	# Min size deliberately small so the viewport can shrink to fit
+	# narrow / short windows without forcing the editor to overflow.
+	holder.custom_minimum_size = Vector2(260, 260)
 	holder.mouse_filter = Control.MOUSE_FILTER_PASS  # so wheel events fire
 	holder.gui_input.connect(_on_preview_wheel)
 	_preview_holder = holder
