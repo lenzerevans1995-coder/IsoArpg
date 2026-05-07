@@ -94,3 +94,8 @@ static func world_fx_full_path(subfolder: String) -> String:
 @export_enum("cone", "circle", "single", "none") var damage_shape: String = "cone"
 @export var damage_range: float = 110.0       # px
 @export var damage_angle_deg: float = 90.0    # full cone width (cone only)
+# Offset of the damage-area center from the caster's position. Lets a
+# skill drop its hitbox in front / beside / behind the player rather
+# than always centered on the body. Configured visually in the skill
+# editor by dragging the red shape overlay.
+@export var damage_offset: Vector2 = Vector2.ZERO

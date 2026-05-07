@@ -872,7 +872,9 @@ func _make_damage_overlay() -> Node2D:
 	var sc := GDScript.new()
 	sc.source_code = """
 extends Node2D
+const HANDLE_R := 7.0
 var editor_ref: Node = null
+var _drag := false
 func _process(_d: float) -> void:
 	queue_redraw()
 func _draw() -> void:
@@ -881,8 +883,6 @@ func _draw() -> void:
 	var shape: String = String(def.damage_shape)
 	var rng: float = float(def.damage_range)
 	var ang: float = deg_to_rad(float(def.damage_angle_deg))
-	# Forward = right (+x) in editor preview. Players in-game face the
-	# cursor; here we pick a stable forward so the cone doesn't spin.
 	var fwd: Vector2 = Vector2(1, 0)
 	var fill := Color(1.0, 0.32, 0.28, 0.18)
 	var line := Color(1.0, 0.32, 0.28, 0.95)
@@ -891,7 +891,6 @@ func _draw() -> void:
 			draw_circle(Vector2.ZERO, rng, fill)
 			draw_arc(Vector2.ZERO, rng, 0.0, TAU, 64, line, 2.0)
 		'cone':
-			# Filled sector: triangulate the half-cone with a small step.
 			var half: float = ang * 0.5
 			var steps: int = 32
 			var pts := PackedVector2Array()
@@ -904,18 +903,38 @@ func _draw() -> void:
 			var cols := PackedColorArray()
 			for i in pts.size(): cols.append(fill)
 			draw_polygon(pts, cols)
-			# Outline edges + arc.
 			draw_line(Vector2.ZERO, fwd.rotated(-half) * rng, line, 2.0)
 			draw_line(Vector2.ZERO, fwd.rotated( half) * rng, line, 2.0)
 			draw_arc(Vector2.ZERO, rng, fwd.angle() - half, fwd.angle() + half, 32, line, 2.0)
 		'single':
-			# Marker at the nearest-front-enemy spot: along forward, range away.
 			var p := fwd * rng
 			draw_circle(p, 8.0, fill)
 			draw_arc(p, 8.0, 0.0, TAU, 24, line, 2.0)
 			draw_line(Vector2.ZERO, p, line, 1.0)
 		_:
-			pass  # 'none' = no overlay
+			pass
+	# Center drag handle — a yellow ring on the area's origin so the
+	# user has a clear grip to move the whole damage area.
+	if shape != 'none':
+		draw_circle(Vector2.ZERO, HANDLE_R, Color(1, 0.9, 0.45, 0.95))
+		draw_arc(Vector2.ZERO, HANDLE_R, 0.0, TAU, 20, Color(0, 0, 0, 0.8), 1.0)
+func _input(ev: InputEvent) -> void:
+	if editor_ref == null or editor_ref._def == null: return
+	if String(editor_ref._def.damage_shape) == 'none': return
+	if ev is InputEventMouseButton and ev.button_index == MOUSE_BUTTON_LEFT:
+		var lp := get_local_mouse_position()
+		if ev.pressed and lp.length() < HANDLE_R + 4:
+			if editor_ref._drag_owner == null:
+				_drag = true
+				editor_ref._drag_owner = self
+		elif not ev.pressed:
+			if _drag and editor_ref._drag_owner == self:
+				editor_ref._drag_owner = null
+			_drag = false
+	elif ev is InputEventMouseMotion and _drag:
+		position += get_local_mouse_position()
+		# Save the offset relative to the player anchor so it persists.
+		editor_ref._def.damage_offset = position - editor_ref._PREVIEW_PLAYER_POS
 """
 	sc.reload()
 	n.set_script(sc)
@@ -1212,6 +1231,9 @@ func _load_fields_from_def() -> void:
 			_f_dmg_shape.selected = s_idx
 		_f_dmg_range.value = float(_def.damage_range)
 		_f_dmg_angle.value = float(_def.damage_angle_deg)
+		# Position the overlay so its drag handle sits on the saved offset.
+		if _damage_overlay:
+			(_damage_overlay as Node2D).position = _PREVIEW_PLAYER_POS + _def.damage_offset
 		_refresh_damage_overlay()
 
 func _set_option_to_value(ob: OptionButton, options: Array, value: String) -> void:
