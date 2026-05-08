@@ -3301,6 +3301,28 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 			if sk.has_method("take_damage"):
 				sk.take_damage(skel_dmg)
 				_spawn_damage_number(sk.global_position + Vector2(0, -32), skel_dmg)
+		# Cone / circle hover-fallback: if the cone test rejected every
+		# enemy but the player IS hovering one within range, hit that
+		# one. The 8-dir-snapped facing combined with iso compression
+		# makes diagonal-facing cones miss enemies the player visibly
+		# clicked on. This restores click-to-hit precision.
+		var cone_hit_count := 0
+		for sk2 in _skel_pool:
+			if sk2 == null or not is_instance_valid(sk2) or sk2.dead:
+				continue
+			var d2: float = (sk2.global_position - origin).length()
+			if d2 > radius or d2 < 1.0:
+				continue
+			var ang2: float = acos(clamp((sk2.global_position - origin).normalized().dot(facing), -1.0, 1.0))
+			if ang2 <= half_angle:
+				cone_hit_count += 1
+		if (skill_shape == "cone" or skill_shape == "circle") and cone_hit_count == 0 \
+				and _hovered_enemy != null and is_instance_valid(_hovered_enemy) \
+				and not _hovered_enemy.dead and _skel_pool.has(_hovered_enemy):
+			var hd2: float = (_hovered_enemy.global_position - origin).length()
+			if hd2 <= radius and hd2 >= 1.0 and _hovered_enemy.has_method("take_damage"):
+				_hovered_enemy.take_damage(skel_dmg)
+				_spawn_damage_number(_hovered_enemy.global_position + Vector2(0, -32), skel_dmg)
 		# Single-target preference: if the player is currently HOVERED
 		# over a valid enemy that's also inside the cone, hit that one
 		# instead of the closest. Lets the player aim — Diablo-style —
