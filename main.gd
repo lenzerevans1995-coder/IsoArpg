@@ -3473,6 +3473,14 @@ func nearest_enemy_target(from: Vector2, max_dist: float) -> Node2D:
 			if ds < best_d:
 				best_d = ds
 				best = sk
+	# Overworld test skeletons (painted-world spawn) — same hover rules.
+	for sk2 in overworld_skeletons:
+		if not is_instance_valid(sk2) or sk2.dead:
+			continue
+		var d2: float = (sk2.global_position - from).length()
+		if d2 < best_d:
+			best_d = d2
+			best = sk2
 	return best
 
 func _spawn_damage_number(world_pos: Vector2, amount: int) -> void:
