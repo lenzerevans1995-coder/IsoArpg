@@ -552,6 +552,11 @@ func _toggle_inventory() -> void:
 	var ui: Control = INVENTORY_UI_SCRIPT.new()
 	layer.add_child(ui)
 	inventory_ui = ui
+	# Hand the live player loadout to the panel so the paper-doll +
+	# backpack populate. Without this the panel renders blank since the
+	# script's _loadout var is an empty dict by default.
+	if player and "_loadout" in player and ui.has_method("open_with"):
+		ui.open_with(player._loadout)
 	ui.closed.connect(func():
 		if is_instance_valid(layer):
 			layer.queue_free()
