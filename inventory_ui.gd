@@ -179,7 +179,7 @@ func _build_panel() -> void:
 	var frame := _StoneFrame.new()
 	# Wide enough for the 6-col x 64px backpack + paper-doll without
 	# the ScrollContainer's reserved scrollbar gutter eating a column.
-	frame.custom_minimum_size = Vector2(900, 600)
+	frame.custom_minimum_size = Vector2(1020, 660)
 	center.add_child(frame)
 
 	# Inner padding inside the cavity.
@@ -362,7 +362,7 @@ func _make_paperdoll_slot(label_text: String, slot_id: String) -> Control:
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 3)
 	var btn := _StoneSlot.new()
-	btn.custom_minimum_size = Vector2(64, 64)
+	btn.custom_minimum_size = Vector2(80, 80)
 	btn.slot_id = slot_id
 	btn.pressed.connect(_on_doll_slot_pressed.bind(slot_id))
 	v.add_child(btn)
@@ -478,7 +478,7 @@ func _make_backpack_cell(item_id: String) -> Control:
 	var btn := _StoneSlot.new()
 	# 64 px cells match the paper-doll slots and give HD icons room to
 	# breathe. Was 50 — way too small with 6 px inner padding.
-	btn.custom_minimum_size = Vector2(64, 64)
+	btn.custom_minimum_size = Vector2(80, 80)
 	if item_id == "":
 		btn.filled = false
 	else:
@@ -506,11 +506,12 @@ func _make_item_icon(item_id: String) -> TextureRect:
 			if t != null:
 				var r := TextureRect.new()
 				r.texture = t
-				r.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-				r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-				# HD item icons render with LINEAR filter so they stay
-				# crisp / detailed regardless of the world's NEAREST
-				# default. The icon textures are deliberately HD.
+				r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				# COVERED fills the entire cell (cropping the outer
+				# transparent padding the baker leaves around the item)
+				# so a 128 px icon with content in the middle reads at
+				# the FULL slot size instead of being letterboxed.
+				r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 				r.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 				r.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				return r
