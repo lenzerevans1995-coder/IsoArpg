@@ -24,13 +24,26 @@ const COL_TEXT_DIM    := Color(0.65, 0.62, 0.55)
 const COL_TEXT_FAINT  := Color(0.42, 0.40, 0.35)
 
 const TABS := ["Weapons", "Armor", "Consumables", "Misc"]
-# 3-column layout. Empty slot_id = spacer.
-const PAPERDOLL_SLOTS := [
-	["",         ""],         ["HEAD",     "head"],     ["",         ""],
-	["NECK",     "neck"],     ["CHEST",    "chest"],    ["HANDS",    "hands"],
-	["MAINHAND", "mainhand"], ["BELT",     "belt"],     ["OFFHAND",  "offhand"],
-	["",         ""],         ["LEGS",     "legs"],     ["RING",     "ring"],
-	["",         ""],         ["SHOES",    "shoes"],    ["",         ""],
+const LayeredCharacter := preload("res://layered_character.gd")
+const Loadout := preload("res://loadout.gd")
+# Slot lists for the two flanking columns + top/bottom rows. Slot ids
+# match ItemsDB.SLOT_LAYER keys so equipping flows directly.
+const LEFT_SLOTS := [
+	["HEAD", "head"],
+	["CHEST", "chest"],
+	["MAINHAND", "mainhand"],
+	["BELT", "belt"],
+]
+const RIGHT_SLOTS := [
+	["HANDS", "hands"],
+	["BAG", "bag"],
+	["OFFHAND", "offhand"],
+	["SHIELD", "shield"],
+]
+const BOTTOM_SLOTS := [
+	["LEGS", "legs"],
+	["SHOES", "shoes"],
+	["MOUNT", "mount"],
 ]
 
 var _loadout: Dictionary = {}
@@ -264,6 +277,9 @@ func _make_tab_button(label: String, idx: int) -> Button:
 
 # --- Paper-doll ----------------------------------------------------------
 
+var _preview_vp: SubViewport
+var _preview_char: Node2D    # LayeredCharacter inside the preview viewport
+
 func _build_paperdoll() -> Control:
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 8)
@@ -274,42 +290,77 @@ func _build_paperdoll() -> Control:
 	hdr.add_theme_font_size_override("font_size", 11)
 	v.add_child(hdr)
 
-	# Inner stone frame around the slot grid (recessed look).
 	var inner := _StoneFrame.new()
-	inner.custom_minimum_size = Vector2(320, 380)
+	inner.custom_minimum_size = Vector2(360, 460)
 	inner.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	v.add_child(inner)
 
-	var grid_pad := MarginContainer.new()
-	grid_pad.anchor_right = 1.0; grid_pad.anchor_bottom = 1.0
-	grid_pad.add_theme_constant_override("margin_left", 16)
-	grid_pad.add_theme_constant_override("margin_right", 16)
-	grid_pad.add_theme_constant_override("margin_top", 18)
-	grid_pad.add_theme_constant_override("margin_bottom", 18)
-	inner.add_child(grid_pad)
+	var pad := MarginContainer.new()
+	pad.anchor_right = 1.0; pad.anchor_bottom = 1.0
+	pad.add_theme_constant_override("margin_left", 14)
+	pad.add_theme_constant_override("margin_right", 14)
+	pad.add_theme_constant_override("margin_top", 14)
+	pad.add_theme_constant_override("margin_bottom", 14)
+	inner.add_child(pad)
 
-	var grid := GridContainer.new()
-	grid.columns = 3
-	grid.add_theme_constant_override("h_separation", 12)
-	grid.add_theme_constant_override("v_separation", 12)
-	grid_pad.add_child(grid)
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 6)
+	pad.add_child(col)
 
-	for entry in PAPERDOLL_SLOTS:
-		var label_text: String = entry[0]
-		var slot_id: String = entry[1]
-		if slot_id == "":
-			var spacer := Control.new()
-			spacer.custom_minimum_size = Vector2(56, 70)
-			grid.add_child(spacer)
-		else:
-			grid.add_child(_make_paperdoll_slot(label_text, slot_id))
+	# --- Center band: left slots | live player preview | right slots ----
+	var middle := HBoxContainer.new()
+	middle.add_theme_constant_override("separation", 8)
+	middle.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	col.add_child(middle)
+
+	var left_col := VBoxContainer.new()
+	left_col.add_theme_constant_override("separation", 8)
+	for entry in LEFT_SLOTS:
+		left_col.add_child(_make_paperdoll_slot(entry[0], entry[1]))
+	middle.add_child(left_col)
+
+	# Live player preview: SubViewport at native resolution holding a
+	# LayeredCharacter mirroring the player's loadout. Re-equips when
+	# the user changes gear so the silhouette updates instantly.
+	var preview_holder := SubViewportContainer.new()
+	preview_holder.stretch = true
+	preview_holder.custom_minimum_size = Vector2(180, 280)
+	preview_holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	preview_holder.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	preview_holder.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	middle.add_child(preview_holder)
+	_preview_vp = SubViewport.new()
+	_preview_vp.size = Vector2i(180, 280)
+	_preview_vp.transparent_bg = true
+	_preview_vp.disable_3d = true
+	_preview_vp.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
+	_preview_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	preview_holder.add_child(_preview_vp)
+	_preview_char = LayeredCharacter.new()
+	(_preview_char as Node2D).position = Vector2(90, 220)
+	(_preview_char as Node2D).scale = Vector2(1.4, 1.4)
+	_preview_vp.add_child(_preview_char)
+
+	var right_col := VBoxContainer.new()
+	right_col.add_theme_constant_override("separation", 8)
+	for entry in RIGHT_SLOTS:
+		right_col.add_child(_make_paperdoll_slot(entry[0], entry[1]))
+	middle.add_child(right_col)
+
+	# --- Bottom row of slots (legs / shoes / mount) --------------------
+	var bottom := HBoxContainer.new()
+	bottom.alignment = BoxContainer.ALIGNMENT_CENTER
+	bottom.add_theme_constant_override("separation", 8)
+	for entry in BOTTOM_SLOTS:
+		bottom.add_child(_make_paperdoll_slot(entry[0], entry[1]))
+	col.add_child(bottom)
 	return v
 
 func _make_paperdoll_slot(label_text: String, slot_id: String) -> Control:
 	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 4)
+	v.add_theme_constant_override("separation", 3)
 	var btn := _StoneSlot.new()
-	btn.custom_minimum_size = Vector2(56, 56)
+	btn.custom_minimum_size = Vector2(64, 64)
 	btn.slot_id = slot_id
 	btn.pressed.connect(_on_doll_slot_pressed.bind(slot_id))
 	v.add_child(btn)
@@ -346,11 +397,18 @@ func _build_backpack() -> Control:
 	pad.add_theme_constant_override("margin_bottom", 14)
 	inner.add_child(pad)
 
+	# Scroll wrapper so the bag grid stays inside the inventory frame
+	# even when items overflow the visible 8x6 area.
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	pad.add_child(scroll)
 	_bag_grid = GridContainer.new()
 	_bag_grid.columns = 8
 	_bag_grid.add_theme_constant_override("h_separation", 4)
 	_bag_grid.add_theme_constant_override("v_separation", 4)
-	pad.add_child(_bag_grid)
+	scroll.add_child(_bag_grid)
 	return v
 
 # --- Refresh -------------------------------------------------------------
@@ -373,9 +431,14 @@ func _refresh_paperdoll() -> void:
 			var icon := _make_item_icon(_item_id_for_folder(folder))
 			if icon:
 				icon.anchor_right = 1.0; icon.anchor_bottom = 1.0
-				icon.offset_left = 6; icon.offset_top = 6
-				icon.offset_right = -6; icon.offset_bottom = -6
+				# Tighter inner padding (3 px) so the icon fills more of
+				# the 64-px slot. Was 6 px which made HD icons read tiny.
+				icon.offset_left = 3; icon.offset_top = 3
+				icon.offset_right = -3; icon.offset_bottom = -3
 				btn.add_child(icon)
+	# Sync the live player preview rig.
+	if _preview_char != null:
+		Loadout.apply(_preview_char, _loadout)
 
 func _refresh_backpack() -> void:
 	if _bag_grid == null:

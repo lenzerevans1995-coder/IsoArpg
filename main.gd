@@ -545,23 +545,29 @@ func _toggle_inventory() -> void:
 	if inventory_ui and is_instance_valid(inventory_ui):
 		inventory_ui.queue_free()
 		inventory_ui = null
+		get_tree().paused = false
 		return
 	var layer := CanvasLayer.new()
-	layer.layer = 30
+	# layer.layer above the combat HUD (which sits at 10) so the
+	# inventory panel paints over it instead of under.
+	layer.layer = 100
+	layer.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(layer)
 	var ui: Control = INVENTORY_UI_SCRIPT.new()
+	ui.process_mode = Node.PROCESS_MODE_ALWAYS  # interactable while paused
 	layer.add_child(ui)
 	inventory_ui = ui
 	# Hand the live player loadout to the panel so the paper-doll +
-	# backpack populate. Without this the panel renders blank since the
-	# script's _loadout var is an empty dict by default.
+	# backpack populate.
 	if player and "_loadout" in player and ui.has_method("open_with"):
 		ui.open_with(player._loadout)
+	# Pause the game while the inventory is open.
+	get_tree().paused = true
 	ui.closed.connect(func():
 		if is_instance_valid(layer):
 			layer.queue_free()
 		inventory_ui = null
-		# Refresh the player after equipping changes (loadout was saved by UI).
+		get_tree().paused = false
 		if player and player.has_method("reload_loadout"):
 			player.reload_loadout()
 	)
