@@ -389,10 +389,13 @@ func _process(delta: float) -> void:
 				# precision per shot — which is why enemies (who use
 				# raw aim_to - start) fired straight while the player
 				# missed at non-cardinal angles.
-				# Origin is the player's foot anchor (0, 0 in player-
-				# local space). Direction is the raw cursor delta, no
-				# 8-dir snap.
-				var to_cur: Vector2 = get_global_mouse_position() - global_position
+				# get_local_mouse_position() returns the cursor offset
+				# from THIS node — exactly the direction we want, no
+				# parent-transform subtraction needed. Avoids the
+				# subtle local-vs-global mismatch in the SubViewport rig
+				# where get_global_mouse_position - global_position was
+				# producing skewed vectors at non-cardinal angles.
+				var to_cur: Vector2 = get_local_mouse_position()
 				if to_cur.length() < 1.0:
 					to_cur = main.dir_to_vec(direction)
 				main.attack_at(global_position, to_cur.normalized())
