@@ -327,18 +327,23 @@ func _build_detail_popup() -> void:
 	pad.add_child(_detail_text)
 
 func _process(_dt: float) -> void:
-	# Track mouse for the floating tooltip.
 	if _detail_panel and _detail_panel.visible:
+		# Resize the StoneFrame to match the label content + padding so
+		# the chunky background covers all of the text. _StoneFrame is
+		# a plain Control (not a Container), so it doesn't auto-grow
+		# from its children — we set the size explicitly each tick.
+		var label_min: Vector2 = _detail_text.get_minimum_size()
+		var pad := Vector2(28, 24)
+		var fit := Vector2(max(label_min.x + pad.x, 200.0), label_min.y + pad.y)
+		_detail_panel.size = fit
+		# Track mouse + clamp on-screen.
 		var mp: Vector2 = get_global_mouse_position()
-		# Offset to the lower-right of the cursor and clamp so the
-		# popup never spills off-screen.
 		var pos := mp + Vector2(16, 18)
-		var sz: Vector2 = _detail_panel.size
 		var screen: Vector2 = size
-		if pos.x + sz.x > screen.x:
-			pos.x = mp.x - sz.x - 8
-		if pos.y + sz.y > screen.y:
-			pos.y = screen.y - sz.y - 4
+		if pos.x + fit.x > screen.x:
+			pos.x = mp.x - fit.x - 8
+		if pos.y + fit.y > screen.y:
+			pos.y = screen.y - fit.y - 4
 		_detail_panel.position = pos
 
 func _build_paperdoll() -> Control:
