@@ -398,17 +398,21 @@ func _build_backpack() -> Control:
 	inner.add_child(pad)
 
 	# Scroll wrapper so the bag grid stays inside the inventory frame
-	# even when items overflow the visible 8x6 area.
+	# even when items overflow. 6 columns × N rows; vertical scroll only.
 	var scroll := ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	pad.add_child(scroll)
+	# Center the grid horizontally inside the scroll container.
+	var center := CenterContainer.new()
+	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(center)
 	_bag_grid = GridContainer.new()
-	_bag_grid.columns = 8
-	_bag_grid.add_theme_constant_override("h_separation", 4)
-	_bag_grid.add_theme_constant_override("v_separation", 4)
-	scroll.add_child(_bag_grid)
+	_bag_grid.columns = 6
+	_bag_grid.add_theme_constant_override("h_separation", 6)
+	_bag_grid.add_theme_constant_override("v_separation", 6)
+	center.add_child(_bag_grid)
 	return v
 
 # --- Refresh -------------------------------------------------------------
@@ -454,12 +458,18 @@ func _refresh_backpack() -> void:
 	for iid in filtered:
 		_bag_grid.add_child(_make_backpack_cell(String(iid)))
 		idx += 1
-	for i in range(idx, 48):
+	# 6 cols × 12 rows = 72 cells. ScrollContainer reveals more as the
+	# inventory fills. Round up to the next full row.
+	var min_cells: int = 72
+	var rounded: int = max(min_cells, int(ceil(idx / 6.0) * 6))
+	for i in range(idx, rounded):
 		_bag_grid.add_child(_make_backpack_cell(""))
 
 func _make_backpack_cell(item_id: String) -> Control:
 	var btn := _StoneSlot.new()
-	btn.custom_minimum_size = Vector2(50, 50)
+	# 64 px cells match the paper-doll slots and give HD icons room to
+	# breathe. Was 50 — way too small with 6 px inner padding.
+	btn.custom_minimum_size = Vector2(64, 64)
 	if item_id == "":
 		btn.filled = false
 	else:
@@ -467,8 +477,8 @@ func _make_backpack_cell(item_id: String) -> Control:
 		var icon := _make_item_icon(item_id)
 		if icon:
 			icon.anchor_right = 1.0; icon.anchor_bottom = 1.0
-			icon.offset_left = 6; icon.offset_top = 6
-			icon.offset_right = -6; icon.offset_bottom = -6
+			icon.offset_left = 3; icon.offset_top = 3
+			icon.offset_right = -3; icon.offset_bottom = -3
 			btn.add_child(icon)
 		btn.set_meta("item_id", item_id)
 		btn.pressed.connect(_on_bag_slot_pressed.bind(item_id))
