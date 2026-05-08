@@ -851,17 +851,32 @@ func is_untiled_at(world_pos: Vector2) -> bool:
 	var water: Node = painted_world.get_node_or_null("water")
 	if ground == null and water == null:
 		return false
-	if ground != null:
-		var lp_g: Vector2 = (ground as Node2D).to_local(world_pos)
-		var c_g: Vector2i = ground.local_to_map(lp_g)
-		if ground.get_cell_source_id(c_g) != -1:
-			return false
-	if water != null:
-		var lp_w: Vector2 = (water as Node2D).to_local(world_pos)
-		var c_w: Vector2i = water.local_to_map(lp_w)
-		if water.get_cell_source_id(c_w) != -1:
-			return false
-	return true
+	# Sample the foot center + a tight iso-aspect diamond. Single-point
+	# checks let the foot leak ~1 cell past the visual edge before the
+	# center crossed the tile boundary; multi-probe rejects sooner.
+	var probes := [
+		Vector2.ZERO,
+		Vector2(20, 0),  Vector2(-20, 0),
+		Vector2(0, 10),  Vector2(0, -10),
+		Vector2(14, 7),  Vector2(-14, 7),
+		Vector2(14, -7), Vector2(-14, -7),
+	]
+	for off in probes:
+		var p: Vector2 = world_pos + off
+		var tiled := false
+		if ground != null:
+			var lp_g: Vector2 = (ground as Node2D).to_local(p)
+			var c_g: Vector2i = ground.local_to_map(lp_g)
+			if ground.get_cell_source_id(c_g) != -1:
+				tiled = true
+		if not tiled and water != null:
+			var lp_w: Vector2 = (water as Node2D).to_local(p)
+			var c_w: Vector2i = water.local_to_map(lp_w)
+			if water.get_cell_source_id(c_w) != -1:
+				tiled = true
+		if not tiled:
+			return true   # ANY probe over grey = untiled / blocked
+	return false
 
 func is_blocked(cell: Vector2i) -> bool:
 	# Inside a dungeon ONLY consult dungeon state. World blocking dicts
@@ -1942,7 +1957,7 @@ func _activate_skill_slot(slot_key: String) -> bool:
 		if def != null and player and player.has_method("play_skill"):
 			player.play_skill(def)
 	return true
-
+	
 func _on_xp_changed(current: int, needed: int) -> void:
 	if combat_hud == null:
 		return
