@@ -391,10 +391,19 @@ func _process(delta: float) -> void:
 				# missed at non-cardinal angles.
 				# get_local_mouse_position() returns the cursor offset
 				# from THIS node — exactly the direction we want.
-				var to_cur: Vector2 = get_local_mouse_position()
+				# Match the enemy arrow pattern exactly: spawn at chest,
+				# aim from chest. The enemy uses
+				#   start = self.global_position + body_offset (chest)
+				#   dir   = (target.global_position + p_off) - start
+				# i.e. chest-to-chest. The player was using foot-to-cursor
+				# which always tilted upward because the cursor lands on
+				# an enemy's body (~28 px above their foot).
+				const PLAYER_CHEST_OFF := Vector2(0, -28)
+				var chest: Vector2 = global_position + PLAYER_CHEST_OFF
+				var to_cur: Vector2 = get_global_mouse_position() - chest
 				if to_cur.length() < 1.0:
 					to_cur = main.dir_to_vec(direction)
-				main.attack_at(global_position, to_cur.normalized())
+				main.attack_at(chest, to_cur.normalized())
 		# Movement is locked during the attack swing.
 		return
 
