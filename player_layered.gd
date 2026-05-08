@@ -181,6 +181,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			MOUSE_BUTTON_RIGHT:
 				right_mouse_held = event.pressed
 				if event.pressed and not attacking:
+					# Try the bound RMB skill first. play_skill() sets
+					# attacking and active_skill so the basic _start_attack
+					# (default cone) doesn't also fire.
+					if main and main.has_method("_activate_skill_slot") \
+							and main._activate_skill_slot("rmb"):
+						return
 					_start_attack()
 			MOUSE_BUTTON_WHEEL_UP:
 				if event.pressed and camera:
@@ -311,8 +317,14 @@ func _apply_skill_tint(layer: String, tint: Color) -> void:
 
 func _on_attack_finished() -> void:
 	attacking = false
-	# Auto-repeat while RMB is held.
+	# Auto-repeat while RMB is held. Try the bound RMB skill FIRST so
+	# the auto-repeat keeps using the user's skill (e.g. warrior_basic
+	# single-target Slash) instead of dropping back to the default
+	# basic-attack cone after the first swing finishes.
 	if right_mouse_held and not dodging:
+		if main and main.has_method("_activate_skill_slot"):
+			if main._activate_skill_slot("rmb"):
+				return
 		_start_attack()
 
 func _try_dodge() -> void:
