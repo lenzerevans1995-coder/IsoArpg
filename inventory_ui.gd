@@ -177,7 +177,9 @@ func _build_panel() -> void:
 	add_child(center)
 
 	var frame := _StoneFrame.new()
-	frame.custom_minimum_size = Vector2(780, 580)
+	# Wide enough for the 6-col x 64px backpack + paper-doll without
+	# the ScrollContainer's reserved scrollbar gutter eating a column.
+	frame.custom_minimum_size = Vector2(900, 600)
 	center.add_child(frame)
 
 	# Inner padding inside the cavity.
@@ -404,6 +406,13 @@ func _build_backpack() -> Control:
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	pad.add_child(scroll)
+	# Hide the visual scrollbar — keep scroll functionality (mouse wheel
+	# still works). Width 0 + transparent theme so the gutter doesn't
+	# steal column space.
+	var vbar: VScrollBar = scroll.get_v_scroll_bar()
+	if vbar:
+		vbar.custom_minimum_size = Vector2(0, 0)
+		vbar.modulate = Color(0, 0, 0, 0)
 	# Center the grid horizontally inside the scroll container.
 	var center := CenterContainer.new()
 	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
