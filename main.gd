@@ -3271,7 +3271,13 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	# The arrow handles its own collision + damage on impact via
 	# arrow.gd, so we just hand off the rolled damage value.
 	if _player_is_ranged() and skill == null:
-		_fire_player_arrow(origin, scaled_dmg, facing)
+		# Snap arrow direction to the 8-dir body facing (per user
+		# preference) — the arrow flies along the player's visible
+		# facing, not whatever sub-pixel angle the cursor sits at.
+		var snapped: Vector2 = facing
+		if player and "direction" in player:
+			snapped = dir_to_vec(int(player.direction))
+		_fire_player_arrow(origin, scaled_dmg, snapped)
 		return
 	# Damage any skeletons caught in the cone (dungeon mode + overworld).
 	var _skel_pool: Array = []
@@ -3280,12 +3286,28 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 	_skel_pool.append_array(overworld_skeletons)
 	if _skel_pool.size() > 0:
 		var skel_dmg: int = scaled_dmg
-		# Single-target shape: collect every valid hit, then keep only
-		# the nearest one. Cone / circle hit everyone in range.
+		# Hover priority — if the player IS hovering an enemy AND that
+		# enemy is within the skill's range, the hover target IS hit
+		# regardless of cone angle. Cone test still applies to other
+		# enemies. For single-target, hover hit means no other target.
+		var hover_in_range: bool = false
+		var already_hit: Dictionary = {}
+		if _hovered_enemy != null and is_instance_valid(_hovered_enemy) \
+				and not _hovered_enemy.dead and _skel_pool.has(_hovered_enemy):
+			var hd: float = (_hovered_enemy.global_position - origin).length()
+			if hd <= radius and hd >= 1.0:
+				hover_in_range = true
+				if _hovered_enemy.has_method("take_damage"):
+					_hovered_enemy.take_damage(skel_dmg)
+					_spawn_damage_number(_hovered_enemy.global_position + Vector2(0, -32), skel_dmg)
+				already_hit[_hovered_enemy] = true
+
 		var single_best: Node = null
 		var single_best_d: float = INF
 		for sk in _skel_pool:
 			if sk == null or not is_instance_valid(sk) or sk.dead:
+				continue
+			if already_hit.has(sk):
 				continue
 			var ground_d: float = (sk.global_position - origin).length()
 			if ground_d > radius or ground_d < 1.0:
@@ -3301,45 +3323,13 @@ func attack_at(origin: Vector2, dir_vec: Vector2) -> void:
 			if sk.has_method("take_damage"):
 				sk.take_damage(skel_dmg)
 				_spawn_damage_number(sk.global_position + Vector2(0, -32), skel_dmg)
-		# Cone / circle hover-fallback: if the cone test rejected every
-		# enemy but the player IS hovering one within range, hit that
-		# one. The 8-dir-snapped facing combined with iso compression
-		# makes diagonal-facing cones miss enemies the player visibly
-		# clicked on. This restores click-to-hit precision.
-		var cone_hit_count := 0
-		for sk2 in _skel_pool:
-			if sk2 == null or not is_instance_valid(sk2) or sk2.dead:
-				continue
-			var d2: float = (sk2.global_position - origin).length()
-			if d2 > radius or d2 < 1.0:
-				continue
-			var ang2: float = acos(clamp((sk2.global_position - origin).normalized().dot(facing), -1.0, 1.0))
-			if ang2 <= half_angle:
-				cone_hit_count += 1
-		if (skill_shape == "cone" or skill_shape == "circle") and cone_hit_count == 0 \
-				and _hovered_enemy != null and is_instance_valid(_hovered_enemy) \
-				and not _hovered_enemy.dead and _skel_pool.has(_hovered_enemy):
-			var hd2: float = (_hovered_enemy.global_position - origin).length()
-			if hd2 <= radius and hd2 >= 1.0 and _hovered_enemy.has_method("take_damage"):
-				_hovered_enemy.take_damage(skel_dmg)
-				_spawn_damage_number(_hovered_enemy.global_position + Vector2(0, -32), skel_dmg)
-		# Single-target preference: if the player is currently HOVERED
-		# over a valid enemy that's also inside the cone, hit that one
-		# instead of the closest. Lets the player aim — Diablo-style —
-		# rather than always being forced onto the nearest target.
-		if skill_shape == "single":
-			var pick: Node = single_best
-			if _hovered_enemy != null and is_instance_valid(_hovered_enemy) \
-					and not _hovered_enemy.dead \
-					and _skel_pool.has(_hovered_enemy):
-				var hd: float = (_hovered_enemy.global_position - origin).length()
-				if hd <= radius and hd >= 1.0:
-					var hang: float = acos(clamp((_hovered_enemy.global_position - origin).normalized().dot(facing), -1.0, 1.0))
-					if hang <= half_angle:
-						pick = _hovered_enemy
-			if pick != null and pick.has_method("take_damage"):
-				pick.take_damage(skel_dmg)
-				_spawn_damage_number(pick.global_position + Vector2(0, -32), skel_dmg)
+		# Single-target finishing pass: if hover already took the hit
+		# above (hover_in_range), don't also hit the cone's nearest.
+		# Otherwise hit single_best (nearest in cone).
+		if skill_shape == "single" and not hover_in_range \
+				and single_best != null and single_best.has_method("take_damage"):
+			single_best.take_damage(skel_dmg)
+			_spawn_damage_number(single_best.global_position + Vector2(0, -32), skel_dmg)
 	# Damage any aggressive monsters caught in the same cone.
 	for m in active_spiders:
 		if not is_instance_valid(m) or m.dead:

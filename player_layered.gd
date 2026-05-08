@@ -391,15 +391,16 @@ func _process(delta: float) -> void:
 				# missed at non-cardinal angles.
 				# get_local_mouse_position() returns the cursor offset
 				# from THIS node — exactly the direction we want.
-				# Arrow flies in the player's BODY-FACING direction, not
-				# the cursor direction. The body's `direction` enum was
-				# set at attack-start from the cursor, then snapped to one
-				# of 8 directions for the swing animation — using that
-				# same vector here keeps the arrow consistent with what
-				# the player's body is visibly doing. Cursor position
-				# doesn't dictate arrow trajectory; the player's facing
-				# does.
-				main.attack_at(global_position, main.dir_to_vec(direction))
+				# Pass the RAW cursor direction. main.attack_at uses this
+				# for the cone test — without it, the 8-dir-snapped
+				# facing leaves dead zones at diagonals (esp. SE under
+				# iso compression) where enemies slip outside the snapped
+				# axis. _fire_player_arrow snaps internally for the arrow
+				# trajectory; the cone wants precision.
+				var to_cur: Vector2 = get_local_mouse_position()
+				if to_cur.length() < 1.0:
+					to_cur = main.dir_to_vec(direction)
+				main.attack_at(global_position, to_cur.normalized())
 		# Movement is locked during the attack swing.
 		return
 
