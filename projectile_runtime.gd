@@ -142,6 +142,16 @@ static func play(def: Resource, parent: Node, origin: Vector2, target: Vector2) 
 		target_off = sd.projectile_target_offset
 	if sd.has_method("get") and ("projectile_scale" in sd):
 		p_scale = float(sd.projectile_scale)
+	# Body-center bias for at_player / at_target FX. Player + enemy
+	# positions are foot anchors, so a flipbook spawned exactly there
+	# reads as floating below the silhouette. Lift by ~28 px (roughly
+	# chest height at the 64-77 px demo silhouette) so the FX overlays
+	# the body. The per-skill offsets above add ON TOP of this.
+	var motion_str: String = motion
+	if motion_str == "at_player":
+		origin_off += Vector2(0, -28)
+	elif motion_str == "at_target":
+		target_off += Vector2(0, -28)
 	origin = origin + origin_off
 	target = target + target_off
 	# Important: add to the parent FIRST, then set global_position.
