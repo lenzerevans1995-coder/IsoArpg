@@ -51,6 +51,9 @@ var _active_tab: int = 0
 var _gold_label: Label
 var _bag_grid: GridContainer
 var _doll_slots: Dictionary = {}    # slot_id -> _StoneSlot
+var _detail_panel: Control          # hover-tooltip pane on the side
+var _detail_text: Label
+var _scroll: ScrollContainer        # cached so we can invert wheel input
 
 func open_with(loadout: Dictionary) -> void:
 	_loadout = loadout
@@ -212,6 +215,11 @@ func _build_panel() -> void:
 	bag.size_flags_stretch_ratio = 1.15
 	split.add_child(bag)
 
+	var details := _build_detail_panel()
+	details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	details.size_flags_stretch_ratio = 0.55
+	split.add_child(details)
+
 # --- Header ---------------------------------------------------------------
 
 func _build_header() -> Control:
@@ -239,6 +247,16 @@ func _build_header() -> Control:
 	_gold_label.add_theme_font_size_override("font_size", 14)
 	_gold_label.custom_minimum_size = Vector2(60, 0)
 	hb.add_child(_gold_label)
+
+	var reset := Button.new()
+	reset.text = "Reset"
+	reset.flat = true
+	reset.add_theme_color_override("font_color", COL_TEXT_DIM)
+	reset.add_theme_color_override("font_hover_color", COL_GOLD_HI)
+	reset.add_theme_font_size_override("font_size", 11)
+	reset.tooltip_text = "Strip every equip slot back into the bag"
+	reset.pressed.connect(_on_reset_pressed)
+	hb.add_child(reset)
 
 	var close := Button.new()
 	close.text = "✕"
@@ -282,15 +300,31 @@ func _make_tab_button(label: String, idx: int) -> Button:
 var _preview_vp: SubViewport
 var _preview_char: Node2D    # LayeredCharacter inside the preview viewport
 
+func _build_detail_panel() -> Control:
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 8)
+	var inner := _StoneFrame.new()
+	inner.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	v.add_child(inner)
+	_detail_panel = inner
+	var pad := MarginContainer.new()
+	pad.anchor_right = 1.0; pad.anchor_bottom = 1.0
+	pad.add_theme_constant_override("margin_left", 14)
+	pad.add_theme_constant_override("margin_right", 14)
+	pad.add_theme_constant_override("margin_top", 14)
+	pad.add_theme_constant_override("margin_bottom", 14)
+	inner.add_child(pad)
+	_detail_text = Label.new()
+	_detail_text.text = "Hover an item"
+	_detail_text.add_theme_color_override("font_color", COL_GOLD_HI)
+	_detail_text.add_theme_font_size_override("font_size", 11)
+	_detail_text.autowrap_mode = TextServer.AUTOWRAP_WORD
+	pad.add_child(_detail_text)
+	return v
+
 func _build_paperdoll() -> Control:
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 8)
-
-	var hdr := Label.new()
-	hdr.text = "PAPER DOLL"
-	hdr.add_theme_color_override("font_color", COL_GOLD)
-	hdr.add_theme_font_size_override("font_size", 11)
-	v.add_child(hdr)
 
 	var inner := _StoneFrame.new()
 	inner.custom_minimum_size = Vector2(360, 460)
@@ -365,6 +399,11 @@ func _make_paperdoll_slot(label_text: String, slot_id: String) -> Control:
 	btn.custom_minimum_size = Vector2(80, 80)
 	btn.slot_id = slot_id
 	btn.pressed.connect(_on_doll_slot_pressed.bind(slot_id))
+	btn.mouse_entered.connect(func():
+		var folder: String = String(_loadout.get(slot_id, ""))
+		var iid: String = _item_id_for_folder(folder) if folder != "" else ""
+		_show_item_detail(iid))
+	btn.mouse_exited.connect(_show_item_detail.bind(""))
 	v.add_child(btn)
 	var lbl := Label.new()
 	lbl.text = label_text
@@ -405,10 +444,9 @@ func _build_backpack() -> Control:
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.gui_input.connect(_on_scroll_gui_input)
+	_scroll = scroll
 	pad.add_child(scroll)
-	# Hide the visual scrollbar — keep scroll functionality (mouse wheel
-	# still works). Width 0 + transparent theme so the gutter doesn't
-	# steal column space.
 	var vbar: VScrollBar = scroll.get_v_scroll_bar()
 	if vbar:
 		vbar.custom_minimum_size = Vector2(0, 0)
@@ -491,6 +529,8 @@ func _make_backpack_cell(item_id: String) -> Control:
 			btn.add_child(icon)
 		btn.set_meta("item_id", item_id)
 		btn.pressed.connect(_on_bag_slot_pressed.bind(item_id))
+		btn.mouse_entered.connect(_show_item_detail.bind(item_id))
+		btn.mouse_exited.connect(_show_item_detail.bind(""))
 	return btn
 
 static var _icon_bbox_cache: Dictionary = {}
@@ -598,6 +638,72 @@ func _on_tab_changed(idx: int) -> void:
 func _on_close() -> void:
 	closed.emit()
 	queue_free()
+
+func _on_reset_pressed() -> void:
+	# Move every equipped item back into the bag, leaving the player in
+	# their default unequipped state. Useful as a clean-slate test.
+	var slot_ids: Array = _doll_slots.keys()
+	for sid in slot_ids:
+		var folder: String = String(_loadout.get(sid, ""))
+		if folder == "":
+			continue
+		var iid: String = _item_id_for_folder(folder)
+		if iid != "":
+			Inventory.add_item(_loadout, iid)
+		_loadout[sid] = ""
+	_save_and_refresh()
+
+func _on_scroll_gui_input(ev: InputEvent) -> void:
+	# Invert mouse-wheel scroll direction so wheel-down moves the view
+	# down through the content. Default Godot behavior matched the user's
+	# "down is up" complaint; this flip restores the natural ARPG feel.
+	if ev is InputEventMouseButton and _scroll:
+		var mb := ev as InputEventMouseButton
+		if not mb.pressed:
+			return
+		var step: int = 40
+		if mb.button_index == MOUSE_BUTTON_WHEEL_UP:
+			_scroll.scroll_vertical += step
+			get_viewport().set_input_as_handled()
+		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			_scroll.scroll_vertical -= step
+			get_viewport().set_input_as_handled()
+
+func _show_item_detail(item_id: String) -> void:
+	if _detail_text == null:
+		return
+	if item_id == "":
+		_detail_text.text = "Hover an item"
+		return
+	var entry: Dictionary = {}
+	for e in ItemsDB.build_catalog():
+		if String(e.get("id", "")) == item_id:
+			entry = e
+			break
+	if entry.is_empty():
+		_detail_text.text = "[%s]" % item_id
+		return
+	# Attempt to load metadata for stat lines.
+	var slot_name: String = ItemsDB.Slot.keys()[int(entry.get("slot", 0))].to_lower()
+	var meta_path: String = "res://data/items/%s/%s.tres" % [slot_name, item_id]
+	var lines: Array[String] = []
+	lines.append(String(entry.get("display", item_id)).to_upper())
+	lines.append("")
+	lines.append("Slot: %s" % slot_name.capitalize())
+	if FileAccess.file_exists(meta_path):
+		var meta: Resource = load(meta_path)
+		if meta:
+			if "is_unique" in meta and bool(meta.is_unique):
+				lines.append("Unique")
+			if "min_damage" in meta and "max_damage" in meta:
+				var mn: int = int(meta.min_damage); var mx: int = int(meta.max_damage)
+				if mn > 0 or mx > 0:
+					lines.append("Damage: %d - %d" % [mn, mx])
+			if "armor" in meta and int(meta.armor) > 0:
+				lines.append("Armor: %d" % int(meta.armor))
+			if "drop_weight" in meta:
+				lines.append("Drop weight: %s" % str(meta.drop_weight))
+	_detail_text.text = "\n".join(lines)
 
 func _on_doll_slot_pressed(slot_id: String) -> void:
 	var folder: String = String(_loadout.get(slot_id, ""))
