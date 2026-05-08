@@ -390,14 +390,18 @@ func _process(delta: float) -> void:
 				# raw aim_to - start) fired straight while the player
 				# missed at non-cardinal angles.
 				# get_local_mouse_position() returns the cursor offset
-				# from THIS node — exactly the direction we want, no
-				# parent-transform subtraction needed. Avoids the
-				# subtle local-vs-global mismatch in the SubViewport rig
-				# where get_global_mouse_position - global_position was
-				# producing skewed vectors at non-cardinal angles.
+				# from THIS node — exactly the direction we want.
 				var to_cur: Vector2 = get_local_mouse_position()
 				if to_cur.length() < 1.0:
 					to_cur = main.dir_to_vec(direction)
+				# DEBUG — remove once arrow direction is verified.
+				print("=== ATTACK ===")
+				print("  global_position: ", global_position)
+				print("  position (local): ", position)
+				print("  get_global_mouse_position(): ", get_global_mouse_position())
+				print("  get_local_mouse_position(): ", to_cur)
+				print("  direction enum: ", direction, " -> ", main.dir_to_vec(direction))
+				print("  to_cur.normalized(): ", to_cur.normalized(), "  angle(deg): ", rad_to_deg(to_cur.angle()))
 				main.attack_at(global_position, to_cur.normalized())
 		# Movement is locked during the attack swing.
 		return
