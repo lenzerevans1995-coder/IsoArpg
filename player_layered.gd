@@ -268,7 +268,17 @@ func play_skill(def: Resource) -> void:
 	if String(def.get("projectile_pack")) != "" and String(def.get("projectile_name")) != "":
 		var ProjRuntime := preload("res://projectile_runtime.gd")
 		var proj_parent: Node = get_parent() if get_parent() else self
-		ProjRuntime.play(def, proj_parent, global_position, get_global_mouse_position())
+		# Aim at the hovered enemy if there is one — otherwise the
+		# at_target FX would land at whatever sub-pixel position the
+		# cursor sits at (often the player when firing via hotkey
+		# without re-aiming, which is why the FX appeared on the
+		# player). Falls back to cursor world pos.
+		var aim: Vector2 = get_global_mouse_position()
+		if main and "_hovered_enemy" in main and main._hovered_enemy != null \
+				and is_instance_valid(main._hovered_enemy) \
+				and not main._hovered_enemy.dead:
+			aim = main._hovered_enemy.global_position
+		ProjRuntime.play(def, proj_parent, global_position, aim)
 	_play(String(def.trigger_anim), ATTACK_FPS, false, _on_skill_finished)
 
 func _on_skill_finished() -> void:

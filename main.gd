@@ -639,7 +639,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed \
 			and event.button_index == MOUSE_BUTTON_LEFT:
 		_try_open_chest_under_cursor()
-	# RMB → activate the slot bound to RMB (basic attack).
+	# LMB is movement-only — no attack ever. RMB fires the bound skill.
 	if event is InputEventMouseButton and event.pressed \
 			and event.button_index == MOUSE_BUTTON_RIGHT:
 		_activate_skill_slot("rmb")
@@ -1888,20 +1888,23 @@ func exit_dungeon() -> void:
 # Activate the skill bound to a hotbar slot key ("rmb", "k1"…"k5").
 # Looks up the slot node in combat_hud, reads its `skill_id`, fires
 # the cooldown overlay, and (TODO) routes to actual skill behaviour.
-func _activate_skill_slot(slot_key: String) -> void:
+func _activate_skill_slot(slot_key: String) -> bool:
+	# Returns true if a skill was actually activated, false otherwise.
+	# Lets the input handler short-circuit the default basic-attack
+	# path when LMB/RMB has a real skill bound.
 	if combat_hud == null:
-		return
+		return false
 	var node_name: String = _SLOT_NODE_BY_KEY.get(slot_key, "")
 	if node_name == "":
-		return
+		return false
 	var slot: Node = combat_hud.get_node_or_null("Root/" + node_name)
 	if slot == null:
-		return
+		return false
 	if slot.has_method("is_on_cooldown") and slot.is_on_cooldown():
-		return
+		return false
 	var sid: String = slot.get("skill_id") if "skill_id" in slot else ""
 	if sid == "":
-		return
+		return false
 	var entry: Dictionary = _SkillDB.get_skill(sid)
 	var cd: float = float(entry.get("cooldown", 0.5))
 	if slot.has_method("trigger_cooldown"):
