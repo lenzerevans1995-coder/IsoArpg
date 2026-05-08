@@ -3180,12 +3180,20 @@ func _fire_player_arrow(origin: Vector2, dmg: int, facing: Vector2 = Vector2.ZER
 	# system than the player's SubViewport), aiming the arrow into a
 	# wrong space.
 	var dir_v: Vector2 = facing.normalized() if facing.length() > 0.01 else Vector2(1, 0)
-	var parent_node: Node = dungeon if (in_dungeon and dungeon) else world
-	if parent_node == null:
-		parent_node = self
+	# Parent the arrow to the player's IMMEDIATE parent so the arrow
+	# shares its coordinate space exactly. `world` (two levels up) and
+	# the painted-world's TileMapLayer hierarchy in between can have
+	# transforms that make `global_position = origin` land at the wrong
+	# spot when the player isn't strictly at (0, 0) of every ancestor.
+	var parent_node: Node = null
+	if in_dungeon and dungeon:
+		parent_node = dungeon
+	elif player and player.get_parent():
+		parent_node = player.get_parent()
+	else:
+		parent_node = world if world else self
 	var arrow := _ArrowScript.new()
 	arrow.direction = dir_v
-	# Distant aim target so the arrow flies until it impacts something.
 	arrow.aim_target_pos = origin + dir_v * 2000.0
 	arrow.damage = dmg
 	parent_node.add_child(arrow)

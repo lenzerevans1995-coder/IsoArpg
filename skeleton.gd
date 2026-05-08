@@ -141,50 +141,39 @@ func _setup_body_collision() -> void:
 func _ensure_highlight() -> void:
 	if _highlight and is_instance_valid(_highlight):
 		return
-	# Code-drawn iso ellipse — direct Node2D with a _draw script so the
-	# ring renders without depending on a texture asset. Stored on the
-	# `_highlight` field (still typed Sprite2D for compatibility with
-	# _clear_highlight, but we treat it as a plain CanvasItem).
-	var ring := Node2D.new()
-	ring.position = Vector2(0, -4)
-	ring.z_index = -1
-	# Per-kind size: bigger silhouettes get a wider ring. 28 px x-radius
-	# is a good base for a 64-77 px-tall sprite; the y-radius is half
-	# for the iso 2:1 ellipse.
+	# Code-built iso ring using Polygon2D — no inline script, no texture.
+	# Outer glow ring + inner crisp ring stacked. Drawn at the feet
+	# (origin = ground anchor). z_index = 200 so it sits above the
+	# terrain / decor but below the silhouette body (z stays under the
+	# parent's effective z bucket via z_as_relative=false).
+	var holder := Node2D.new()
+	holder.position = Vector2(0, -2)
+	holder.z_as_relative = false
+	holder.z_index = 200
 	var rx: float = 26.0 * (sprite_scale / 0.6)
 	var ry: float = rx * 0.5
-	var sc := GDScript.new()
-	sc.source_code = """
-extends Node2D
-var rx: float = 26.0
-var ry: float = 13.0
-func _ready() -> void:
-	queue_redraw()
-func _draw() -> void:
-	# Soft outer glow — concentric ellipses with falling alpha.
-	for i in range(4):
-		var bump: float = float(i) * 2.0
-		var a: float = 0.16 - 0.03 * float(i)
-		_iso_arc(rx + bump, ry + bump * 0.5, Color(1.0, 0.32, 0.30, a), 1.5)
+	# Outer glow ring (wider, dim red).
+	holder.add_child(_make_iso_ring(rx + 5.0, ry + 2.5, Color(1.0, 0.32, 0.30, 0.18), 4.0))
 	# Crisp middle ring.
-	_iso_arc(rx, ry, Color(1.0, 0.32, 0.30, 0.95), 2.0)
+	holder.add_child(_make_iso_ring(rx, ry, Color(1.0, 0.32, 0.30, 0.85), 2.5))
 	# Inner shimmer.
-	_iso_arc(rx - 3.0, ry - 1.5, Color(1.0, 0.55, 0.50, 0.55), 1.0)
-func _iso_arc(rx_: float, ry_: float, col: Color, w: float) -> void:
-	var pts := PackedVector2Array()
-	var n := 56
-	for i in range(n + 1):
+	holder.add_child(_make_iso_ring(rx - 3.0, ry - 1.5, Color(1.0, 0.6, 0.55, 0.5), 1.5))
+	add_child(holder)
+	_highlight = holder
+
+# Build a 2D iso-ellipse outline as a Line2D so it draws without a
+# texture, custom shader, or inline script.
+func _make_iso_ring(rx: float, ry: float, color: Color, width: float) -> Line2D:
+	var line := Line2D.new()
+	line.width = width
+	line.default_color = color
+	line.closed = true
+	line.joint_mode = Line2D.LINE_JOINT_ROUND
+	var n := 48
+	for i in range(n):
 		var t: float = float(i) / float(n) * TAU
-		pts.append(Vector2(cos(t) * rx_, sin(t) * ry_))
-	for i in range(pts.size() - 1):
-		draw_line(pts[i], pts[i + 1], col, w)
-"""
-	sc.reload()
-	ring.set_script(sc)
-	ring.set("rx", rx)
-	ring.set("ry", ry)
-	add_child(ring)
-	_highlight = ring
+		line.add_point(Vector2(cos(t) * rx, sin(t) * ry))
+	return line
 
 func _clear_highlight() -> void:
 	if _highlight and is_instance_valid(_highlight):
