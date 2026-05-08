@@ -1941,6 +1941,7 @@ func _activate_skill_slot(slot_key: String) -> bool:
 		var def: Resource = load(def_path)
 		if def != null and player and player.has_method("play_skill"):
 			player.play_skill(def)
+	return true
 
 func _on_xp_changed(current: int, needed: int) -> void:
 	if combat_hud == null:
