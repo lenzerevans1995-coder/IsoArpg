@@ -553,11 +553,16 @@ func _find_content_bbox(tex: Texture2D) -> Rect2:
 				if y > max_y: max_y = y
 	if max_x < min_x or max_y < min_y:
 		return Rect2()
-	# Tiny breathing pad of 2 px so the item doesn't touch the slot edge.
-	min_x = max(0, min_x - 2)
-	min_y = max(0, min_y - 2)
-	max_x = min(w - 1, max_x + 2)
-	max_y = min(h - 1, max_y + 2)
+	# Add ~25 % of the content size as breathing room on each side so
+	# cropped icons don't fill the slot to the edges. Keeps the gold
+	# rim visible around the item.
+	var cw: int = max_x - min_x + 1
+	var ch: int = max_y - min_y + 1
+	var pad: int = int(max(cw, ch) * 0.25)
+	min_x = max(0, min_x - pad)
+	min_y = max(0, min_y - pad)
+	max_x = min(w - 1, max_x + pad)
+	max_y = min(h - 1, max_y + pad)
 	return Rect2(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
 
 func _item_id_for_folder(folder: String) -> String:
