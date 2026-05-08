@@ -493,6 +493,8 @@ func _make_backpack_cell(item_id: String) -> Control:
 		btn.pressed.connect(_on_bag_slot_pressed.bind(item_id))
 	return btn
 
+static var _icon_bbox_cache: Dictionary = {}
+
 func _make_item_icon(item_id: String) -> TextureRect:
 	if item_id == "":
 		return null
@@ -501,21 +503,62 @@ func _make_item_icon(item_id: String) -> TextureRect:
 		"res://assets/generated/ground/%s.png" % item_id,
 	]
 	for p in paths:
-		if ResourceLoader.exists(p):
-			var t: Texture2D = load(p)
-			if t != null:
-				var r := TextureRect.new()
-				r.texture = t
-				r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-				# COVERED fills the entire cell (cropping the outer
-				# transparent padding the baker leaves around the item)
-				# so a 128 px icon with content in the middle reads at
-				# the FULL slot size instead of being letterboxed.
-				r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-				r.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-				r.mouse_filter = Control.MOUSE_FILTER_IGNORE
-				return r
+		if not ResourceLoader.exists(p):
+			continue
+		var t: Texture2D = load(p)
+		if t == null:
+			continue
+		# Crop to the non-transparent bounding box. The baked icons
+		# have their actual content occupying only ~10-20 px inside a
+		# 128x128 frame (loot bake artifact), so without cropping the
+		# texture is 95% empty space and shows the item at ~10 px.
+		var bbox: Rect2 = _icon_bbox_cache.get(p, Rect2())
+		if bbox.size == Vector2.ZERO:
+			bbox = _find_content_bbox(t)
+			_icon_bbox_cache[p] = bbox
+		if bbox.size.x <= 0 or bbox.size.y <= 0:
+			# Empty image — skip.
+			continue
+		var atlas := AtlasTexture.new()
+		atlas.atlas = t
+		atlas.region = bbox
+		var r := TextureRect.new()
+		r.texture = atlas
+		r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		r.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		return r
 	return null
+
+# Find the alpha bounding box of a Texture2D — the smallest rect
+# containing all non-transparent pixels. Used to crop oversized baked
+# icons so the actual item fills its inventory slot.
+func _find_content_bbox(tex: Texture2D) -> Rect2:
+	var img: Image = tex.get_image()
+	if img == null:
+		return Rect2()
+	var w: int = img.get_width()
+	var h: int = img.get_height()
+	var min_x: int = w; var min_y: int = h
+	var max_x: int = -1; var max_y: int = -1
+	# Scan with a stride to keep this cheap; baked icons aren't that
+	# big and the cache lookup means we only pay once per item_id.
+	for y in range(h):
+		for x in range(w):
+			if img.get_pixel(x, y).a > 0.05:
+				if x < min_x: min_x = x
+				if y < min_y: min_y = y
+				if x > max_x: max_x = x
+				if y > max_y: max_y = y
+	if max_x < min_x or max_y < min_y:
+		return Rect2()
+	# Tiny breathing pad of 2 px so the item doesn't touch the slot edge.
+	min_x = max(0, min_x - 2)
+	min_y = max(0, min_y - 2)
+	max_x = min(w - 1, max_x + 2)
+	max_y = min(h - 1, max_y + 2)
+	return Rect2(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
 
 func _item_id_for_folder(folder: String) -> String:
 	for e in ItemsDB.build_catalog():
