@@ -486,8 +486,8 @@ func _make_backpack_cell(item_id: String) -> Control:
 		var icon := _make_item_icon(item_id)
 		if icon:
 			icon.anchor_right = 1.0; icon.anchor_bottom = 1.0
-			icon.offset_left = 3; icon.offset_top = 3
-			icon.offset_right = -3; icon.offset_bottom = -3
+			icon.offset_left = 10; icon.offset_top = 10
+			icon.offset_right = -10; icon.offset_bottom = -10
 			btn.add_child(icon)
 		btn.set_meta("item_id", item_id)
 		btn.pressed.connect(_on_bag_slot_pressed.bind(item_id))
@@ -558,7 +558,7 @@ func _find_content_bbox(tex: Texture2D) -> Rect2:
 	# rim visible around the item.
 	var cw: int = max_x - min_x + 1
 	var ch: int = max_y - min_y + 1
-	var pad: int = int(max(cw, ch) * 0.25)
+	var pad: int = int(max(cw, ch) * 0.6)
 	min_x = max(0, min_x - pad)
 	min_y = max(0, min_y - pad)
 	max_x = min(w - 1, max_x + pad)
