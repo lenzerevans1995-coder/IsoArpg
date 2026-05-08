@@ -215,10 +215,9 @@ func _build_panel() -> void:
 	bag.size_flags_stretch_ratio = 1.15
 	split.add_child(bag)
 
-	var details := _build_detail_panel()
-	details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	details.size_flags_stretch_ratio = 0.55
-	split.add_child(details)
+	# Hover popup — floating tooltip, not a sidebar. Added to the root
+	# so it can position above any slot in the panel.
+	_build_detail_popup()
 
 # --- Header ---------------------------------------------------------------
 
@@ -300,27 +299,47 @@ func _make_tab_button(label: String, idx: int) -> Button:
 var _preview_vp: SubViewport
 var _preview_char: Node2D    # LayeredCharacter inside the preview viewport
 
-func _build_detail_panel() -> Control:
-	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 8)
+func _build_detail_popup() -> void:
+	# Floating popup that follows the cursor — sits above the rest of
+	# the inventory UI so it overlays slots while hovering. Hidden by
+	# default; shown via _show_item_detail when the user hovers a slot.
 	var inner := _StoneFrame.new()
-	inner.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	v.add_child(inner)
+	inner.custom_minimum_size = Vector2(220, 0)
+	inner.visible = false
+	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	inner.z_index = 50
+	add_child(inner)
 	_detail_panel = inner
 	var pad := MarginContainer.new()
 	pad.anchor_right = 1.0; pad.anchor_bottom = 1.0
 	pad.add_theme_constant_override("margin_left", 14)
 	pad.add_theme_constant_override("margin_right", 14)
-	pad.add_theme_constant_override("margin_top", 14)
-	pad.add_theme_constant_override("margin_bottom", 14)
+	pad.add_theme_constant_override("margin_top", 12)
+	pad.add_theme_constant_override("margin_bottom", 12)
+	pad.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	inner.add_child(pad)
 	_detail_text = Label.new()
-	_detail_text.text = "Hover an item"
+	_detail_text.text = ""
 	_detail_text.add_theme_color_override("font_color", COL_GOLD_HI)
 	_detail_text.add_theme_font_size_override("font_size", 11)
 	_detail_text.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_detail_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	pad.add_child(_detail_text)
-	return v
+
+func _process(_dt: float) -> void:
+	# Track mouse for the floating tooltip.
+	if _detail_panel and _detail_panel.visible:
+		var mp: Vector2 = get_global_mouse_position()
+		# Offset to the lower-right of the cursor and clamp so the
+		# popup never spills off-screen.
+		var pos := mp + Vector2(16, 18)
+		var sz: Vector2 = _detail_panel.size
+		var screen: Vector2 = size
+		if pos.x + sz.x > screen.x:
+			pos.x = mp.x - sz.x - 8
+		if pos.y + sz.y > screen.y:
+			pos.y = screen.y - sz.y - 4
+		_detail_panel.position = pos
 
 func _build_paperdoll() -> Control:
 	var v := VBoxContainer.new()
@@ -673,8 +692,9 @@ func _show_item_detail(item_id: String) -> void:
 	if _detail_text == null:
 		return
 	if item_id == "":
-		_detail_text.text = "Hover an item"
+		_detail_panel.visible = false
 		return
+	_detail_panel.visible = true
 	var entry: Dictionary = {}
 	for e in ItemsDB.build_catalog():
 		if String(e.get("id", "")) == item_id:
