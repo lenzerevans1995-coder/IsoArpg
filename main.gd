@@ -657,7 +657,10 @@ func _input(event: InputEvent) -> void:
 				# Start next wave (was KEY_4). N for "next wave".
 				_start_next_wave()
 			KEY_I:
-				if panels_ui: panels_ui.toggle_inventory()
+				# New Foundry-styled InventoryUI (paper-doll + tabs).
+				# panels_ui.toggle_inventory() was the legacy 6x5 grid
+				# panel — superseded.
+				_toggle_inventory()
 			KEY_C:
 				if panels_ui: panels_ui.toggle_character()
 			KEY_K:
