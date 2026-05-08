@@ -524,6 +524,11 @@ func _vec_to_dir(v: Vector2) -> int:
 func _cell_blocked(world_pos: Vector2) -> bool:
 	if main == null:
 		return false
+	# Untiled grey backplate = invisible wall. Treat absence of a
+	# ground / water tile as impassable so players can't wander off
+	# the painted island.
+	if main.has_method("is_untiled_at") and main.is_untiled_at(world_pos):
+		return true
 	# Pixel-level wall collision first: only block when the wall sprite's
 	# art is actually opaque under our column. That way thin cliffs / cave
 	# walls only stop the player on the strip the visible pixels cover,

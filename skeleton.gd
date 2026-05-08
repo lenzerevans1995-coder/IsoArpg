@@ -359,6 +359,17 @@ func _step(velocity: Vector2, delta: float) -> void:
 	var next_pos: Vector2 = global_position + velocity * delta
 	var main := _main_ref
 	if main and main.has_method("_screen_to_grid"):
+		# Untiled / grey backplate is an invisible wall — same rule as
+		# the player. Off-grid cells reject the move.
+		if main.has_method("is_untiled_at") and main.is_untiled_at(next_pos):
+			var slide_x_u: Vector2 = global_position + Vector2(velocity.x * delta, 0.0)
+			var slide_y_u: Vector2 = global_position + Vector2(0.0, velocity.y * delta)
+			if not main.is_untiled_at(slide_x_u):
+				next_pos = slide_x_u
+			elif not main.is_untiled_at(slide_y_u):
+				next_pos = slide_y_u
+			else:
+				return
 		# Skeletons treat ALL wall cells as solid (transparent or not).
 		# is_blocked lets the player walk under transparent walls, but
 		# enemies must stay strictly inside floor / corridor space.

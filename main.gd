@@ -839,6 +839,30 @@ func _screen_to_grid(p: Vector2) -> Vector2i:
 	var gy: float = (p.y / th - p.x / tw) * 0.5
 	return Vector2i(int(floor(gx)), int(floor(gy)))
 
+func is_untiled_at(world_pos: Vector2) -> bool:
+	# Painted-world: untiled cells (the grey backplate) act as invisible
+	# walls. A cell counts as tiled if EITHER the ground OR the water
+	# layer has a tile painted at that coord — both define "walkable
+	# floor." Wall / flora layers don't count (they'd let the player
+	# walk on a tree-top).
+	if not USE_PAINTED_WORLD or painted_world == null:
+		return false
+	var ground: Node = painted_world.get_node_or_null("ground")
+	var water: Node = painted_world.get_node_or_null("water")
+	if ground == null and water == null:
+		return false
+	if ground != null:
+		var lp_g: Vector2 = (ground as Node2D).to_local(world_pos)
+		var c_g: Vector2i = ground.local_to_map(lp_g)
+		if ground.get_cell_source_id(c_g) != -1:
+			return false
+	if water != null:
+		var lp_w: Vector2 = (water as Node2D).to_local(world_pos)
+		var c_w: Vector2i = water.local_to_map(lp_w)
+		if water.get_cell_source_id(c_w) != -1:
+			return false
+	return true
+
 func is_blocked(cell: Vector2i) -> bool:
 	# Inside a dungeon ONLY consult dungeon state. World blocking dicts
 	# carry stale forest entries that overlap dungeon coords. Block:
