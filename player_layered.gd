@@ -389,18 +389,13 @@ func _process(delta: float) -> void:
 				# precision per shot — which is why enemies (who use
 				# raw aim_to - start) fired straight while the player
 				# missed at non-cardinal angles.
-				# Use chest height as the firing anchor so the arrow's
-				# direction matches what the cursor visually points to.
-				# Foot-anchored direction tilted up because the cursor
-				# usually lands on an enemy's CHEST (~28 px above foot)
-				# — only N/S looked correct because their large y
-				# component drowned out the foot/chest mismatch. Same
-				# offset enemies already use via body_offset.
-				var chest: Vector2 = global_position + Vector2(0, -28)
-				var to_cur: Vector2 = get_global_mouse_position() - chest
+				# Origin is the player's foot anchor (0, 0 in player-
+				# local space). Direction is the raw cursor delta, no
+				# 8-dir snap.
+				var to_cur: Vector2 = get_global_mouse_position() - global_position
 				if to_cur.length() < 1.0:
 					to_cur = main.dir_to_vec(direction)
-				main.attack_at(chest, to_cur.normalized())
+				main.attack_at(global_position, to_cur.normalized())
 		# Movement is locked during the attack swing.
 		return
 
