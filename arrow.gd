@@ -60,11 +60,12 @@ func _ready() -> void:
 	_sprite.centered = true
 	if not _frames.is_empty():
 		_sprite.texture = _frames[0]
-	# Anchor the rotation pivot at the arrow's TIP (texture pixel
-	# (295, 10)) so the tip always starts exactly at the spawn point and
-	# the trail extends BEHIND it. Texture canvas is 512×26 with center
-	# at (256, 13); offset = canvas_center - art_tip = (-39, 3).
-	_sprite.offset = Vector2(-39.0, 3.0)
+	# Center the sprite on arrow.position so the arrow appears coming
+	# FROM the spawn point (center of the player's collision shape).
+	# Old offset (-39, 3) anchored the tip at arrow.position with the
+	# body trailing 39 px back, which made the arrow look like it was
+	# launching from 39 px to one side of the player.
+	_sprite.offset = Vector2.ZERO
 	add_child(_sprite)
 	# Rotate the sprite (not the parent Node2D) so positional collision
 	# in _process stays in plain world space and only the visual swings.
