@@ -22,7 +22,15 @@ const LoadoutScript := preload("res://loadout.gd")
 const ICON_DIR := "res://assets/generated/icons"
 const GROUND_DIR := "res://assets/generated/ground"
 const OUT_SIZE := Vector2i(128, 128)
-const ANCHOR := Vector2(64, 96)         # center the rig in the 128x128 frame
+# Render at a much larger viewport so the LayeredCharacter's content
+# (which only fills ~10-20 px of a naive 128x128 frame because the rig
+# sits at native scale) gives us enough resolution to crop tightly.
+const RENDER_SIZE := Vector2i(384, 384)
+# Anchor the rig roughly at the bottom-center so feet land in-frame.
+const ANCHOR := Vector2(192, 320)
+# Fraction of the cropped content edge length to leave as breathing room
+# inside the OUT_SIZE canvas. 0.85 = content fills 85% of the icon.
+const CONTENT_FILL_FRACTION := 0.82
 # Slot id -> LayeredCharacter layer (mirrors item_editor's table).
 const SLOT_TO_LAYER := {
 	ItemsDB.Slot.HEAD: "head", ItemsDB.Slot.HANDS: "hands",
@@ -46,7 +54,7 @@ static func bake_all(host_node: Node, force: bool = false) -> Dictionary:
 	_ensure_dir(ICON_DIR)
 	_ensure_dir(GROUND_DIR)
 	var vp := SubViewport.new()
-	vp.size = OUT_SIZE
+	vp.size = RENDER_SIZE
 	vp.transparent_bg = true
 	vp.disable_3d = true
 	vp.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
@@ -142,11 +150,48 @@ static func _flush(host: Node, vp: SubViewport) -> void:
 static func _save_image(vp: SubViewport, path: String) -> void:
 	var tex: Texture2D = vp.get_texture()
 	if tex == null: return
-	var img: Image = tex.get_image()
-	if img == null: return
-	# Strip the OS path prefix from res:// for save_png.
-	var sys_path: String = ProjectSettings.globalize_path(path)
-	img.save_png(sys_path)
+	var src: Image = tex.get_image()
+	if src == null: return
+	# Find the alpha bounding box of the rendered content.
+	var bbox: Rect2i = _content_bbox(src)
+	if bbox.size.x <= 0 or bbox.size.y <= 0:
+		# Fully transparent — write an empty OUT_SIZE png so the file
+		# exists; runtime fallback paths still work.
+		var blank := Image.create(OUT_SIZE.x, OUT_SIZE.y, false, Image.FORMAT_RGBA8)
+		blank.save_png(ProjectSettings.globalize_path(path))
+		return
+	# Crop to bbox.
+	var cropped := src.get_region(bbox)
+	# Compose into the OUT_SIZE canvas with content filling
+	# CONTENT_FILL_FRACTION of the longest edge, centered.
+	var target_long: int = int(OUT_SIZE.x * CONTENT_FILL_FRACTION)
+	var src_long: int = max(bbox.size.x, bbox.size.y)
+	var scale: float = float(target_long) / float(src_long)
+	var dst_w: int = max(1, int(round(bbox.size.x * scale)))
+	var dst_h: int = max(1, int(round(bbox.size.y * scale)))
+	cropped.resize(dst_w, dst_h, Image.INTERPOLATE_LANCZOS)
+	var canvas := Image.create(OUT_SIZE.x, OUT_SIZE.y, false, Image.FORMAT_RGBA8)
+	var dst_x: int = (OUT_SIZE.x - dst_w) / 2
+	var dst_y: int = (OUT_SIZE.y - dst_h) / 2
+	canvas.blit_rect(cropped, Rect2i(0, 0, dst_w, dst_h), Vector2i(dst_x, dst_y))
+	canvas.save_png(ProjectSettings.globalize_path(path))
+
+# Find the smallest rect containing all non-transparent pixels.
+static func _content_bbox(img: Image) -> Rect2i:
+	var w: int = img.get_width()
+	var h: int = img.get_height()
+	var min_x: int = w; var min_y: int = h
+	var max_x: int = -1; var max_y: int = -1
+	for y in range(h):
+		for x in range(w):
+			if img.get_pixel(x, y).a > 0.05:
+				if x < min_x: min_x = x
+				if y < min_y: min_y = y
+				if x > max_x: max_x = x
+				if y > max_y: max_y = y
+	if max_x < min_x or max_y < min_y:
+		return Rect2i()
+	return Rect2i(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
 
 static func _load_meta(item_id: String, slot_id: int) -> Resource:
 	var slot_name: String = ItemsDB.Slot.keys()[slot_id].to_lower()

@@ -8,6 +8,8 @@ class_name InventoryUI
 # rest of the HUD exactly.
 
 const Inventory := preload("res://inventory.gd")
+const RarityVisuals := preload("res://loot/rarity_visuals.gd")
+const ItemMetadataScript := preload("res://loot/item_metadata.gd")
 
 signal closed()
 
@@ -122,6 +124,11 @@ class _StoneSlot extends Button:
 	var filled: bool = false :
 		set(v): filled = v; queue_redraw()
 	var slot_id: String = ""
+	# When set, replaces the gold pinstripe with the rarity color so
+	# the slot reads as Magic / Rare / Unique / Legendary at a glance.
+	# Color.WHITE = use the default gold rim.
+	var rarity_color: Color = Color.WHITE :
+		set(v): rarity_color = v; queue_redraw()
 	func _ready() -> void:
 		flat = true
 		focus_mode = Control.FOCUS_NONE
@@ -130,6 +137,10 @@ class _StoneSlot extends Button:
 		var h: int = int(size.y)
 		var mode: int = get_draw_mode()
 		var rim: Color = COL_GOLD_HI if (mode == DRAW_HOVER or mode == DRAW_HOVER_PRESSED) else COL_GOLD
+		# Rarity rim: when the slot holds a non-common item, paint the
+		# pinstripe in the rarity color (brighter on hover).
+		if filled and rarity_color != Color.WHITE:
+			rim = rarity_color.lightened(0.25) if (mode == DRAW_HOVER or mode == DRAW_HOVER_PRESSED) else rarity_color
 		var cavity: Color = COL_VOID_HOT if (mode == DRAW_HOVER or mode == DRAW_HOVER_PRESSED) else COL_VOID
 		# Drop shadow.
 		draw_rect(Rect2(2, 3, w, h), Color(0, 0, 0, 0.5), true)
@@ -246,16 +257,6 @@ func _build_header() -> Control:
 	_gold_label.add_theme_font_size_override("font_size", 14)
 	_gold_label.custom_minimum_size = Vector2(60, 0)
 	hb.add_child(_gold_label)
-
-	var reset := Button.new()
-	reset.text = "Reset"
-	reset.flat = true
-	reset.add_theme_color_override("font_color", COL_TEXT_DIM)
-	reset.add_theme_color_override("font_hover_color", COL_GOLD_HI)
-	reset.add_theme_font_size_override("font_size", 11)
-	reset.tooltip_text = "Strip every equip slot back into the bag"
-	reset.pressed.connect(_on_reset_pressed)
-	hb.add_child(reset)
 
 	var close := Button.new()
 	close.text = "✕"
@@ -502,14 +503,15 @@ func _refresh_paperdoll() -> void:
 		for c in btn.get_children():
 			c.queue_free()
 		btn.filled = (folder != "")
+		btn.rarity_color = Color.WHITE
 		if folder != "":
-			var icon := _make_item_icon(_item_id_for_folder(folder))
+			var iid: String = _item_id_for_folder(folder)
+			btn.rarity_color = _rarity_color_for(iid)
+			var icon := _make_item_icon(iid)
 			if icon:
 				icon.anchor_right = 1.0; icon.anchor_bottom = 1.0
-				# Tighter inner padding (3 px) so the icon fills more of
-				# the 64-px slot. Was 6 px which made HD icons read tiny.
-				icon.offset_left = 3; icon.offset_top = 3
-				icon.offset_right = -3; icon.offset_bottom = -3
+				icon.offset_left = 6; icon.offset_top = 6
+				icon.offset_right = -6; icon.offset_bottom = -6
 				btn.add_child(icon)
 	# Sync the live player preview rig.
 	if _preview_char != null:
@@ -543,13 +545,15 @@ func _make_backpack_cell(item_id: String) -> Control:
 	btn.custom_minimum_size = Vector2(80, 80)
 	if item_id == "":
 		btn.filled = false
+		btn.rarity_color = Color.WHITE
 	else:
 		btn.filled = true
+		btn.rarity_color = _rarity_color_for(item_id)
 		var icon := _make_item_icon(item_id)
 		if icon:
 			icon.anchor_right = 1.0; icon.anchor_bottom = 1.0
-			icon.offset_left = 10; icon.offset_top = 10
-			icon.offset_right = -10; icon.offset_bottom = -10
+			icon.offset_left = 6; icon.offset_top = 6
+			icon.offset_right = -6; icon.offset_bottom = -6
 			btn.add_child(icon)
 		btn.set_meta("item_id", item_id)
 		btn.pressed.connect(_on_bag_slot_pressed.bind(item_id))
@@ -557,9 +561,36 @@ func _make_backpack_cell(item_id: String) -> Control:
 		btn.mouse_exited.connect(_show_item_detail.bind(""))
 	return btn
 
+func _make_item_icon(item_id: String) -> TextureRect:
+	if item_id == "":
+		return null
+	var paths := [
+		"res://assets/generated/icons/%s.png" % item_id,
+		"res://assets/generated/ground/%s.png" % item_id,
+	]
+	for p in paths:
+		if not ResourceLoader.exists(p):
+			continue
+		var t: Texture2D = load(p)
+		if t == null:
+			continue
+		# Baker now tight-crops each icon to its content bbox, so the
+		# texture is the item filling ~82% of its frame. No extra crop
+		# pass needed at runtime — render the whole texture.
+		var r := TextureRect.new()
+		r.texture = t
+		r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		r.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		return r
+	return null
+
+# (Legacy alpha-bbox helpers kept for potential future use; not called
+# now that the baker pre-crops.)
 static var _icon_bbox_cache: Dictionary = {}
 
-func _make_item_icon(item_id: String) -> TextureRect:
+func _make_item_icon_legacy(item_id: String) -> TextureRect:
 	if item_id == "":
 		return null
 	var paths := [
@@ -663,19 +694,7 @@ func _on_close() -> void:
 	closed.emit()
 	queue_free()
 
-func _on_reset_pressed() -> void:
-	# Move every equipped item back into the bag, leaving the player in
-	# their default unequipped state. Useful as a clean-slate test.
-	var slot_ids: Array = _doll_slots.keys()
-	for sid in slot_ids:
-		var folder: String = String(_loadout.get(sid, ""))
-		if folder == "":
-			continue
-		var iid: String = _item_id_for_folder(folder)
-		if iid != "":
-			Inventory.add_item(_loadout, iid)
-		_loadout[sid] = ""
-	_save_and_refresh()
+## (Removed: _on_reset_pressed. Reset button dropped per Phase 1.4.)
 
 func _on_scroll_gui_input(ev: InputEvent) -> void:
 	# Invert mouse-wheel scroll direction so wheel-down moves the view
@@ -693,6 +712,35 @@ func _on_scroll_gui_input(ev: InputEvent) -> void:
 			_scroll.scroll_vertical -= step
 			get_viewport().set_input_as_handled()
 
+func _rarity_color_for(item_id: String) -> Color:
+	# Read item metadata; if is_unique, use the unique tier color (or
+	# the per-item glow_color). Otherwise default white = no rim tint.
+	var meta := _meta_for_item(item_id)
+	if meta == null:
+		return Color.WHITE
+	if "is_unique" in meta and bool(meta.is_unique):
+		if "unique_glow_color" in meta and meta.unique_glow_color != Color.WHITE:
+			return meta.unique_glow_color
+		return RarityVisuals.color_for(3)   # Unique tier
+	return Color.WHITE
+
+func _meta_for_item(item_id: String) -> Resource:
+	if item_id == "":
+		return null
+	var entry: Dictionary = {}
+	for e in ItemsDB.build_catalog():
+		if String(e.get("id", "")) == item_id:
+			entry = e
+			break
+	if entry.is_empty():
+		return null
+	var slot_name: String = ItemsDB.Slot.keys()[int(entry.get("slot", 0))].to_lower()
+	var path: String = "res://data/items/%s/%s.tres" % [slot_name, item_id]
+	if not FileAccess.file_exists(path):
+		return null
+	var r: Resource = load(path)
+	return r if r is ItemMetadataScript else null
+
 func _show_item_detail(item_id: String) -> void:
 	if _detail_text == null:
 		return
@@ -708,27 +756,58 @@ func _show_item_detail(item_id: String) -> void:
 	if entry.is_empty():
 		_detail_text.text = "[%s]" % item_id
 		return
-	# Attempt to load metadata for stat lines.
 	var slot_name: String = ItemsDB.Slot.keys()[int(entry.get("slot", 0))].to_lower()
-	var meta_path: String = "res://data/items/%s/%s.tres" % [slot_name, item_id]
+	var meta := _meta_for_item(item_id)
 	var lines: Array[String] = []
+	# Title — name (uppercased), tinted via Label modulate after build.
 	lines.append(String(entry.get("display", item_id)).to_upper())
-	lines.append("")
-	lines.append("Slot: %s" % slot_name.capitalize())
-	if FileAccess.file_exists(meta_path):
-		var meta: Resource = load(meta_path)
-		if meta:
-			if "is_unique" in meta and bool(meta.is_unique):
-				lines.append("Unique")
-			if "min_damage" in meta and "max_damage" in meta:
-				var mn: int = int(meta.min_damage); var mx: int = int(meta.max_damage)
-				if mn > 0 or mx > 0:
-					lines.append("Damage: %d - %d" % [mn, mx])
-			if "armor" in meta and int(meta.armor) > 0:
-				lines.append("Armor: %d" % int(meta.armor))
-			if "drop_weight" in meta:
-				lines.append("Drop weight: %s" % str(meta.drop_weight))
+	# Sub: slot — weapon class for mainhand
+	var sub_line: String = "%s" % slot_name.capitalize()
+	if int(entry.get("slot", -1)) == ItemsDB.Slot.MAINHAND:
+		var wc: int = int(entry.get("weapon_class", 0))
+		var wc_name := ["NONE", "Melee", "Ranged", "Magic"]
+		if wc >= 0 and wc < wc_name.size():
+			sub_line = "Mainhand — %s" % wc_name[wc]
+	lines.append(sub_line)
+	if meta != null:
+		# Base stats.
+		if "min_damage" in meta and "max_damage" in meta:
+			var mn: int = int(meta.min_damage); var mx: int = int(meta.max_damage)
+			if mn > 0 or mx > 0:
+				lines.append("Damage: %d–%d" % [mn, mx])
+		if "armor" in meta and int(meta.armor) > 0:
+			lines.append("Armor: %d" % int(meta.armor))
+		# Affixes — one line each. Format depends on whether the affix
+		# is a flat add or percent. We don't know without loading
+		# affix_db; show the field directly if present.
+		if "affixes" in meta and meta.affixes is Array:
+			for a in meta.affixes:
+				lines.append(_format_affix(a))
+		# Unique flag + flavor.
+		if "is_unique" in meta and bool(meta.is_unique):
+			lines.append("")
+			lines.append("Unique")
+			if "flavor_text" in meta and String(meta.flavor_text) != "":
+				lines.append(String(meta.flavor_text))
 	_detail_text.text = "\n".join(lines)
+	# Tint the whole tooltip toward the rarity color (subtle modulate
+	# so the chrome stays readable).
+	var rcol: Color = _rarity_color_for(item_id)
+	if rcol == Color.WHITE:
+		_detail_text.add_theme_color_override("font_color", COL_GOLD_HI)
+	else:
+		_detail_text.add_theme_color_override("font_color", rcol.lightened(0.15))
+
+func _format_affix(a: Variant) -> String:
+	if a is Dictionary:
+		var stat: String = String(a.get("stat", "?"))
+		var amount: float = float(a.get("amount", 0.0))
+		var is_pct: bool = bool(a.get("percent", false))
+		if is_pct:
+			return "%s +%d%%" % [stat.capitalize(), int(round(amount))]
+		var sign: String = "+" if amount >= 0 else ""
+		return "%s%d to %s" % [sign, int(round(amount)), stat.capitalize()]
+	return String(a)
 
 func _on_doll_slot_pressed(slot_id: String) -> void:
 	var folder: String = String(_loadout.get(slot_id, ""))

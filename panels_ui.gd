@@ -61,7 +61,11 @@ func _ready() -> void:
 	_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_root)
-	_inventory = _build_inventory()
+	# Inventory panel is now hosted by inventory_ui.gd — see
+	# main.gd::_toggle_inventory. The legacy _build_inventory below is
+	# kept only because internal references still touch _inventory; the
+	# panel is never shown.
+	_inventory = Control.new(); add_child(_inventory)
 	_character = _build_character()
 	_skills    = _build_skills()
 	_inventory.visible = false
