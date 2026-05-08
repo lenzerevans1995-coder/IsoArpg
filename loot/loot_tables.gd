@@ -208,8 +208,15 @@ static func _slot_pool(slot_key: String) -> Array:
 	var cat: Array = ItemsDB.build_catalog()
 	# Composite "mainhand_<class>" routing.
 	if slot_key == "mainhand_melee":
+		# Loot restriction: only sword folders drop from melee mainhand
+		# rolls. Axe / mace / dagger items are still equippable by the
+		# warrior class (see ItemsDB.is_warrior_weapon) — they're just
+		# not dropped randomly. Adjust LOOT_SWORD_FOLDERS in items_db.gd
+		# to broaden the pool.
 		for e in cat:
-			if int(e["slot"]) == ItemsDB.Slot.MAINHAND and int(e["weapon_class"]) == ItemsDB.WeaponClass.MELEE:
+			if int(e["slot"]) == ItemsDB.Slot.MAINHAND \
+					and int(e["weapon_class"]) == ItemsDB.WeaponClass.MELEE \
+					and ItemsDB.is_sword(String(e.get("folder", ""))):
 				out.append(e)
 		return out
 	if slot_key == "mainhand_ranged":

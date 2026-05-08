@@ -94,7 +94,10 @@ func _build_for(rarity: int) -> void:
 	_gold_sprite.offset = Vector2.ZERO
 	_gold_sprite.z_index = 30
 	_gold_sprite.scale = Vector2(COIN_SCALE, COIN_SCALE)
-	_gold_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	# Item icons render with LINEAR filter so they stay sharp / detailed
+	# regardless of the world's NEAREST pixel-art default. Same rule the
+	# inventory panel uses for its TextureRect icons.
+	_gold_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	var icon_tex: Texture2D = _icon_for_item(item_id)
 	if icon_tex != null:
 		_gold_sprite.texture = icon_tex

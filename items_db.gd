@@ -127,6 +127,21 @@ static func _src_for_tier(n: int) -> String:
 # a melee swing, Attack3 is the canonical bow-draw + release on the
 # Fantasy tileset bodies. If a particular weapon set looks wrong here
 # tweak per-class instead of fighting the convention.
+# Class restrictions — folders the warrior is allowed to wield.
+# Sword: Melee2 / Melee5 (Longsword, Broadsword)
+# Mace:  Melee9 (Wand of the Lich is decorative; Melee9 = Mace)
+# Axe:   Melee10 (placeholder; expand once axe folders are catalogued)
+const WARRIOR_WEAPON_FOLDERS := ["Melee2", "Melee5", "Melee9", "Melee10"]
+
+# Loot: only sword folders drop from melee mainhand rolls.
+const LOOT_SWORD_FOLDERS := ["Melee2", "Melee5"]
+
+static func is_warrior_weapon(folder: String) -> bool:
+	return folder in WARRIOR_WEAPON_FOLDERS
+
+static func is_sword(folder: String) -> bool:
+	return folder in LOOT_SWORD_FOLDERS
+
 static func attack_anim_for(weapon_class: int) -> String:
 	match weapon_class:
 		WeaponClass.MELEE: return "Attack1"

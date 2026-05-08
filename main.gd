@@ -3388,7 +3388,13 @@ func _pickup_drop(drop: Node) -> void:
 	var item_id: String = String(data.get("item_id", ""))
 	if item_id == "":
 		return
-	_equip_item_id(item_id)
+	# Route pickups into the inventory instead of auto-equipping. The
+	# player opens the inventory panel to choose what to wear.
+	if player and "_loadout" in player:
+		var Inv := preload("res://inventory.gd")
+		Inv.add_item(player._loadout, item_id)
+		var L := preload("res://loadout.gd")
+		L.save(player._loadout)
 
 # Apply an item_id to the player's loadout: look up sheet folder + slot
 # in items_db, push into loadout dict, equip on the LayeredCharacter,
