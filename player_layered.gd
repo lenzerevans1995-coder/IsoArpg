@@ -382,12 +382,17 @@ func _process(delta: float) -> void:
 		if not attack_hit_fired and attack_time >= ATTACK_IMPACT_TIME:
 			attack_hit_fired = true
 			if main and main.has_method("attack_at"):
-				# Pass global_position — main.attack_at uses it as the
-				# origin for arrow spawn / cone-damage tests, which all
-				# need world-space coords. `position` is local to the
-				# player's parent (flora layer in painted world), so it
-				# would be wrong wherever the parent is offset.
-				main.attack_at(global_position, main.dir_to_vec(direction))
+				# Use the RAW cursor direction (not the 8-dir-snapped
+				# `direction` enum) so arrow flight matches exactly
+				# where the cursor is pointing. Quantizing to 8 dirs is
+				# fine for body-anim selection but loses up to 22.5° of
+				# precision per shot — which is why enemies (who use
+				# raw aim_to - start) fired straight while the player
+				# missed at non-cardinal angles.
+				var to_cur: Vector2 = get_global_mouse_position() - global_position
+				if to_cur.length() < 1.0:
+					to_cur = main.dir_to_vec(direction)
+				main.attack_at(global_position, to_cur.normalized())
 		# Movement is locked during the attack swing.
 		return
 
