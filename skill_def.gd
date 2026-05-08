@@ -99,3 +99,8 @@ static func world_fx_full_path(subfolder: String) -> String:
 # than always centered on the body. Configured visually in the skill
 # editor by dragging the red shape overlay.
 @export var damage_offset: Vector2 = Vector2.ZERO
+# End / reach point of the damage area, relative to the caster's
+# position. Together with damage_offset (start), the editor draws a
+# draggable START + END pair that defines the cone's length and
+# direction. damage_range is auto-derived from |end - start|.
+@export var damage_end_offset: Vector2 = Vector2(110, 0)

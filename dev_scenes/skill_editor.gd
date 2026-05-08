@@ -73,7 +73,9 @@ const DAMAGE_SHAPES := ["cone", "circle", "single", "none"]
 var _f_dmg_shape: OptionButton
 var _f_dmg_range: SpinBox
 var _f_dmg_angle: SpinBox
-var _damage_overlay: Node2D    # draws the cone / circle / single marker
+var _damage_overlay: Node2D    # draws the cone / circle / single marker (= damage start)
+var _damage_end_marker: Node2D # draws the cone reach / end point (damage tab only)
+var _active_main_tab: int = 0  # tab index in the form-side TabContainer
 # Single drag owner so the dummy enemy and the offset markers can't all
 # capture the same click — overlapping hit-zones used to make moving
 # the enemy also slide the markers (and vice-versa).
@@ -255,6 +257,7 @@ func _build_ui() -> void:
 	tabs.add_child(t_fx)
 	tabs.add_child(t_proj)
 	tabs.add_child(t_dmg)
+	tabs.tab_changed.connect(_on_main_tab_changed)
 	split.add_child(tabs)
 
 	var preview_col := _build_col_preview()
