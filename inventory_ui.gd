@@ -255,7 +255,12 @@ func _build_header() -> Control:
 	if ResourceLoader.exists("res://assets/drops/gold_drop/coins_drop.png"):
 		coin.texture = load("res://assets/drops/gold_drop/coins_drop.png")
 	coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	# COVERED instead of CENTERED — coins_drop.png has its visible art
+	# at the bottom of its canvas with empty space above; CENTERED was
+	# placing the visible coins at the bottom of the TextureRect rect,
+	# so the icon read as offset from the label. COVERED fills the
+	# rect (cropping transparent margins).
+	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	coin.custom_minimum_size = Vector2(64, 64)
 	coin.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	coin.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
