@@ -208,7 +208,6 @@ func _build_panel() -> void:
 	pad.add_child(page)
 
 	page.add_child(_build_header())
-	page.add_child(_build_tab_strip())
 
 	var split := HBoxContainer.new()
 	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -536,9 +535,13 @@ func _make_paperdoll_slot(label_text: String, slot_id: String) -> Control:
 
 func _build_backpack() -> Control:
 	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 8)
+	# Zero gap so the tab strip's bottom edge sits flush with the
+	# inventory frame's top edge.
+	v.add_theme_constant_override("separation", 0)
 
-	# (BACKPACK label removed — frame chrome is enough.)
+	# Tab strip sits ON TOP of the inventory panel, butting its top
+	# edge. Lives inside the bag column so its width matches the bag.
+	v.add_child(_build_tab_strip())
 
 	var inner := _StoneFrame.new()
 	inner.size_flags_vertical = Control.SIZE_EXPAND_FILL
