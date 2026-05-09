@@ -246,22 +246,30 @@ func _build_header() -> Control:
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hb.add_child(spacer)
 
-	# Gold counter — coin icon + number, both vertically centered in
-	# the header bar so they line up.
+	# Gold counter — coin icon + number aligned by giving them the SAME
+	# row height. The coins_drop.png art sits at the bottom of its
+	# canvas; cropping the texture region to its content bbox snaps
+	# the visible coins to the rect center so they line up with the
+	# label baseline.
 	var gold_box := HBoxContainer.new()
 	gold_box.add_theme_constant_override("separation", 6)
 	gold_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	var coin_size: Vector2 = Vector2(48, 48)
 	var coin := TextureRect.new()
-	if ResourceLoader.exists("res://assets/drops/gold_drop/coins_drop.png"):
-		coin.texture = load("res://assets/drops/gold_drop/coins_drop.png")
+	var coin_path := "res://assets/drops/gold_drop/coins_drop.png"
+	if ResourceLoader.exists(coin_path):
+		var raw: Texture2D = load(coin_path)
+		var atlas := AtlasTexture.new()
+		atlas.atlas = raw
+		# Hand-cropped region — pulls the coin pile out of the bottom
+		# of the source frame and skips the transparent top half.
+		var w: int = raw.get_width()
+		var h: int = raw.get_height()
+		atlas.region = Rect2(0, h * 0.45, w, h * 0.55)
+		coin.texture = atlas
 	coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	# COVERED instead of CENTERED — coins_drop.png has its visible art
-	# at the bottom of its canvas with empty space above; CENTERED was
-	# placing the visible coins at the bottom of the TextureRect rect,
-	# so the icon read as offset from the label. COVERED fills the
-	# rect (cropping transparent margins).
-	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	coin.custom_minimum_size = Vector2(64, 64)
+	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+	coin.custom_minimum_size = coin_size
 	coin.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	coin.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	gold_box.add_child(coin)
@@ -271,7 +279,7 @@ func _build_header() -> Control:
 	_gold_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
 	_gold_label.add_theme_constant_override("outline_size", 3)
 	_gold_label.add_theme_font_size_override("font_size", 18)
-	_gold_label.custom_minimum_size = Vector2(60, 0)
+	_gold_label.custom_minimum_size = Vector2(60, coin_size.y)
 	_gold_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_gold_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	gold_box.add_child(_gold_label)
