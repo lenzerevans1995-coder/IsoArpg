@@ -94,8 +94,8 @@ class _StoneFrame extends Control:
 		draw_rect(Rect2(5, 5, w - 10, h - 10), COL_STONE_DARK, true)
 		# Cavity.
 		draw_rect(Rect2(6, 6, w - 12, h - 12), COL_VOID, true)
-		# Top sheen.
-		draw_rect(Rect2(6, 6, w - 12, max(2, (h - 12) / 8)), Color(1, 1, 1, 0.05), true)
+		# (Top sheen removed — read as a light grey rectangle at the top
+		# edge of the paper-doll / backpack cards.)
 		# Bottom shadow.
 		draw_rect(Rect2(6, h - 8, w - 12, 2), Color(0, 0, 0, 0.4), true)
 		# Gold corner studs (4 small triangles).
@@ -484,11 +484,7 @@ func _build_backpack() -> Control:
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 8)
 
-	var hdr := Label.new()
-	hdr.text = "BACKPACK"
-	hdr.add_theme_color_override("font_color", COL_GOLD)
-	hdr.add_theme_font_size_override("font_size", 11)
-	v.add_child(hdr)
+	# (BACKPACK label removed — frame chrome is enough.)
 
 	var inner := _StoneFrame.new()
 	inner.size_flags_vertical = Control.SIZE_EXPAND_FILL
