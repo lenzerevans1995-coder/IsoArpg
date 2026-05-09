@@ -33,7 +33,7 @@ const ANCHOR := Vector2(192, 320)
 # so when the inventory's TextureRect renders the texture inside its
 # 80x80 slot, the visible item reads at ~75 px (was ~55 px at 0.82) —
 # bigger items inside the SAME slot, no layout change.
-const CONTENT_FILL_FRACTION := 0.96
+const CONTENT_FILL_FRACTION := 0.55
 # Slot id -> LayeredCharacter layer (mirrors item_editor's table).
 const SLOT_TO_LAYER := {
 	ItemsDB.Slot.HEAD: "head", ItemsDB.Slot.HANDS: "hands",
