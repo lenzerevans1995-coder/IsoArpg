@@ -163,9 +163,7 @@ class _StoneSlot extends Button:
 		_corner_tri(w - 3, 3, 3, 1, rim)
 		_corner_tri(3, h - 3, 3, 2, rim)
 		_corner_tri(w - 3, h - 3, 3, 3, rim)
-		# Tick mark for empty slots — 4×1 px gold sliver in upper-left of cavity.
-		if not filled:
-			draw_rect(Rect2(7, 7, 4, 1), COL_GOLD, true)
+		# (Empty-slot tick mark removed — was reading as a stray dash.)
 	func _corner_tri(x: int, y: int, ts: int, corner: int, col: Color) -> void:
 		var pts := PackedVector2Array()
 		match corner:
@@ -210,6 +208,7 @@ func _build_panel() -> void:
 	pad.add_child(page)
 
 	page.add_child(_build_header())
+	page.add_child(_build_tab_strip())
 
 	var split := HBoxContainer.new()
 	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -242,25 +241,24 @@ func _build_header() -> Control:
 	title.add_theme_font_size_override("font_size", 16)
 	hb.add_child(title)
 
-	# Tab strip — custom buttons.
-	var tabs_hb := HBoxContainer.new()
-	tabs_hb.add_theme_constant_override("separation", 4)
-	tabs_hb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	for i in TABS.size():
-		var b := _make_tab_button(TABS[i], i)
-		tabs_hb.add_child(b)
-	hb.add_child(tabs_hb)
+	# Tabs are rendered as a separate strip butting the inventory
+	# panel below — see _build_tab_strip / page.add_child below.
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(spacer)
 
-	# Gold counter: small coin icon + gold-tinted number, mimicking
-	# loot drop's coins_drop sprite.
+	# Gold counter — coin icon + number, both vertically centered in
+	# the header bar so they line up.
 	var gold_box := HBoxContainer.new()
-	gold_box.add_theme_constant_override("separation", 4)
+	gold_box.add_theme_constant_override("separation", 6)
+	gold_box.alignment = BoxContainer.ALIGNMENT_CENTER
 	var coin := TextureRect.new()
 	if ResourceLoader.exists("res://assets/drops/gold_drop/coins_drop.png"):
 		coin.texture = load("res://assets/drops/gold_drop/coins_drop.png")
 	coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	coin.custom_minimum_size = Vector2(64, 64)
+	coin.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	coin.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	gold_box.add_child(coin)
 	_gold_label = Label.new()
@@ -268,8 +266,9 @@ func _build_header() -> Control:
 	_gold_label.add_theme_color_override("font_color", COL_GOLD_HI)
 	_gold_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
 	_gold_label.add_theme_constant_override("outline_size", 3)
-	_gold_label.add_theme_font_size_override("font_size", 14)
-	_gold_label.custom_minimum_size = Vector2(50, 0)
+	_gold_label.add_theme_font_size_override("font_size", 18)
+	_gold_label.custom_minimum_size = Vector2(60, 0)
+	_gold_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_gold_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	gold_box.add_child(_gold_label)
 	hb.add_child(gold_box)
@@ -278,7 +277,8 @@ func _build_header() -> Control:
 	# outer + bronze rim + gold pinstripe + cavity, sinks 1 px on press.
 	var close := Button.new()
 	close.text = "✕"
-	close.custom_minimum_size = Vector2(36, 36)
+	close.custom_minimum_size = Vector2(44, 44)
+	close.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	close.add_theme_color_override("font_color", COL_GOLD)
 	close.add_theme_color_override("font_hover_color", COL_GOLD_HI)
 	close.add_theme_color_override("font_pressed_color", COL_GOLD)
@@ -301,35 +301,89 @@ func _close_btn_style(hot: bool) -> StyleBoxFlat:
 	sb.shadow_color = Color(0, 0, 0, 0.55)
 	sb.shadow_size = 2
 	sb.shadow_offset = Vector2(0, 2)
+	# Equal margins on all four sides so the cavity is square.
 	sb.content_margin_left = 6; sb.content_margin_right = 6
-	sb.content_margin_top = 4; sb.content_margin_bottom = 4
+	sb.content_margin_top = 6; sb.content_margin_bottom = 6
 	return sb
+
+var _tab_buttons: Array = []
+
+func _build_tab_strip() -> Control:
+	# Row of tab buttons that butt the inventory panel below — each tab
+	# has top + left + right border but NO bottom border, so the active
+	# tab visually merges with the frame underneath. Selected tab uses
+	# the panel's bg color (no separator); inactive tabs sit on a
+	# darker fill so they read as recessed.
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 0)
+	hb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# Left padding so the leftmost tab doesn't crowd the frame edge.
+	var pad_l := Control.new()
+	pad_l.custom_minimum_size = Vector2(18, 0)
+	hb.add_child(pad_l)
+	_tab_buttons.clear()
+	for i in TABS.size():
+		var b := _make_tab_button(TABS[i], i)
+		hb.add_child(b)
+		_tab_buttons.append(b)
+	# Right side filler so the strip extends to the panel's right edge.
+	var fill := Control.new()
+	fill.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(fill)
+	return hb
 
 func _make_tab_button(label: String, idx: int) -> Button:
 	var b := Button.new()
 	b.text = label
-	b.flat = true
 	b.toggle_mode = false
-	b.add_theme_color_override("font_color", COL_TEXT_DIM if idx != _active_tab else COL_GOLD_HI)
-	b.add_theme_color_override("font_hover_color", COL_GOLD_HI)
-	b.add_theme_font_size_override("font_size", 12)
-	b.custom_minimum_size = Vector2(82, 28)
+	b.add_theme_font_size_override("font_size", 13)
+	b.custom_minimum_size = Vector2(108, 36)
 	b.pressed.connect(_on_tab_changed.bind(idx))
 	b.set_meta("tab_idx", idx)
-	# Custom draw via a stone bg behind the text — wrap in a small panel.
-	var sb := StyleBoxFlat.new()
-	sb.bg_color = COL_STONE_DARK if idx != _active_tab else COL_BRONZE_DARK
-	sb.border_color = COL_GOLD if idx == _active_tab else COL_BRONZE_DARK
-	sb.border_width_bottom = 2
-	sb.content_margin_left = 10; sb.content_margin_right = 10
-	sb.content_margin_top = 6; sb.content_margin_bottom = 6
-	b.add_theme_stylebox_override("normal", sb)
-	var hov := sb.duplicate() as StyleBoxFlat
-	hov.bg_color = COL_BRONZE_DARK
-	hov.border_color = COL_GOLD_HI
+	_apply_tab_style(b, idx == _active_tab)
+	return b
+
+func _apply_tab_style(b: Button, is_active: bool) -> void:
+	var normal := StyleBoxFlat.new()
+	if is_active:
+		# Selected tab — gold rim on top + sides, bg matches the panel
+		# below so the bottom edge "opens" into the inventory frame.
+		normal.bg_color = COL_PANEL if has_node("__not_a_real_check") else Color(0.10, 0.11, 0.12)
+		normal.bg_color = COL_STONE_DARK
+		normal.border_color = COL_GOLD
+		normal.border_width_top = 3
+		normal.border_width_left = 2
+		normal.border_width_right = 2
+		normal.border_width_bottom = 0
+	else:
+		# Inactive — recessed, dim border, no bottom (still butts panel).
+		normal.bg_color = Color(0.06, 0.07, 0.09)
+		normal.border_color = COL_BRONZE_DARK
+		normal.border_width_top = 2
+		normal.border_width_left = 2
+		normal.border_width_right = 2
+		normal.border_width_bottom = 0
+	normal.corner_radius_top_left = 4
+	normal.corner_radius_top_right = 4
+	normal.content_margin_left = 14; normal.content_margin_right = 14
+	normal.content_margin_top = 8; normal.content_margin_bottom = 6
+	b.add_theme_stylebox_override("normal", normal)
+	# Hover — bronze rim brightens slightly, fill lifts.
+	var hov := normal.duplicate() as StyleBoxFlat
+	if not is_active:
+		hov.bg_color = Color(0.10, 0.11, 0.13)
+		hov.border_color = COL_GOLD
 	b.add_theme_stylebox_override("hover", hov)
 	b.add_theme_stylebox_override("pressed", hov)
-	return b
+	# Text color
+	if is_active:
+		b.add_theme_color_override("font_color", COL_GOLD_HI)
+		b.add_theme_color_override("font_hover_color", COL_GOLD_HI)
+	else:
+		b.add_theme_color_override("font_color", COL_TEXT_DIM)
+		b.add_theme_color_override("font_hover_color", COL_GOLD_HI)
+	b.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	b.add_theme_constant_override("outline_size", 3)
 
 # --- Paper-doll ----------------------------------------------------------
 
@@ -722,7 +776,9 @@ func _matches_tab(item_id: String, tab: int) -> bool:
 
 func _on_tab_changed(idx: int) -> void:
 	_active_tab = idx
-	# Rebuild the header so tab styling reflects the new selection. Cheap.
+	# Repaint each tab so the active state reflects the new selection.
+	for i in _tab_buttons.size():
+		_apply_tab_style(_tab_buttons[i], i == idx)
 	_refresh_backpack()
 
 func _on_close() -> void:
