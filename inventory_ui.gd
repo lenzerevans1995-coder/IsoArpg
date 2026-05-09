@@ -346,9 +346,9 @@ func _make_tab_button(label: String, idx: int) -> Button:
 func _apply_tab_style(b: Button, is_active: bool) -> void:
 	var normal := StyleBoxFlat.new()
 	if is_active:
-		# Selected tab — gold rim on top + sides, bg matches the panel
-		# below so the bottom edge "opens" into the inventory frame.
-		normal.bg_color = COL_PANEL if has_node("__not_a_real_check") else Color(0.10, 0.11, 0.12)
+		# Selected tab — gold rim on top + sides, fill matches the
+		# panel below so the bottom edge "opens" into the inventory
+		# frame.
 		normal.bg_color = COL_STONE_DARK
 		normal.border_color = COL_GOLD
 		normal.border_width_top = 3
