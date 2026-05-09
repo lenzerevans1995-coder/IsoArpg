@@ -39,7 +39,7 @@ const RENDER_SIZE := Vector2i(128, 128)
 # is rig.y - 90*scale. Anchor.y is tuned so the item's body region
 # lands at canvas y=64 (vertical center of the 128² output).
 const SLOT_BAKE := {
-	ItemsDB.Slot.HEAD:     {"scale": 2.0, "anchor": Vector2(64, 204)},
+	ItemsDB.Slot.HEAD:     {"scale": 2.0, "anchor": Vector2(64, 220)},
 	ItemsDB.Slot.HANDS:    {"scale": 1.6, "anchor": Vector2(64, 112)},
 	ItemsDB.Slot.CHEST:    {"scale": 1.5, "anchor": Vector2(64, 109)},
 	ItemsDB.Slot.LEGS:     {"scale": 1.6, "anchor": Vector2(64,  90)},
