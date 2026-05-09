@@ -260,7 +260,7 @@ func _build_header() -> Control:
 		coin.texture = load("res://assets/drops/gold_drop/coins_drop.png")
 	coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	coin.custom_minimum_size = Vector2(36, 36)
+	coin.custom_minimum_size = Vector2(64, 64)
 	coin.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	gold_box.add_child(coin)
 	_gold_label = Label.new()
