@@ -29,8 +29,11 @@ const RENDER_SIZE := Vector2i(384, 384)
 # Anchor the rig roughly at the bottom-center so feet land in-frame.
 const ANCHOR := Vector2(192, 320)
 # Fraction of the cropped content edge length to leave as breathing room
-# inside the OUT_SIZE canvas. 0.85 = content fills 85% of the icon.
-const CONTENT_FILL_FRACTION := 0.82
+# inside the OUT_SIZE canvas. 0.96 = content fills 96% of the icon canvas
+# so when the inventory's TextureRect renders the texture inside its
+# 80x80 slot, the visible item reads at ~75 px (was ~55 px at 0.82) —
+# bigger items inside the SAME slot, no layout change.
+const CONTENT_FILL_FRACTION := 0.96
 # Slot id -> LayeredCharacter layer (mirrors item_editor's table).
 const SLOT_TO_LAYER := {
 	ItemsDB.Slot.HEAD: "head", ItemsDB.Slot.HANDS: "hands",

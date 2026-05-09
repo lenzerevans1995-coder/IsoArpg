@@ -193,7 +193,7 @@ func _build_panel() -> void:
 	var frame := _StoneFrame.new()
 	# Wide enough for the 6-col x 64px backpack + paper-doll without
 	# the ScrollContainer's reserved scrollbar gutter eating a column.
-	frame.custom_minimum_size = Vector2(1240, 780)
+	frame.custom_minimum_size = Vector2(1020, 660)
 	center.add_child(frame)
 
 	# Inner padding inside the cavity.
@@ -421,7 +421,7 @@ func _make_paperdoll_slot(label_text: String, slot_id: String) -> Control:
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 3)
 	var btn := _StoneSlot.new()
-	btn.custom_minimum_size = Vector2(112, 112)
+	btn.custom_minimum_size = Vector2(80, 80)
 	btn.slot_id = slot_id
 	btn.pressed.connect(_on_doll_slot_pressed.bind(slot_id))
 	btn.mouse_entered.connect(func():
@@ -542,7 +542,7 @@ func _make_backpack_cell(item_id: String) -> Control:
 	var btn := _StoneSlot.new()
 	# 64 px cells match the paper-doll slots and give HD icons room to
 	# breathe. Was 50 — way too small with 6 px inner padding.
-	btn.custom_minimum_size = Vector2(112, 112)
+	btn.custom_minimum_size = Vector2(80, 80)
 	if item_id == "":
 		btn.filled = false
 		btn.rarity_color = Color.WHITE
@@ -552,8 +552,8 @@ func _make_backpack_cell(item_id: String) -> Control:
 		var icon := _make_item_icon(item_id)
 		if icon:
 			icon.anchor_right = 1.0; icon.anchor_bottom = 1.0
-			icon.offset_left = 4; icon.offset_top = 4
-			icon.offset_right = -4; icon.offset_bottom = -4
+			icon.offset_left = 2; icon.offset_top = 2
+			icon.offset_right = -2; icon.offset_bottom = -2
 			btn.add_child(icon)
 		btn.set_meta("item_id", item_id)
 		btn.pressed.connect(_on_bag_slot_pressed.bind(item_id))
