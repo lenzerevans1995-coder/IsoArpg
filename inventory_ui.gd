@@ -279,9 +279,13 @@ func _build_header() -> Control:
 	_gold_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
 	_gold_label.add_theme_constant_override("outline_size", 3)
 	_gold_label.add_theme_font_size_override("font_size", 18)
-	_gold_label.custom_minimum_size = Vector2(60, coin_size.y)
+	# Tight min height (matching coin) but no min width — text sits
+	# RIGHT next to the coin instead of centered inside a 60-wide rect.
+	_gold_label.custom_minimum_size = Vector2(0, coin_size.y)
 	_gold_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_gold_label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	_gold_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_gold_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	gold_box.add_child(_gold_label)
 	hb.add_child(gold_box)
 
