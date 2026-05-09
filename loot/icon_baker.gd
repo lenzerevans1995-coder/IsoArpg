@@ -29,7 +29,26 @@ const OUT_SIZE := Vector2i(128, 128)
 # Earlier crop-and-resize pipeline made every icon fill the canvas the
 # same amount, which clipped helmets and over-magnified small items.
 const RENDER_SIZE := Vector2i(128, 128)
-const ANCHOR := Vector2(64, 96)
+# Per-slot rig (scale, anchor). The LayeredCharacter sheet is 128x128
+# per frame at scale 1.0; rig.position sets the FOOT anchor and the
+# sprite extends up by ~80 px from there. Different items live on
+# different parts of the body, so anchor.y must shift with scale to
+# keep the relevant content centered in the 128x128 output frame.
+const SLOT_BAKE := {
+	ItemsDB.Slot.HEAD:     {"scale": 2.0, "anchor": Vector2(64, 200)},
+	ItemsDB.Slot.HANDS:    {"scale": 1.6, "anchor": Vector2(64, 170)},
+	ItemsDB.Slot.CHEST:    {"scale": 1.5, "anchor": Vector2(64, 160)},
+	ItemsDB.Slot.LEGS:     {"scale": 1.6, "anchor": Vector2(64, 140)},
+	ItemsDB.Slot.SHOES:    {"scale": 1.8, "anchor": Vector2(64, 130)},
+	ItemsDB.Slot.BELT:     {"scale": 1.8, "anchor": Vector2(64, 150)},
+	ItemsDB.Slot.BAG:      {"scale": 1.6, "anchor": Vector2(64, 165)},
+	ItemsDB.Slot.MAINHAND: {"scale": 1.5, "anchor": Vector2(64, 160)},
+	ItemsDB.Slot.OFFHAND:  {"scale": 1.5, "anchor": Vector2(64, 160)},
+	ItemsDB.Slot.SHIELD:   {"scale": 1.5, "anchor": Vector2(64, 160)},
+	ItemsDB.Slot.MOUNT:    {"scale": 1.0, "anchor": Vector2(64, 100)},
+}
+const DEFAULT_BAKE := {"scale": 1.5, "anchor": Vector2(64, 160)}
+const ANCHOR := Vector2(64, 96)   # legacy fallback referenced elsewhere
 # Slot id -> LayeredCharacter layer (mirrors item_editor's table).
 const SLOT_TO_LAYER := {
 	ItemsDB.Slot.HEAD: "head", ItemsDB.Slot.HANDS: "hands",
@@ -92,6 +111,11 @@ static func bake_all(host_node: Node, force: bool = false) -> Dictionary:
 static func _pose_for_icon(rig: Node2D, entry: Dictionary) -> void:
 	_clear(rig)
 	var slot_id: int = int(entry["slot"])
+	# Per-slot scale + anchor so each item reads at a useful size with
+	# the relevant body region centered in the 128x128 frame.
+	var bake: Dictionary = SLOT_BAKE.get(slot_id, DEFAULT_BAKE)
+	rig.scale = Vector2(bake.scale, bake.scale)
+	rig.position = bake.anchor
 	if NEEDS_BODY.get(slot_id, false):
 		rig.call("equip", "body", "NakedBody")
 	var layer: String = String(SLOT_TO_LAYER.get(slot_id, ""))
@@ -110,6 +134,9 @@ static func _pose_for_icon(rig: Node2D, entry: Dictionary) -> void:
 static func _pose_for_ground(rig: Node2D, entry: Dictionary) -> void:
 	_clear(rig)
 	var slot_id: int = int(entry["slot"])
+	var bake: Dictionary = SLOT_BAKE.get(slot_id, DEFAULT_BAKE)
+	rig.scale = Vector2(bake.scale, bake.scale)
+	rig.position = bake.anchor
 	if NEEDS_BODY.get(slot_id, false):
 		rig.call("equip", "body", "NakedBody")
 	var layer: String = String(SLOT_TO_LAYER.get(slot_id, ""))
