@@ -31,9 +31,16 @@ const OUT_SIZE := Vector2i(128, 128)
 const RENDER_SIZE := Vector2i(128, 128)
 const ANCHOR := Vector2(64, 96)
 # After rendering, scale the PNG up so the visible item fills more of
-# the slot. Single uniform value across all slots — no per-slot table
-# to throw centering off. 1.0 = no zoom (original), 2.0 = aggressive.
-const POST_ZOOM := 1.6
+# the slot. Per-slot zoom multipliers — head / hands / belt items
+# render with smaller native sprite content so they need a stronger
+# post-zoom. Anchor / rig scale stays uniform so CENTERING is
+# unaffected; only the post-render Image gets resized.
+const POST_ZOOM_DEFAULT := 1.6
+const POST_ZOOM_PER_SLOT := {
+	ItemsDB.Slot.HEAD:  2.4,
+	ItemsDB.Slot.HANDS: 2.2,
+	ItemsDB.Slot.BELT:  2.4,
+}
 # Slot id -> LayeredCharacter layer (mirrors item_editor's table).
 const SLOT_TO_LAYER := {
 	ItemsDB.Slot.HEAD: "head", ItemsDB.Slot.HANDS: "hands",
@@ -76,16 +83,17 @@ static func bake_all(host_node: Node, force: bool = false) -> Dictionary:
 			continue
 		var icon_path: String = "%s/%s.png" % [ICON_DIR, iid]
 		var ground_path: String = "%s/%s.png" % [GROUND_DIR, iid]
+		var slot_id: int = int(entry["slot"])
 		# S-facing Idle frame 0 — the canonical inventory icon.
 		_pose_for_icon(rig, entry)
 		await _flush(host_node, vp)
-		_save_image(vp, icon_path)
+		_save_image(vp, icon_path, slot_id)
 		summary.icons += 1
 		# Death pose for the ground drop sprite. Falls back to Idle if
 		# the slot's sheets don't have Die (rare).
 		_pose_for_ground(rig, entry)
 		await _flush(host_node, vp)
-		_save_image(vp, ground_path)
+		_save_image(vp, ground_path, slot_id)
 		summary.ground += 1
 	rig.queue_free()
 	vp.queue_free()
@@ -157,29 +165,25 @@ static func _flush(host: Node, vp: SubViewport) -> void:
 	await host.get_tree().process_frame
 	await host.get_tree().process_frame
 
-static func _save_image(vp: SubViewport, path: String) -> void:
+static func _save_image(vp: SubViewport, path: String, slot_id: int = -1) -> void:
 	var tex: Texture2D = vp.get_texture()
 	if tex == null: return
 	var src: Image = tex.get_image()
 	if src == null: return
-	# Uniform post-render zoom: scale the entire 128x128 image up by
-	# POST_ZOOM, then crop center back to 128x128. Content gets bigger
-	# proportionally; centering stays exactly where the rig put it; no
-	# per-slot anchor math; no aspect distortion.
-	if POST_ZOOM != 1.0:
-		var w: int = src.get_width()
-		var h: int = src.get_height()
-		var zw: int = int(round(w * POST_ZOOM))
-		var zh: int = int(round(h * POST_ZOOM))
-		src.resize(zw, zh, Image.INTERPOLATE_LANCZOS)
-		# Crop center back to OUT_SIZE.
-		var out := Image.create(OUT_SIZE.x, OUT_SIZE.y, false, src.get_format())
-		var src_x: int = (zw - OUT_SIZE.x) / 2
-		var src_y: int = (zh - OUT_SIZE.y) / 2
-		out.blit_rect(src, Rect2i(src_x, src_y, OUT_SIZE.x, OUT_SIZE.y), Vector2i.ZERO)
-		out.save_png(ProjectSettings.globalize_path(path))
+	var zoom: float = float(POST_ZOOM_PER_SLOT.get(slot_id, POST_ZOOM_DEFAULT))
+	if zoom == 1.0:
+		src.save_png(ProjectSettings.globalize_path(path))
 		return
-	src.save_png(ProjectSettings.globalize_path(path))
+	var w: int = src.get_width()
+	var h: int = src.get_height()
+	var zw: int = int(round(w * zoom))
+	var zh: int = int(round(h * zoom))
+	src.resize(zw, zh, Image.INTERPOLATE_LANCZOS)
+	var out := Image.create(OUT_SIZE.x, OUT_SIZE.y, false, src.get_format())
+	var src_x: int = (zw - OUT_SIZE.x) / 2
+	var src_y: int = (zh - OUT_SIZE.y) / 2
+	out.blit_rect(src, Rect2i(src_x, src_y, OUT_SIZE.x, OUT_SIZE.y), Vector2i.ZERO)
+	out.save_png(ProjectSettings.globalize_path(path))
 
 static func _load_meta(item_id: String, slot_id: int) -> Resource:
 	var slot_name: String = ItemsDB.Slot.keys()[slot_id].to_lower()
