@@ -33,7 +33,7 @@ const ANCHOR := Vector2(192, 320)
 # so when the inventory's TextureRect renders the texture inside its
 # 80x80 slot, the visible item reads at ~75 px (was ~55 px at 0.82) —
 # bigger items inside the SAME slot, no layout change.
-const CONTENT_FILL_FRACTION := 0.55
+const CONTENT_FILL_FRACTION := 0.40
 # Slot id -> LayeredCharacter layer (mirrors item_editor's table).
 const SLOT_TO_LAYER := {
 	ItemsDB.Slot.HEAD: "head", ItemsDB.Slot.HANDS: "hands",
@@ -131,16 +131,19 @@ static func _clear(rig: Node2D) -> void:
 			"belt", "bag", "mainhand", "offhand", "mount"]:
 		rig.call("clear_layer", layer)
 
-# Per-item layer tint chosen by hashing item_id against the per-slot
-# palette in loadout.gd. Two chest items (chest_3, chest_7) end up in
-# different palette swatches so the loot pile reads as varied colors
-# instead of all-grey. Stable: chest_3 always picks the same swatch.
-static func _tint_for_item(layer: String, item_id: String) -> Color:
+# Match the PLAYER'S equipped tint per layer so the inventory icon and
+# the equipped silhouette read in the same color. Reads loadout.json's
+# `tints` dict (set by the character creator); falls back to the first
+# palette swatch if the layer isn't tinted yet. The legacy
+# hash-by-item-id behavior is gone — we want consistency across
+# inventory / equipped, not per-item variation.
+static func _tint_for_item(layer: String, _item_id: String) -> Color:
+	var loadout: Dictionary = LoadoutScript.load_or_default()
+	var tints: Dictionary = loadout.get("tints", {})
+	if tints.has(layer):
+		return Color(String(tints[layer]))
 	var palette: Array = LoadoutScript.palette_for(layer)
-	if palette.is_empty():
-		return Color.WHITE
-	var idx: int = abs(item_id.hash()) % palette.size()
-	return palette[idx]
+	return palette[0] if palette.size() > 0 else Color.WHITE
 
 # Wait until the SubViewport has rendered the new pose. Two frames is
 # enough: one for _process to update sheet/region, one for the renderer
@@ -185,14 +188,12 @@ static func _content_bbox(img: Image) -> Rect2i:
 	var h: int = img.get_height()
 	var min_x: int = w; var min_y: int = h
 	var max_x: int = -1; var max_y: int = -1
-	# Threshold 0.25 (was 0.05). Item sheets have faint anti-alias /
-	# shadow wisps that make the alpha bbox larger than the visible
-	# content; head sheets in particular had hair/shading pixels that
-	# pushed the bbox 30-40% bigger than the helmet itself, leaving the
-	# rendered icon too small after the resize.
+	# 0.15 alpha threshold — tighter than 0.05 (which catches every
+	# shadow wisp) but loose enough not to clip helmets / hair edges
+	# (0.25 was clipping head items).
 	for y in range(h):
 		for x in range(w):
-			if img.get_pixel(x, y).a > 0.25:
+			if img.get_pixel(x, y).a > 0.15:
 				if x < min_x: min_x = x
 				if y < min_y: min_y = y
 				if x > max_x: max_x = x
