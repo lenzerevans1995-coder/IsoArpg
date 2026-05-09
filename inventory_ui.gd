@@ -251,23 +251,59 @@ func _build_header() -> Control:
 		tabs_hb.add_child(b)
 	hb.add_child(tabs_hb)
 
+	# Gold counter: small coin icon + gold-tinted number, mimicking
+	# loot drop's coins_drop sprite.
+	var gold_box := HBoxContainer.new()
+	gold_box.add_theme_constant_override("separation", 4)
+	var coin := TextureRect.new()
+	if ResourceLoader.exists("res://assets/drops/gold_drop/coins_drop.png"):
+		coin.texture = load("res://assets/drops/gold_drop/coins_drop.png")
+	coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	coin.custom_minimum_size = Vector2(20, 20)
+	coin.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	gold_box.add_child(coin)
 	_gold_label = Label.new()
-	_gold_label.text = "0g"
+	_gold_label.text = "0"
 	_gold_label.add_theme_color_override("font_color", COL_GOLD_HI)
+	_gold_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	_gold_label.add_theme_constant_override("outline_size", 3)
 	_gold_label.add_theme_font_size_override("font_size", 14)
-	_gold_label.custom_minimum_size = Vector2(60, 0)
-	hb.add_child(_gold_label)
+	_gold_label.custom_minimum_size = Vector2(50, 0)
+	_gold_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	gold_box.add_child(_gold_label)
+	hb.add_child(gold_box)
 
+	# Close button — same chunky stone style as HUDStoneButton: dark
+	# outer + bronze rim + gold pinstripe + cavity, sinks 1 px on press.
 	var close := Button.new()
 	close.text = "✕"
-	close.flat = true
-	close.add_theme_color_override("font_color", COL_TEXT_DIM)
+	close.custom_minimum_size = Vector2(36, 36)
+	close.add_theme_color_override("font_color", COL_GOLD)
 	close.add_theme_color_override("font_hover_color", COL_GOLD_HI)
-	close.add_theme_font_size_override("font_size", 18)
-	close.custom_minimum_size = Vector2(28, 28)
+	close.add_theme_color_override("font_pressed_color", COL_GOLD)
+	close.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
+	close.add_theme_constant_override("outline_size", 3)
+	close.add_theme_font_size_override("font_size", 16)
+	close.add_theme_stylebox_override("normal", _close_btn_style(false))
+	close.add_theme_stylebox_override("hover",  _close_btn_style(true))
+	close.add_theme_stylebox_override("pressed", _close_btn_style(true))
 	close.pressed.connect(_on_close)
 	hb.add_child(close)
 	return hb
+
+func _close_btn_style(hot: bool) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = COL_VOID_HOT if hot else COL_VOID
+	sb.border_color = COL_GOLD_HI if hot else COL_GOLD
+	sb.border_width_left = 2; sb.border_width_top = 2
+	sb.border_width_right = 2; sb.border_width_bottom = 2
+	sb.shadow_color = Color(0, 0, 0, 0.55)
+	sb.shadow_size = 2
+	sb.shadow_offset = Vector2(0, 2)
+	sb.content_margin_left = 6; sb.content_margin_right = 6
+	sb.content_margin_top = 4; sb.content_margin_bottom = 4
+	return sb
 
 func _make_tab_button(label: String, idx: int) -> Button:
 	var b := Button.new()
@@ -383,23 +419,26 @@ func _build_paperdoll() -> Control:
 	# Live player preview: SubViewport at native resolution holding a
 	# LayeredCharacter mirroring the player's loadout. Re-equips when
 	# the user changes gear so the silhouette updates instantly.
+	# Phase 2.2: bigger character preview so the equipped silhouette
+	# reads clearly. ~50% larger than the previous 180x280 viewport.
 	var preview_holder := SubViewportContainer.new()
 	preview_holder.stretch = true
-	preview_holder.custom_minimum_size = Vector2(180, 280)
+	preview_holder.custom_minimum_size = Vector2(260, 400)
 	preview_holder.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	preview_holder.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	preview_holder.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	middle.add_child(preview_holder)
 	_preview_vp = SubViewport.new()
-	_preview_vp.size = Vector2i(180, 280)
+	_preview_vp.size = Vector2i(260, 400)
 	_preview_vp.transparent_bg = true
 	_preview_vp.disable_3d = true
 	_preview_vp.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
 	_preview_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	preview_holder.add_child(_preview_vp)
 	_preview_char = LayeredCharacter.new()
-	(_preview_char as Node2D).position = Vector2(90, 220)
-	(_preview_char as Node2D).scale = Vector2(1.4, 1.4)
+	(_preview_char as Node2D).position = Vector2(130, 320)
+	(_preview_char as Node2D).scale = Vector2(2.0, 2.0)
+	_preview_char.set("_direction", 1)   # SE-facing reads as more 3D
 	_preview_vp.add_child(_preview_char)
 
 	var right_col := VBoxContainer.new()
@@ -492,7 +531,7 @@ func _build_backpack() -> Control:
 func _refresh_all() -> void:
 	if _gold_label == null:
 		return
-	_gold_label.text = "%dg" % Inventory.get_gold(_loadout)
+	_gold_label.text = "%d" % Inventory.get_gold(_loadout)
 	_refresh_paperdoll()
 	_refresh_backpack()
 
