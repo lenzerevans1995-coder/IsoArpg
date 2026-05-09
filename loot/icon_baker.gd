@@ -182,9 +182,14 @@ static func _content_bbox(img: Image) -> Rect2i:
 	var h: int = img.get_height()
 	var min_x: int = w; var min_y: int = h
 	var max_x: int = -1; var max_y: int = -1
+	# Threshold 0.25 (was 0.05). Item sheets have faint anti-alias /
+	# shadow wisps that make the alpha bbox larger than the visible
+	# content; head sheets in particular had hair/shading pixels that
+	# pushed the bbox 30-40% bigger than the helmet itself, leaving the
+	# rendered icon too small after the resize.
 	for y in range(h):
 		for x in range(w):
-			if img.get_pixel(x, y).a > 0.05:
+			if img.get_pixel(x, y).a > 0.25:
 				if x < min_x: min_x = x
 				if y < min_y: min_y = y
 				if x > max_x: max_x = x
