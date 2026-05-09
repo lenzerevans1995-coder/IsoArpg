@@ -535,9 +535,11 @@ func _make_paperdoll_slot(label_text: String, slot_id: String) -> Control:
 
 func _build_backpack() -> Control:
 	var v := VBoxContainer.new()
-	# Zero gap so the tab strip's bottom edge sits flush with the
-	# inventory frame's top edge.
-	v.add_theme_constant_override("separation", 0)
+	# Negative separation overlaps the tab strip 2 px down into the
+	# frame, hiding the frame's outermost stone-dark band so the tab
+	# bottom merges directly into the bronze/gold rim. Plain 0 left a
+	# visible 2 px dark strip between tab and panel.
+	v.add_theme_constant_override("separation", -2)
 
 	# Tab strip sits ON TOP of the inventory panel, butting its top
 	# edge. Lives inside the bag column so its width matches the bag.
