@@ -193,7 +193,7 @@ func _build_panel() -> void:
 	var frame := _StoneFrame.new()
 	# Wide enough for the 6-col x 64px backpack + paper-doll without
 	# the ScrollContainer's reserved scrollbar gutter eating a column.
-	frame.custom_minimum_size = Vector2(1020, 660)
+	frame.custom_minimum_size = Vector2(1120, 700)
 	center.add_child(frame)
 
 	# Inner padding inside the cavity.
@@ -260,7 +260,7 @@ func _build_header() -> Control:
 		coin.texture = load("res://assets/drops/gold_drop/coins_drop.png")
 	coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	coin.custom_minimum_size = Vector2(20, 20)
+	coin.custom_minimum_size = Vector2(36, 36)
 	coin.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	gold_box.add_child(coin)
 	_gold_label = Label.new()
@@ -388,7 +388,7 @@ func _build_paperdoll() -> Control:
 	v.add_theme_constant_override("separation", 8)
 
 	var inner := _StoneFrame.new()
-	inner.custom_minimum_size = Vector2(360, 460)
+	inner.custom_minimum_size = Vector2(460, 520)
 	inner.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	v.add_child(inner)
 
