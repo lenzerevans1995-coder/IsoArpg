@@ -34,20 +34,24 @@ const RENDER_SIZE := Vector2i(128, 128)
 # sprite extends up by ~80 px from there. Different items live on
 # different parts of the body, so anchor.y must shift with scale to
 # keep the relevant content centered in the 128x128 output frame.
+# LayeredCharacter sprite_offset = (0, -26) → sprite center sits at
+# rig.position + (0, -26 * scale). Sprite spans 128 px tall, so top
+# is rig.y - 90*scale. Anchor.y is tuned so the item's body region
+# lands at canvas y=64 (vertical center of the 128² output).
 const SLOT_BAKE := {
-	ItemsDB.Slot.HEAD:     {"scale": 2.0, "anchor": Vector2(64, 200)},
-	ItemsDB.Slot.HANDS:    {"scale": 1.6, "anchor": Vector2(64, 170)},
-	ItemsDB.Slot.CHEST:    {"scale": 1.5, "anchor": Vector2(64, 160)},
-	ItemsDB.Slot.LEGS:     {"scale": 1.6, "anchor": Vector2(64, 140)},
-	ItemsDB.Slot.SHOES:    {"scale": 1.8, "anchor": Vector2(64, 130)},
-	ItemsDB.Slot.BELT:     {"scale": 1.8, "anchor": Vector2(64, 150)},
-	ItemsDB.Slot.BAG:      {"scale": 1.6, "anchor": Vector2(64, 165)},
-	ItemsDB.Slot.MAINHAND: {"scale": 1.5, "anchor": Vector2(64, 160)},
-	ItemsDB.Slot.OFFHAND:  {"scale": 1.5, "anchor": Vector2(64, 160)},
-	ItemsDB.Slot.SHIELD:   {"scale": 1.5, "anchor": Vector2(64, 160)},
-	ItemsDB.Slot.MOUNT:    {"scale": 1.0, "anchor": Vector2(64, 100)},
+	ItemsDB.Slot.HEAD:     {"scale": 2.0, "anchor": Vector2(64, 204)},
+	ItemsDB.Slot.HANDS:    {"scale": 1.6, "anchor": Vector2(64, 112)},
+	ItemsDB.Slot.CHEST:    {"scale": 1.5, "anchor": Vector2(64, 109)},
+	ItemsDB.Slot.LEGS:     {"scale": 1.6, "anchor": Vector2(64,  90)},
+	ItemsDB.Slot.SHOES:    {"scale": 1.8, "anchor": Vector2(64,  68)},
+	ItemsDB.Slot.BELT:     {"scale": 1.8, "anchor": Vector2(64,  98)},
+	ItemsDB.Slot.BAG:      {"scale": 1.6, "anchor": Vector2(64, 112)},
+	ItemsDB.Slot.MAINHAND: {"scale": 1.5, "anchor": Vector2(64, 109)},
+	ItemsDB.Slot.OFFHAND:  {"scale": 1.5, "anchor": Vector2(64, 109)},
+	ItemsDB.Slot.SHIELD:   {"scale": 1.5, "anchor": Vector2(64, 109)},
+	ItemsDB.Slot.MOUNT:    {"scale": 1.0, "anchor": Vector2(64,  96)},
 }
-const DEFAULT_BAKE := {"scale": 1.5, "anchor": Vector2(64, 160)}
+const DEFAULT_BAKE := {"scale": 1.5, "anchor": Vector2(64, 109)}
 const ANCHOR := Vector2(64, 96)   # legacy fallback referenced elsewhere
 # Slot id -> LayeredCharacter layer (mirrors item_editor's table).
 const SLOT_TO_LAYER := {
